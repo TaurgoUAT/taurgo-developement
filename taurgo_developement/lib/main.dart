@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/pages/landingPage.dart';
-
+import 'package:taurgo_developement/pages/home.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: const LandingPage(),
+      // home: const LandingPage(),
+      home: const Homepage(),
     );
   }
 }
