@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/navpages/accountPageComponents/bottom_nav_bar.dart';
 
 class Home1 extends StatefulWidget {
   const Home1({super.key});
@@ -106,66 +107,17 @@ class _Home1State extends State<Home1> {
           ],
         ),
       ),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: kPrimaryColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(999),
-        ),
-        tooltip: 'Increment',
-        child: const Icon(Icons.add, color: bWhite),
-      ),
-      // bottomNavigationBar: BottomAppBar(
-      //   shape: const CircularNotchedRectangle(),
-      //   height: 60,
-      //   color: kPrimaryColor,
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //     children: <Widget>[
-      //       IconButton(
-      //         icon: const Icon(
-      //           Icons.home_outlined,
-      //         ),
-      //         color: bWhite,
-      //         tooltip: 'Home',
-      //         onPressed: () {
-      //           setState(() {
-      //             selectedIndex = 0;
-      //           });
-      //         },
-      //       ),
-      //       IconButton(
-      //         icon: const Icon(Icons.menu_outlined),
-      //         color: bWhite,
-      //         onPressed: () {
-      //           setState(() {
-      //             selectedIndex = 1;
-      //           });
-      //         },
-      //       ),
-      //       IconButton(
-      //         icon: const Icon(Icons.image_outlined),
-      //         color: bWhite,
-      //         onPressed: () {
-      //           setState(() {
-      //             selectedIndex = 2;
-      //           });
-      //         },
-      //       ),
-      //       IconButton(
-      //         icon: const Icon(Icons.person_pin_outlined),
-      //         color: bWhite,
-      //         onPressed: () {
-      //           setState(() {
-      //             selectedIndex = 3;
-      //           });
-      //         },
-      //       ),
-      //     ],
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      //   backgroundColor: kPrimaryColor,
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.circular(999),
       //   ),
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add, color: bWhite),
       // ),
+      // bottomNavigationBar: BottomNavBar(),
     );
   }
 }

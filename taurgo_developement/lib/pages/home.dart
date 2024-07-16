@@ -25,7 +25,7 @@ class _HomepageState extends State<Homepage> {
 
   final PageStorageBucket bucket = PageStorageBucket();
 
-  Widget currentScreen =  HomePage();
+  Widget currentScreen =  Home1();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +60,7 @@ class _HomepageState extends State<Homepage> {
                     minWidth: 40,
                     onPressed: (){
                       setState(() {
-                        currentScreen = HomePage();
+                        currentScreen = Home1();
                         currentTab = 0;
                       });
                     },
