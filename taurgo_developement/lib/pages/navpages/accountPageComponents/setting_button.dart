@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/navpages/settings_page.dart';
 
 class SettingsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
-
       child: Container(
         height: 50,
         width: 300,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettingsPage()),
+            );
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: kSecondaryButtonColor,
             foregroundColor: kSecondaryButtonTextColor,
