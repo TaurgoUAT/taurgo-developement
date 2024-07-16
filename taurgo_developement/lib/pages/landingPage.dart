@@ -11,12 +11,12 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
-
     var image = Image.asset('assets/logo/Taurgo Logo.png',
         height: 250,
         fit: BoxFit.scaleDown); //<- Creates a widget that displays an image.
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
           decoration: const BoxDecoration(color: bWhite),
