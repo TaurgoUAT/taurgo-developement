@@ -5,8 +5,12 @@ const kPrimaryColor = Color(0xFF286167);
 const kButtonColour = Color(0xFFF19447);
 
 
+const kSecondaryButtonColor = Color(0xFFF1F1F1);
+
+const kSecondaryButtonTextColor = Color(0xFF000000);
 const kSecondaryTextColour = Color(0xff6C757D);
-const kPrimaryTextColour = Color(0xff4F4846);
+const kPrimaryTextColour = Color(0xff0E0F11);
+
 const kPrimaryLightColor = Color(0xFFddb892);
 const kSecondaryLightColor = Color(0xFFb08968);
 const iconColor = Color(0xFFF4ECE5);
