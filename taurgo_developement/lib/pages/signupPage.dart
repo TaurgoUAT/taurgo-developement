@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:taurgo_developement/pages/landingPage.dart';
-import 'package:taurgo_developement/pages/signupPage.dart';
 
-class Login extends StatefulWidget {
+class SignUp extends StatefulWidget {
   @override
-  _LoginState createState() => _LoginState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _LoginState extends State<Login> {
+class _SignUpState extends State<SignUp> {
+  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool isLoading = false;
 
   @override
@@ -20,7 +21,7 @@ class _LoginState extends State<Login> {
           child: Center(
             child: isLoading
                 ? Text(
-                    'Login....',
+                    'Creating account....',
                     style: TextStyle(fontSize: 30),
                     textAlign: TextAlign.center,
                   )
@@ -35,29 +36,24 @@ class _LoginState extends State<Login> {
                         ),
                         SizedBox(height: 50),
                         Text(
-                          'Sign In',
+                          'Create Account',
                           style: TextStyle(
                               fontSize: 30, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 20),
+                        _buildTextField('Full Name', _fullNameController,
+                            icon: Icons.person),
                         _buildTextField('Email Address', _emailController,
-                            hint: ''),
+                            icon: Icons.email),
                         _buildTextField('Password', _passwordController,
-                            obscureText: true),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Forget Password?',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                        ),
+                            icon: Icons.lock, obscureText: true),
+                        _buildTextField(
+                            'Confirm Password', _confirmPasswordController,
+                            icon: Icons.lock, obscureText: true),
                         SizedBox(height: 50),
                         ElevatedButton(
-                          // onPressed: handleNavigateToHome,
+                          // onPressed: handleSignUp,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xFF124D35),
                             padding: EdgeInsets.symmetric(
@@ -65,27 +61,17 @@ class _LoginState extends State<Login> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LandingPage()));
-                          },
+                          onPressed: () {},
                           child: Text(
-                            'Sign in',
+                            'Sign up',
                             style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
                         ),
                         TextButton(
-                          // onPressed: handleNavigateToRegister,
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignUp()));
-                          },
+                          // onPressed: handleNavigateToSignIn,
+                          onPressed: () {},
                           child: Text(
-                            "Don't have an account? Sign up",
+                            "Already have an account? Sign in",
                             style: TextStyle(color: Color(0xFF1A1A1A)),
                           ),
                         ),
@@ -99,7 +85,7 @@ class _LoginState extends State<Login> {
   }
 
   Widget _buildTextField(String label, TextEditingController controller,
-      {String hint = '', bool obscureText = false}) {
+      {IconData? icon, String hint = '', bool obscureText = false}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Column(
@@ -111,6 +97,7 @@ class _LoginState extends State<Login> {
             decoration: InputDecoration(
               hintText: hint,
               border: UnderlineInputBorder(),
+              suffixIcon: icon != null ? Icon(icon) : null,
             ),
             obscureText: obscureText,
           ),
