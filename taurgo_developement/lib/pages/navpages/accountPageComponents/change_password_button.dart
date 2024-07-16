@@ -8,7 +8,7 @@ class ChangePasswordButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Container(
         height: 50,
-        width: 300,
+        width: double.maxFinite,
         child: ElevatedButton(
           onPressed: () {},
           style: ElevatedButton.styleFrom(

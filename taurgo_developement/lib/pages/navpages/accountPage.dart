@@ -50,6 +50,7 @@ class _AccountPageState extends State<AccountPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             Center(child: ProfileSection()),
             SizedBox(height: 16),
             Padding(
@@ -63,13 +64,54 @@ class _AccountPageState extends State<AccountPage> {
               child: Divider(thickness: 1, color: Color(0xFFC2C2C2)),
             ),
             SizedBox(height: 16),
-            Center(child: SettingsButton()),
-            Center(child: ChangePasswordButton()),
-            Center(child: HelpSupportButton()),
+            Container(
+              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+              child: SettingsButton(),
+            ),
+            // Center(
+            //     child:Container(
+            //       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+            //       child: SettingsButton(),
+            //     )),
+            Container(
+              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+              child: ChangePasswordButton(),
+            ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+              child: HelpSupportButton(),
+            ),
             Spacer(),
-            Center(
+            // Center(
+            //   child: Padding(
+            //     padding: const EdgeInsets.symmetric(vertical: 20.0),
+            //     child: ElevatedButton(
+            //       onPressed: () {},
+            //       child: Padding(
+            //         padding: const EdgeInsets.symmetric(
+            //             horizontal: 100, vertical: 10),
+            //         child: Text(
+            //           'Logout',
+            //           style: TextStyle(fontSize: 18),
+            //         ),
+            //       ),
+            //       style: ElevatedButton.styleFrom(
+            //         backgroundColor: kPrimaryColor,
+            //         foregroundColor: bWhite, // Background color
+            //         shape: RoundedRectangleBorder(
+            //           borderRadius:
+            //           BorderRadius.circular(50), // Button corner radius
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 20.0),
+              width: double.maxFinite,
+
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: ElevatedButton(
                   onPressed: () {},
                   child: Padding(
@@ -91,6 +133,7 @@ class _AccountPageState extends State<AccountPage> {
                 ),
               ),
             ),
+
           ],
         ),
       ),

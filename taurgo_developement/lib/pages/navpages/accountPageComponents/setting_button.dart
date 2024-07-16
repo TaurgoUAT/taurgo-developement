@@ -9,7 +9,7 @@ class SettingsButton extends StatelessWidget {
 
       child: Container(
         height: 50,
-        width: 300,
+        width: double.maxFinite,
         child: ElevatedButton(
           onPressed: () {},
           style: ElevatedButton.styleFrom(
