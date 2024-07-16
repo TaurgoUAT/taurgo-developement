@@ -31,16 +31,42 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin{
   //   super.dispose();
   // }
 
-  List allImage = [
-    "prop-img.png",
-    "prop-img.png",
-    "prop-img.png",
-    "prop-img.png"
-  ];
-  List latestImages = ["prop-img.png", "Lprop-img.png", "prop-img.png", "prop-"
-      "img.png"];
-  List deletedImages = ["prop-img.png", "Lprop-img.png", "prop-img.png", "prop-"
-      "img.png"];
+
+  // List<String> allImage = [
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //
+  // ];
+  // List<String> latestImages = [
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  // ];
+  // List<String> deletedImages = [
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  //   "prop-img.png",
+  // ];
+
   @override
   Widget build(BuildContext context) {
     TabController _tabController = TabController(length: 3, vsync: this);
@@ -79,29 +105,34 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin{
             Center(child: SearchBarSection()),
 
             CapturedImage(),
-
             Container(
-
               child: TabBar(
-                  // labelPadding: const EdgeInsets.only(left: 0, right: 20),
-                  controller: _tabController,
-                  labelColor: kPrimaryColor,
-                  unselectedLabelColor: kPrimaryColor.withOpacity(0.3),
-                  isScrollable: true,
-                  // indicator: CircleTabIndicator(color: kPrimaryColor, radius: 4),
-                  // indicatorSize: TabBarIndicatorSize.label,
-                  tabs: [
-                    Tab(
-                      text: "All Images",
-                    ),
-                    Tab(
-                      text: "Latest",
-                    ),
-                    Tab(
-                      text: "Deleted",
-                    )
-                  ]),
+                controller: _tabController,
+                labelColor: kPrimaryColor,
+                unselectedLabelColor: kSecondaryBorderColor,
+                indicator: BoxDecoration(),
+
+
+                // indicatorSize: TabBarIndicatorSize.tab,
+                tabs: [
+                  Tab(text: "All Images"),
+                  Tab(text: "Latest"),
+                  Tab(text: "Deleted"),
+                ],
+              ),
             ),
+            // Expanded(
+            //   child: TabBarView(
+            //     controller: _tabController,
+            //     children: [
+            //       buildGridView(allImage),
+            //       buildGridView(latestImages),
+            //       buildGridView(deletedImages),
+            //     ],
+            //   ),
+            // ),
+
+
 
             // Container(
             //   padding: const EdgeInsets.only(left: 20),
@@ -221,3 +252,33 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin{
     );
   }
 }
+
+
+Widget buildGridView(List<String> images) {
+  return GridView.builder(
+    padding: const EdgeInsets.all(8.0),
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 3,
+      crossAxisSpacing: 8.0,
+      mainAxisSpacing: 8.0,
+    ),
+    itemCount: images.length,
+    itemBuilder: (BuildContext context, int index) {
+      return GestureDetector(
+        onTap: () {
+          // Handle image tap
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            image: DecorationImage(
+              image: AssetImage("assets/images/${images[index]}"),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+

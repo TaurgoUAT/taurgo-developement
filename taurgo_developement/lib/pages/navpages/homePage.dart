@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/pages/navpages/accountPageComponents/bottom_nav_bar.dart';
+import 'package:taurgo_developement/costants/AppColors.dart';
 
 class Home1 extends StatefulWidget {
   const Home1({super.key});
@@ -15,14 +16,13 @@ class _Home1State extends State<Home1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'My Tour',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            fontFamily: "Inter",
-          ),
-        ),
+
+        title: Text('My Tour', style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          fontFamily: "Inter",
+        ),),
+
         centerTitle: true,
         backgroundColor: bWhite,
         leading: Padding(
@@ -32,6 +32,7 @@ class _Home1State extends State<Home1> {
         ),
         actions: [
           IconButton(
+
             icon: Icon(
               Icons.notifications_none,
               color: kPrimaryColor,
@@ -193,7 +194,15 @@ class _Home1State extends State<Home1> {
             ),
           ),
         ),
+
+  
+
       ),
+      body: Container(
+        color: bWhite,
+        padding: const EdgeInsets.all(16.0),
+
+      )
     );
   }
 }
