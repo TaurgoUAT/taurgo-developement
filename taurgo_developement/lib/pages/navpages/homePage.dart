@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
-import 'package:taurgo_developement/pages/navpages/accountPageComponents/bottom_nav_bar.dart';
-import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/navpages/imagePageComponents/search_bar_section.dart';
 
 class Home1 extends StatefulWidget {
   const Home1({super.key});
@@ -16,23 +15,23 @@ class _Home1State extends State<Home1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
-        title: Text('My Tour', style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          fontFamily: "Inter",
-        ),),
-
+        title: Text(
+          'My Tour',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            fontFamily: "Inter",
+          ),
+        ),
         centerTitle: true,
         backgroundColor: bWhite,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Image.asset(
-              'assets/logo/Taurgo Logo.png'), // Path to your company icon
+              'assets/logo/Taurgo Logo.png'), 
         ),
         actions: [
           IconButton(
-
             icon: Icon(
               Icons.notifications_none,
               color: kPrimaryColor,
@@ -54,43 +53,28 @@ class _Home1State extends State<Home1> {
           backgroundColor: bWhite,
           body: Container(
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 30),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search...',
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(100),
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                      filled: true,
-                      fillColor: kLightPrimaryColor,
-                    ),
-                  ),
-                ),
+                Center(child: SearchBarSection()),
+
                 const SizedBox(
-                    height: 10), // Adds space between search bar and text
+                    height: 20), 
 
                 const Padding(
                   padding: EdgeInsets.only(
-                      left: 30.0), // Adjust the padding as needed
+                      left: 30.0), 
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Completed Properties',
                       style: TextStyle(
                         fontSize: 22,
-                        fontWeight: FontWeight.bold, // Set the font size to 20
+                        fontWeight: FontWeight.bold, 
                       ),
                     ),
                   ),
                 ),
-               const TabBar(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                const TabBar(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   unselectedLabelColor: kPrimaryColor,
                   labelColor: kPrimaryColor,
                   unselectedLabelStyle: const TextStyle(fontSize: 13),
@@ -118,7 +102,6 @@ class _Home1State extends State<Home1> {
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -132,7 +115,7 @@ class _Home1State extends State<Home1> {
                                   children: <Widget>[
                                     Icon(Icons.folder,
                                         size: 50.0, color: kAccentColor),
-                                    Text('Folder 1'), // Folder name added
+                                    Text('Folder 1'), 
                                   ],
                                 ),
                               ),
@@ -145,7 +128,7 @@ class _Home1State extends State<Home1> {
                                   children: <Widget>[
                                     Icon(Icons.folder,
                                         size: 50.0, color: kAccentColor),
-                                    Text('Folder 2'), // Folder name added
+                                    Text('Folder 2'), 
                                   ],
                                 ),
                               ),
@@ -158,7 +141,7 @@ class _Home1State extends State<Home1> {
                                   children: <Widget>[
                                     Icon(Icons.folder,
                                         size: 50.0, color: kAccentColor),
-                                    Text('Folder 3'), // Folder name added
+                                    Text('Folder 3'), 
                                   ],
                                 ),
                               ),
@@ -171,7 +154,7 @@ class _Home1State extends State<Home1> {
                                   children: <Widget>[
                                     Icon(Icons.folder,
                                         size: 50.0, color: kAccentColor),
-                                    Text('Folder 4'), // Folder name added
+                                    Text('Folder 4'), 
                                   ],
                                 ),
                               ),
@@ -179,14 +162,14 @@ class _Home1State extends State<Home1> {
                           ),
                         ],
                       ),
-                      // Placeholder content for HOME tab
+                     
                       Center(
                           child: Text(
-                              'Your Tours')), // Placeholder content for FILES tab
+                              'Your Tours')), 
                       Center(child: Text('Taurgo Tours')),
                       Center(
                           child: Text(
-                              'Taurgo Tours')), // Placeholder content for SETTINGS tab
+                              'Taurgo Tours')), 
                     ],
                   ),
                 ),
@@ -194,15 +177,8 @@ class _Home1State extends State<Home1> {
             ),
           ),
         ),
-
-  
-
       ),
-      body: Container(
-        color: bWhite,
-        padding: const EdgeInsets.all(16.0),
-
-      )
+      
     );
   }
 }
