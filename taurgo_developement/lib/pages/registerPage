@@ -1,0 +1,190 @@
+import 'package:flutter/material.dart';
+import 'package:your_project/firebase_handler.dart'; // Ensure you have the correct import for your Firebase handler
+
+class Register extends StatefulWidget {
+  @override
+  _RegisterState createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  String _name = '';
+  String _email = '';
+  String _password = '';
+  String _confirmPassword = '';
+
+  void _handleNavigateToLogin() {
+    Navigator.pushNamed(context, '/login');
+  }
+
+  Future<void> _handleRegister() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Assume handleAuthentication is a function that takes the required parameters and handles the registration
+      await handleAuthentication(
+        email: _email,
+        password: _password,
+        name: _name,
+        cb: () {
+          Navigator.pushNamed(context, '/login');
+        },
+        setIsLoading: (value) {
+          setState(() {
+            _isLoading = value;
+          });
+        },
+        isLogin: false,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: _isLoading
+            ? Center(
+                child: Text(
+                  'Registering....',
+                  style: TextStyle(fontSize: 30),
+                ),
+              )
+            : SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 50),
+                      Image.asset('assets/images/logo-flat.png'),
+                      SizedBox(height: 50),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Create account',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(height: 40),
+                            Text('Full Name', style: TextStyle(fontSize: 20)),
+                            TextFormField(
+                              onChanged: (value) {
+                                setState(() {
+                                  _name = value;
+                                });
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your name';
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                border: UnderlineInputBorder(),
+                                contentPadding: EdgeInsets.symmetric(vertical: 5),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Text('Email Address', style: TextStyle(fontSize: 20)),
+                            TextFormField(
+                              onChanged: (value) {
+                                setState(() {
+                                  _email = value;
+                                });
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your email';
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                border: UnderlineInputBorder(),
+                                contentPadding: EdgeInsets.symmetric(vertical: 5),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Text('Password', style: TextStyle(fontSize: 20)),
+                            TextFormField(
+                              obscureText: true,
+                              onChanged: (value) {
+                                setState(() {
+                                  _password = value;
+                                });
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your password';
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                border: UnderlineInputBorder(),
+                                contentPadding: EdgeInsets.symmetric(vertical: 5),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Text('Confirm Password', style: TextStyle(fontSize: 20)),
+                            TextFormField(
+                              obscureText: true,
+                              onChanged: (value) {
+                                setState(() {
+                                  _confirmPassword = value;
+                                });
+                              },
+                              validator: (value) {
+                                if (value != _password) {
+                                  return 'Passwords do not match';
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                border: UnderlineInputBorder(),
+                                contentPadding: EdgeInsets.symmetric(vertical: 5),
+                              ),
+                            ),
+                            SizedBox(height: 50),
+                            ElevatedButton(
+                              onPressed: _handleRegister,
+                              child: Text(
+                                'Sign up',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 15,
+                                ),
+                                primary: Color(0xFF124d35),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: _handleNavigateToLogin,
+                              child: Text(
+                                'Already have an account, sign in',
+                                style: TextStyle(color: Color(0xFF1a1a1a)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+      ),
+    );
+  }
+}
