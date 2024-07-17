@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/navpages/folder/Folder1ContentsPage.dart';
 import 'package:taurgo_developement/pages/navpages/imagePageComponents/search_bar_section.dart';
 
 class Home1 extends StatefulWidget {
-  const Home1({super.key});
+    final String folderName;
+
+  const Home1({super.key,
+      this.folderName = 'Default Folder Name',
+});
 
   @override
   State<Home1> createState() => _Home1State();
@@ -16,7 +21,7 @@ class _Home1State extends State<Home1> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'My Tour',
+          'My Tours',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
@@ -27,8 +32,7 @@ class _Home1State extends State<Home1> {
         backgroundColor: bWhite,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-              'assets/logo/Taurgo Logo.png'), 
+          child: Image.asset('assets/logo/Taurgo Logo.png'),
         ),
         actions: [
           IconButton(
@@ -55,20 +59,16 @@ class _Home1State extends State<Home1> {
             child: Column(
               children: <Widget>[
                 Center(child: SearchBarSection()),
-
-                const SizedBox(
-                    height: 20), 
-
+                const SizedBox(height: 20),
                 const Padding(
-                  padding: EdgeInsets.only(
-                      left: 30.0), 
+                  padding: EdgeInsets.only(left: 30.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Completed Properties',
                       style: TextStyle(
                         fontSize: 22,
-                        fontWeight: FontWeight.bold, 
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -97,7 +97,7 @@ class _Home1State extends State<Home1> {
                     ),
                   ],
                 ),
-                const Expanded(
+                Expanded(
                   child: TabBarView(
                     children: [
                       Column(
@@ -107,19 +107,25 @@ class _Home1State extends State<Home1> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               InkWell(
-                                // onTap: () {
-                                //   // Action for folder 1
-                                // },
-                                child: Column(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Folder1ContentsPage(
+                                          folderName: 'Folder 1'),
+                                    ),
+                                  );
+                                },
+                                child: const Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
                                     Icon(Icons.folder,
                                         size: 50.0, color: kAccentColor),
-                                    Text('Folder 1'), 
+                                    Text('Folder 1'),
                                   ],
                                 ),
                               ),
-                              InkWell(
+                              const InkWell(
                                 // onTap: () {
                                 //   // Action for folder 2
                                 // },
@@ -128,7 +134,7 @@ class _Home1State extends State<Home1> {
                                   children: <Widget>[
                                     Icon(Icons.folder,
                                         size: 50.0, color: kAccentColor),
-                                    Text('Folder 2'), 
+                                    Text('Folder 2'),
                                   ],
                                 ),
                               ),
@@ -141,7 +147,7 @@ class _Home1State extends State<Home1> {
                                   children: <Widget>[
                                     Icon(Icons.folder,
                                         size: 50.0, color: kAccentColor),
-                                    Text('Folder 3'), 
+                                    Text('Folder 3'),
                                   ],
                                 ),
                               ),
@@ -154,7 +160,7 @@ class _Home1State extends State<Home1> {
                                   children: <Widget>[
                                     Icon(Icons.folder,
                                         size: 50.0, color: kAccentColor),
-                                    Text('Folder 4'), 
+                                    Text('Folder 4'),
                                   ],
                                 ),
                               ),
@@ -162,14 +168,9 @@ class _Home1State extends State<Home1> {
                           ),
                         ],
                       ),
-                     
-                      Center(
-                          child: Text(
-                              'Your Tours')), 
+                      Center(child: Text('Your Tours')),
                       Center(child: Text('Taurgo Tours')),
-                      Center(
-                          child: Text(
-                              'Taurgo Tours')), 
+                      Center(child: Text('Taurgo Tours')),
                     ],
                   ),
                 ),
@@ -178,7 +179,6 @@ class _Home1State extends State<Home1> {
           ),
         ),
       ),
-      
     );
   }
 }
