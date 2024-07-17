@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:taurgo_developement/pages/landingPage.dart';
-import 'package:taurgo_developement/pages/home.dart';
+import 'package:taurgo_developement/pages/navpages/PropertyDetailsPage.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -14,8 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Taurgo',
       // home: const LandingPage(),
-      home: const Homepage(),
+      home: PropertyDetailsPage(),
     );
   }
 }
-
