@@ -31,6 +31,7 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin{
   //   super.dispose();
   // }
 
+
   // List<String> allImage = [
   //   "prop-img.png",
   //   "prop-img.png",
@@ -65,6 +66,7 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin{
   //   "prop-img.png",
   //   "prop-img.png",
   // ];
+
   @override
   Widget build(BuildContext context) {
     TabController _tabController = TabController(length: 3, vsync: this);
