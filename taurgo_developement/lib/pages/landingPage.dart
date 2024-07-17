@@ -14,7 +14,6 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
-
     var image = Image.asset('assets/logo/Taurgo Logo.png',
         height: 250,
         fit: BoxFit.scaleDown);

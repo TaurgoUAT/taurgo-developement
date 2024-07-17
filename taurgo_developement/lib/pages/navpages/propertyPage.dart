@@ -40,6 +40,7 @@ class _ProperyPageState extends State<ProperyPage> {
         body: Container(
           color: bWhite,
           padding: const EdgeInsets.all(16.0),
+
           child: Container(
             height: 320,
             margin: EdgeInsets.all(16.0),
@@ -126,6 +127,7 @@ class _ProperyPageState extends State<ProperyPage> {
               ],
             ),
           ),
+
 
         )
     );
