@@ -17,55 +17,55 @@ class Imagepage extends StatefulWidget {
 }
 
 class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin{
-  // late TabController _tabController;
-  //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _tabController = TabController(length: 3, vsync: this);
-  // }
-  //
-  // @override
-  // void dispose() {
-  //   _tabController.dispose();
-  //   super.dispose();
-  // }
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
 
-  // List<String> allImage = [
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //
-  // ];
-  // List<String> latestImages = [
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  // ];
-  // List<String> deletedImages = [
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  //   "prop-img.png",
-  // ];
+  List<String> allImage = [
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+
+  ];
+  List<String> latestImages = [
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+  ];
+  List<String> deletedImages = [
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+    "prop-img.png",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -105,20 +105,45 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin{
             Center(child: SearchBarSection()),
 
             CapturedImage(),
+            // Container(
+            //   child: TabBar(
+            //     controller: _tabController,
+            //     labelColor: kPrimaryColor,
+            //     unselectedLabelColor: kSecondaryBorderColor,
+            //     indicator: BoxDecoration(),
+            //
+            //
+            //     // indicatorSize: TabBarIndicatorSize.tab,
+            //     tabs: [
+            //       Tab(text: "All Images"),
+            //       Tab(text: "Latest"),
+            //       Tab(text: "Deleted"),
+            //     ],
+            //   ),
+            // ),
+
             Container(
-              child: TabBar(
-                controller: _tabController,
-                labelColor: kPrimaryColor,
-                unselectedLabelColor: kSecondaryBorderColor,
-                indicator: BoxDecoration(),
-
-
-                // indicatorSize: TabBarIndicatorSize.tab,
-                tabs: [
-                  Tab(text: "All Images"),
-                  Tab(text: "Latest"),
-                  Tab(text: "Deleted"),
-                ],
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: TabBar(
+                    // labelPadding: const EdgeInsets.only(left: 20, right: 20),
+                    controller: _tabController,
+                    labelColor: kPrimaryColor,
+                    unselectedLabelColor: kSecondaryBorderColor,
+                    indicator: BoxDecoration(),
+                    // indicator: CircleTabIndicator(color: kPrimaryColor, radius: 4),
+                    //indicatorSize: TabBarIndicatorSize.label,
+                    tabs: [
+                      Tab(
+                        text: "All Images",
+                      ),
+                      Tab(
+                        text: "Latest",
+                      ),
+                      Tab(
+                        text: "Deleted",
+                      )
+                    ]),
               ),
             ),
             // Expanded(
@@ -281,4 +306,35 @@ Widget buildGridView(List<String> images) {
     },
   );
 }
+
+
+class CircleTabIndicator extends Decoration {
+  final Color color;
+  double radius;
+
+  CircleTabIndicator({required this.color, required this.radius});
+  @override
+  BoxPainter createBoxPainter([VoidCallback? onChanged]) {
+    // TODO: implement createBoxPainter
+    return _CirclePainter(color: color, radius: radius);
+  }
+}
+
+class _CirclePainter extends BoxPainter {
+  final Color color;
+  double radius;
+
+  _CirclePainter({required this.color, required this.radius});
+  @override
+  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
+    Paint _paint = Paint();
+    _paint.color = color;
+    _paint.isAntiAlias = true;
+    final Offset circleOffset = Offset(
+        configuration.size!.width / 2 - radius / 2, configuration.size!.height);
+    canvas.drawCircle(offset + circleOffset, radius, _paint);
+  }
+}
+
+
 

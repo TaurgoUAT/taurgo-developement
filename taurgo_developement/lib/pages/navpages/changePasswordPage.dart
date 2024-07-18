@@ -25,14 +25,14 @@ class ChangePasswordPage extends StatefulWidget {
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  int currentTab = 0;
-
-  final List<Widget> pages = [
-    HomePage(),
-    ProperyPage(),
-    Imagepage(),
-    AccountPage(),
-  ];
+  // int currentTab = 0;
+  //
+  // final List<Widget> pages = [
+  //   HomePage(),
+  //   ProperyPage(),
+  //   Imagepage(),
+  //   AccountPage(),
+  // ];
 
   void onTabSelected(int index) {
     setState(() {

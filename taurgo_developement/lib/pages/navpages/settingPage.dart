@@ -21,14 +21,14 @@ class _SettingsPageState extends State<SettingsPage> {
   bool soundEnabled = true;
   bool notificationsEnabled = true;
   bool locationEnabled = true;
-  int currentTab = 0;
-
-  final List<Widget> pages = [
-    HomePage(),
-    ProperyPage(),
-    Imagepage(),
-    AccountPage(),
-  ];
+  // int currentTab = 0;
+  //
+  // final List<Widget> pages = [
+  //   HomePage(),
+  //   ProperyPage(),
+  //   Imagepage(),
+  //   AccountPage(),
+  // ];
 
   void onTabSelected(int index) {
     setState(() {

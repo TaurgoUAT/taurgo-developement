@@ -3,11 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
-import 'package:taurgo_developement/pages/navpages/accountPage.dart';
-import 'package:taurgo_developement/pages/navpages/homePage.dart';
-import 'package:taurgo_developement/pages/navpages/propertyPage.dart';
-import 'package:taurgo_developement/pages/navpages/imagePage.dart';
 import 'package:taurgo_developement/pages/navpages/shareImagePage.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo;
+import 'package:path_provider/path_provider.dart';
 
 class UploadImagePage extends StatefulWidget {
   const UploadImagePage({super.key});
@@ -154,7 +152,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
                       child: Image.file(
                         images[index],
                         fit: BoxFit.cover,
-                        width: 160,
+                        width: 320,
                       ),
                     ),
                   );
