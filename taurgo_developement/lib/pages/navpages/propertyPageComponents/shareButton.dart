@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/navpages/shareImagePage.dart';
+
 
 class ShareButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ShareImagePage()),
+        );
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12.0),
         child: Text(

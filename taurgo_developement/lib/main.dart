@@ -36,8 +36,8 @@ class MyApp extends StatelessWidget {
           // ),
         ),
       ),
-      home: const LandingPage(),
-      //home: const Homepage(),
+      // home: const LandingPage(),
+      home: const Homepage(),
     );
   }
 }

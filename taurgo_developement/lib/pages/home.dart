@@ -4,6 +4,7 @@ import 'package:taurgo_developement/pages/navpages/accountPage.dart';
 import 'package:taurgo_developement/pages/navpages/homePage.dart';
 import 'package:taurgo_developement/pages/navpages/propertyPage.dart';
 import 'package:taurgo_developement/pages/navpages/imagePage.dart';
+import 'package:taurgo_developement/pages/newPropertyScreen.dart';
 
 
 class Homepage extends StatefulWidget {
@@ -41,7 +42,14 @@ class _HomepageState extends State<Homepage> {
           Icons.add,
           size: 48,
         ),
-        onPressed: () {},
+        onPressed: () {
+          // Navigate to the desired screen
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => NewPropertyScreen(),
+            ),
+          );
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
