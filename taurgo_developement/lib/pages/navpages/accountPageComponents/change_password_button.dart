@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/navpages/changePasswordPage.dart';
 
 class ChangePasswordButton extends StatelessWidget {
   @override
@@ -10,7 +11,12 @@ class ChangePasswordButton extends StatelessWidget {
         height: 50,
         width: double.maxFinite,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChangePasswordPage()),
+            );
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: kSecondaryButtonColor,
             foregroundColor: kSecondaryButtonTextColor,

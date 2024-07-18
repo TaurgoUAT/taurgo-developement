@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/pages/landingPage.dart';
+
+import 'package:taurgo_developement/pages/authentication/signInPage.dart';
 import 'package:taurgo_developement/pages/home.dart';
 void main() {
   runApp(const MyApp());

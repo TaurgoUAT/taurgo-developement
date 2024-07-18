@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/navpages/settingPage.dart';
 
 class SettingsButton extends StatelessWidget {
   @override
@@ -11,7 +12,12 @@ class SettingsButton extends StatelessWidget {
         height: 50,
         width: double.maxFinite,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettingsPage()),
+            );
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: kSecondaryButtonColor,
             foregroundColor: kSecondaryButtonTextColor,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/widgets/AppWelcomeText.dart';
+import 'package:taurgo_developement/pages/authentication/signInPage.dart';
+import 'package:taurgo_developement/pages/authentication/signUpPage.dart';
 
 import 'package:flutter/cupertino.dart';
 
@@ -111,12 +113,20 @@ class _LandingPageState extends State<LandingPage> {
                     margin: const EdgeInsets.only(top: 10, left: 20, right: 20),
 
                     child: GestureDetector(
-                      // onTap: (){
-                      //   AuthController.instance.registerUser(emailController.text
-                      //       .trim(), passwordController.text.trim());
+                      // onTap: () {
+                      //   Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => SignUpPage()));
                       // },
                       child: Container(
                         child: GestureDetector(
+                          // onTap: () {
+                          //   Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) => SignInPage()));
+                          // },
                           child: Container(
                               width: 288,
                               height: 48,
