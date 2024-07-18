@@ -7,6 +7,8 @@ import 'package:taurgo_developement/pages/navpages/accountPageComponents/setting
 import 'package:taurgo_developement/pages/navpages/accountPageComponents/susbcribtion_section.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 
+import '../../controllers/authController.dart';
+
 
 
 class AccountPage extends StatefulWidget {
@@ -113,7 +115,11 @@ class _AccountPageState extends State<AccountPage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+
+                      AuthController.instance.logOut();
+
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 100, vertical: 10),

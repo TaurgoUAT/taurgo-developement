@@ -38,6 +38,8 @@ import 'package:taurgo_developement/pages/navpages/propertyPage.dart';
 import 'package:taurgo_developement/pages/navpages/imagePage.dart';
 import 'package:taurgo_developement/widgets/bottom_nav_bar.dart';
 
+import '../../controllers/authController.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -46,6 +48,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  var emailController =  TextEditingController();
+  var passwordController = TextEditingController();
   var image =
   Image.asset('assets/logo/logo.png', height: 250, fit: BoxFit.scaleDown);
 
@@ -68,30 +72,96 @@ class _SignUpPageState extends State<SignUpPage> {
               Center(
                 child: SignUpCard(),
               ),
-              ChangePasswordInput(
-                label: 'Full Name',
-                icon: Icons.perm_identity_rounded,
+            TextField(
+            decoration: InputDecoration(
+              labelText: "Full Name",
+              suffixIcon: Icon(Icons.perm_identity_rounded, color: kPrimaryColor),
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(color: kPrimaryColor),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: kPrimaryColor),
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+            ),
+            // obscureText: true,
+          ),
+              SizedBox(height: 30), // Increased spacing
+
+              TextField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  labelText: "Email",
+                  suffixIcon: Icon(Icons.email_outlined, color: kPrimaryColor),
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: kPrimaryColor),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: kPrimaryColor),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+                ),
+                // obscureText: true,
+              ),
+              SizedBox(height: 30), // Increased spacing
+              TextField(
+                controller: passwordController,
+                decoration: InputDecoration(
+                  labelText: "Password",
+                  suffixIcon: Icon(Icons.lock_outline, color: kPrimaryColor),
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: kPrimaryColor),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: kPrimaryColor),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+                ),
+                obscureText: true,
               ),
               SizedBox(height: 30), // Increased spacing
 
-              ChangePasswordInput(
-                label: 'Email Address',
-                icon: Icons.mail_outline,
-              ),
-              SizedBox(height: 30), // Increased spacing
-              ChangePasswordInput(
-                label: 'Password',
-                icon: Icons.lock_outline,
-              ),
-              SizedBox(height: 30), // Increased spacing
-
-              ChangePasswordInput(
-                label: 'Confirm Password',
-                icon: Icons.lock_outline,
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Confirm Password",
+                  suffixIcon: Icon(Icons.lock_outline, color: kPrimaryColor),
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: kPrimaryColor),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: kPrimaryColor),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+                ),
+                obscureText: true,
               ),
 
               SizedBox(height: 70),
-              SignUpButton(),
+        GestureDetector(
+          onTap: (){
+            AuthController.instance.registerUser(emailController.text.trim(),
+                passwordController.text.trim());
+          },
+          child: Center(
+            child: ElevatedButton(
+              onPressed: () {
+                AuthController.instance.registerUser(emailController.text.trim(),
+                    passwordController.text.trim());
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 10),
+                child: Text('Sign Up', style: TextStyle(fontSize: 18)),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kPrimaryColor,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+              ),
+            ),
+          ),
+        ),
               SizedBox(
                 height: 10,
               ),
