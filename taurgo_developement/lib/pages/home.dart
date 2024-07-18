@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/pages/navpages/accountPage.dart';
 import 'package:taurgo_developement/pages/navpages/homePage.dart';
 import 'package:taurgo_developement/pages/navpages/imagePage.dart';
 import 'package:taurgo_developement/pages/navpages/propertyPage.dart';
 import 'package:taurgo_developement/widgets/bottom_nav_bar.dart';
+import 'package:taurgo_developement/widgets/custom_floating_action_button.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -35,18 +35,8 @@ class _HomepageState extends State<Homepage> {
         child: currentScreen,
         bucket: bucket,
       ),
-      floatingActionButton: isKeyboardVisible
-          ? null
-          : FloatingActionButton(
-              shape: CircleBorder(),
-              backgroundColor: kPrimaryColor,
-              foregroundColor: Colors.white,
-              child: Icon(
-                Icons.add,
-                size: 48,
-              ),
-              onPressed: () {},
-            ),
+      floatingActionButton:
+          CustomFloatingActionButton(isVisible: !isKeyboardVisible),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomBottomNavBar(
         currentTab: currentTab,
