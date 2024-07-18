@@ -1,26 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
-import 'package:flutter/material.dart';
-import 'package:taurgo_developement/costants/AppColors.dart';
-import 'package:taurgo_developement/pages/navpages/propertyPageComponents/uploadImageButton.dart';
+import 'package:taurgo_developement/pages/navpages/accountPage.dart';
+import 'package:taurgo_developement/pages/navpages/homePage.dart';
+import 'package:taurgo_developement/pages/navpages/imagePage.dart';
+import 'package:taurgo_developement/pages/navpages/propertyPage.dart';
 import 'package:taurgo_developement/pages/navpages/propertyPageComponents'
     '/propertyDetails.dart';
 import 'package:taurgo_developement/pages/navpages/propertyPageComponents'
     '/propertyImageCarousal.dart';
-
 import 'package:taurgo_developement/pages/navpages/propertyPageComponents'
     '/shareButton.dart';
-// settings_page.dart
-import 'package:flutter/material.dart';
-import 'package:taurgo_developement/costants/AppColors.dart';
-import 'package:taurgo_developement/widgets/bottom_nav_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:taurgo_developement/costants/AppColors.dart';
-import 'package:taurgo_developement/pages/navpages/accountPage.dart';
-import 'package:taurgo_developement/pages/navpages/homePage.dart';
-import 'package:taurgo_developement/pages/navpages/propertyPage.dart';
-import 'package:taurgo_developement/pages/navpages/imagePage.dart';
-import 'package:taurgo_developement/widgets/bottom_nav_bar.dart';
+import 'package:taurgo_developement/pages/navpages/propertyPageComponents/uploadImageButton.dart';
 
 class UploadImagePage extends StatefulWidget {
   const UploadImagePage({super.key});
@@ -41,14 +31,14 @@ class _UploadImagePageState extends State<UploadImagePage> {
 
   void onTabSelected(int index) {
     setState(() {
-      Navigator.of(context).pop(); // Return to the previous page when a tab is selected
+      Navigator.of(context)
+          .pop(); // Return to the previous page when a tab is selected
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         title: Text(
           'Properties',
@@ -108,7 +98,6 @@ class _UploadImagePageState extends State<UploadImagePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-
             UploadImagesButton(),
             SizedBox(height: 16),
             PropertyImageCarousel(),
@@ -118,23 +107,22 @@ class _UploadImagePageState extends State<UploadImagePage> {
             ShareButton(),
           ],
         ),
-
       ),
-      floatingActionButton: FloatingActionButton(
-        shape: CircleBorder(),
-        backgroundColor: kPrimaryColor,
-        foregroundColor: Colors.white,
-        child: Icon(
-          Icons.add,
-          size: 48,
-        ),
-        onPressed: () {},
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: CustomBottomNavBar(
-        currentTab: currentTab,
-        onTabSelected: onTabSelected,
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   shape: CircleBorder(),
+      //   backgroundColor: kPrimaryColor,
+      //   foregroundColor: Colors.white,
+      //   child: Icon(
+      //     Icons.add,
+      //     size: 48,
+      //   ),
+      //   onPressed: () {},
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // bottomNavigationBar: CustomBottomNavBar(
+      //   currentTab: currentTab,
+      //   onTabSelected: onTabSelected,
+      // ),
     );
   }
 }

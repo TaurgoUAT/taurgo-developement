@@ -13,7 +13,7 @@ class Homepage extends StatefulWidget {
   State<Homepage> createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
   int currentTab = 0;
   final List<Widget> pages = [
     HomePage(),
@@ -25,28 +25,50 @@ class _HomepageState extends State<Homepage> {
   final PageStorageBucket bucket = PageStorageBucket();
 
   Widget currentScreen = HomePage();
+  double bottomPadding =
+      16.0; // Initial bottom padding for FloatingActionButton
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    final bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
+    setState(() {
+      bottomPadding = bottomInset > 0 ? bottomInset + 16.0 : 16.0;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
-
     return Scaffold(
       body: PageStorage(
         child: currentScreen,
         bucket: bucket,
       ),
-      floatingActionButton: isKeyboardVisible
-          ? null
-          : FloatingActionButton(
-              shape: CircleBorder(),
-              backgroundColor: kPrimaryColor,
-              foregroundColor: Colors.white,
-              child: Icon(
-                Icons.add,
-                size: 48,
-              ),
-              onPressed: () {},
-            ),
+      floatingActionButton: AnimatedPadding(
+        duration: const Duration(milliseconds: 300),
+        padding: EdgeInsets.only(bottom: bottomPadding),
+        child: FloatingActionButton(
+          shape: CircleBorder(),
+          backgroundColor: kPrimaryColor,
+          foregroundColor: Colors.white,
+          child: Icon(
+            Icons.add,
+            size: 48,
+          ),
+          onPressed: () {},
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomBottomNavBar(
         currentTab: currentTab,
