@@ -10,7 +10,6 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-
       color: kPrimaryColor,
       shape: CircularNotchedRectangle(),
       notchMargin: 10,
@@ -55,7 +54,8 @@ class CustomBottomNavBar extends StatelessWidget {
     );
   }
 
-  Widget buildTabItem({required int index, required IconData icon, required String text}) {
+  Widget buildTabItem(
+      {required int index, required IconData icon, required String text}) {
     return MaterialButton(
       minWidth: 40,
       onPressed: () => onTabSelected(index),
@@ -64,7 +64,9 @@ class CustomBottomNavBar extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: currentTab == index ? Colors.white : Colors.white.withOpacity(0.6),
+            color: currentTab == index
+                ? Colors.white
+                : Colors.white.withOpacity(0.6),
           ),
           Text(
             text,
@@ -72,7 +74,9 @@ class CustomBottomNavBar extends StatelessWidget {
               fontSize: 10,
               fontWeight: FontWeight.w400,
               fontFamily: "Inter",
-              color: currentTab == index ? Colors.white : Colors.white.withOpacity(0.6),
+              color: currentTab == index
+                  ? Colors.white
+                  : Colors.white.withOpacity(0.6),
             ),
           )
         ],

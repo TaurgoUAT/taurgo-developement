@@ -159,21 +159,21 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        shape: CircleBorder(),
-        backgroundColor: kPrimaryColor,
-        foregroundColor: Colors.white,
-        child: Icon(
-          Icons.add,
-          size: 48,
-        ),
-        onPressed: () {},
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: CustomBottomNavBar(
-        currentTab: currentTab,
-        onTabSelected: onTabSelected,
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   shape: CircleBorder(),
+      //   backgroundColor: kPrimaryColor,
+      //   foregroundColor: Colors.white,
+      //   child: Icon(
+      //     Icons.add,
+      //     size: 48,
+      //   ),
+      //   onPressed: () {},
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // bottomNavigationBar: CustomBottomNavBar(
+      //   currentTab: currentTab,
+      //   onTabSelected: onTabSelected,
+      // ),
     );
   }
 }

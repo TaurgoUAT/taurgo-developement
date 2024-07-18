@@ -96,21 +96,21 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        shape: CircleBorder(),
-        backgroundColor: kPrimaryColor,
-        foregroundColor: Colors.white,
-        child: Icon(
-          Icons.add,
-          size: 48,
-        ),
-        onPressed: () {},
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: CustomBottomNavBar(
-        currentTab: currentTab,
-        onTabSelected: onTabSelected,
-      ),// Assuming you have a BottomNavBar widget
+      // floatingActionButton: FloatingActionButton(
+      //   shape: CircleBorder(),
+      //   backgroundColor: kPrimaryColor,
+      //   foregroundColor: Colors.white,
+      //   child: Icon(
+      //     Icons.add,
+      //     size: 48,
+      //   ),
+      //   onPressed: () {},
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // bottomNavigationBar: CustomBottomNavBar(
+      //   currentTab: currentTab,
+      //   onTabSelected: onTabSelected,
+      // ),// Assuming you have a BottomNavBar widget
     );
   }
 }

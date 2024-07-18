@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/home.dart';
 
 class ShareImagePage extends StatelessWidget {
   const ShareImagePage({super.key});
@@ -31,7 +32,12 @@ class ShareImagePage extends StatelessWidget {
               Icons.home,
               color: kPrimaryColor,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Homepage()),
+              );
+            },
           ),
         ],
       ),
@@ -144,20 +150,17 @@ class ShareImagePage extends StatelessWidget {
                     'Share via External Link',
                     style: TextStyle(fontSize: 14, color: allBlack),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 12),
                   ElevatedButton(
                     onPressed: () {},
                     child: Icon(Icons.link, color: kPrimaryColor),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kGrey,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100), // Button
-                        // corner radius
-                      ),
-                      padding: EdgeInsets.all(0), // Add some padding to make
-                      // the button look better
+                      shape: CircleBorder(), // Make the button circular
+                      padding: EdgeInsets.all(16), // Adjust padding to make it look like a circle
                     ),
                   ),
+
 
                 ],
               ),

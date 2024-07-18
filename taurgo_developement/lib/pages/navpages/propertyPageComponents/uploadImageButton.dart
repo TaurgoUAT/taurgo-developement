@@ -1,9 +1,50 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'dart:io';
 
 class UploadImagesButton extends StatelessWidget {
+  File? image;
+
+  Future<void> selectFromGallery(BuildContext context) async {
+    try {
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile == null) return;
+
+      final imageTemp = File(pickedFile.path);
+
+      // Update the UI
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Image selected from gallery')),
+      );
+
+      // Update state to display the selected image
+      // setState(() => this.image = imageTemp);
+    } catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future<void> selectFromCamera(BuildContext context) async {
+    try {
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (pickedFile == null) return;
+
+      final imageTemp = File(pickedFile.path);
+
+      // Update the UI
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Image captured from camera')),
+      );
+
+      // Update state to display the selected image
+      // setState(() => this.image = imageTemp);
+    } catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
@@ -16,22 +57,32 @@ class UploadImagesButton extends StatelessWidget {
         ),
         padding: EdgeInsets.symmetric(vertical: 16),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.add, color: kPrimaryColor, size: 32),
-              SizedBox(height: 8), // Add spacing between the icon and the text
-              Text(
-                'Upload 2D Images',
-                style: TextStyle(
-                  color: kPrimaryColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+          child: GestureDetector(
+            onTap: () {
+              selectFromGallery(context); // Call method to open gallery
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.add, color: kPrimaryColor, size: 32),
+                SizedBox(height: 8), // Add spacing between the icon and the text
+                GestureDetector(
+                  onTap: () {
+                    selectFromGallery(context); // Call method to open gallery
+                  },
+                  child: Text(
+                    'Upload 2D Images',
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+              ],
+            ),
+          )
         ),
       ),
     );
