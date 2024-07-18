@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/widgets/AppWelcomeText.dart';
-import 'package:taurgo_developement/pages/authentication/signinPage.dart';
-import 'package:taurgo_developement/pages/authentication/signupPage.dart';
+// import 'package:taurgo_developement/pages/authentication/signinPage.dart';
+// import 'package:taurgo_developement/pages/authentication/signupPage.dart';
 
 import 'package:flutter/cupertino.dart';
 
@@ -73,12 +73,12 @@ class _LandingPageState extends State<LandingPage> {
                     margin: const EdgeInsets.only(top: 200, left: 20, right: 20),
 
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignInPage()));
-                      },
+                      // onTap: () {
+                      //   Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => SignInPage()));
+                      // },
                       child: Container(
                         child: GestureDetector(
                           child: Container(
@@ -115,20 +115,20 @@ class _LandingPageState extends State<LandingPage> {
                     margin: const EdgeInsets.only(top: 10, left: 20, right: 20),
 
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignUpPage()));
-                      },
+                      // onTap: () {
+                      //   Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => SignUpPage()));
+                      // },
                       child: Container(
                         child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignUpPage()));
-                          },
+                          // onTap: () {
+                          //   Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) => SignUpPage()));
+                          // },
                           child: Container(
                               width: 288,
                               height: 48,

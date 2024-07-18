@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:taurgo_developement/pages/landingPage.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 
-import 'package:taurgo_developement/pages/authentication/signinPage.dart';
-
-import 'package:taurgo_developement/pages/authentication/signupPage.dart';
+// import 'package:taurgo_developement/pages/authentication/signinPage.dart';
+//
+// import 'package:taurgo_developement/pages/authentication/signupPage.dart';
 import 'package:taurgo_developement/pages/home.dart';
 void main() {
   runApp(const MyApp());
