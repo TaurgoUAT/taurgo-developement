@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/pages/FolderContentsPage.dart';
+import 'package:taurgo_developement/pages/home.dart';
 import 'package:taurgo_developement/pages/navpages/imagePageComponents/search_bar_section.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,9 +31,18 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
         backgroundColor: bWhite,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/logo/Taurgo Logo.png'),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Homepage()), // Replace
+              // HomePage with your home page widget
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset('assets/logo/Taurgo Logo.png'), // Path to your company icon
+          ),
         ),
         actions: [
           IconButton(
@@ -51,6 +61,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+
       body: DefaultTabController(
         length: 4,
         child: Scaffold(
