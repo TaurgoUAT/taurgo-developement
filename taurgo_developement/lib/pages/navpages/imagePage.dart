@@ -37,16 +37,16 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin {
     "prop-img-2.png",
     "prop-img.png",
     "prop-img.png",
-    "prop-img.png",
-    "prop-img.png",
     "prop-img-2.png",
     "prop-img.png",
+    "prop-img-2.png",
+    "prop-img-2.png",
     "prop-img.png",
   ];
   List<String> latestImages = [
     "prop-img-2.png",
     "prop-img.png",
-    "prop-img.png",
+    "prop-img-2.png",
     "prop-img-2.png",
     "prop-img.png",
     "prop-img.png",
@@ -58,11 +58,11 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin {
     "prop-img.png",
     "prop-img-2.png",
     "prop-img.png",
-    "prop-img.png",
+    "prop-img-2.png",
     "prop-img.png",
     "prop-img-2.png",
     "prop-img.png",
-    "prop-img.png",
+    "prop-img-2.png",
     "prop-img.png",
   ];
 

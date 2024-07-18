@@ -2,10 +2,13 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/navpages/imagePageComponents/search_bar_section.dart';
 import 'package:taurgo_developement/pages/navpages/shareImagePage.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 import 'package:path_provider/path_provider.dart';
+import 'package:taurgo_developement/pages/select_image.dart';
 
 class UploadImagePage extends StatefulWidget {
   const UploadImagePage({super.key});
@@ -19,7 +22,8 @@ class _UploadImagePageState extends State<UploadImagePage> {
 
   Future<void> selectFromGallery(BuildContext context) async {
     try {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedFile == null) return;
 
       final imageTemp = File(pickedFile.path);
@@ -32,7 +36,6 @@ class _UploadImagePageState extends State<UploadImagePage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Image selected from gallery')),
       );
-
     } catch (e) {
       print('Failed to pick image: $e');
     }
@@ -40,7 +43,8 @@ class _UploadImagePageState extends State<UploadImagePage> {
 
   Future<void> selectFromCamera(BuildContext context) async {
     try {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.camera);
       if (pickedFile == null) return;
 
       final imageTemp = File(pickedFile.path);
@@ -53,17 +57,15 @@ class _UploadImagePageState extends State<UploadImagePage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Image captured from camera')),
       );
-
     } catch (e) {
       print('Failed to pick image: $e');
     }
   }
 
-
-
   void onTabSelected(int index) {
     setState(() {
-      Navigator.of(context).pop(); // Return to the previous page when a tab is selected
+      Navigator.of(context)
+          .pop(); // Return to the previous page when a tab is selected
     });
   }
 
@@ -114,13 +116,17 @@ class _UploadImagePageState extends State<UploadImagePage> {
                 child: Center(
                   child: GestureDetector(
                     onTap: () {
-                      selectFromGallery(context); // Call method to open gallery
+                      showDialog(
+                        context: context,
+                        builder: (context) => UploadByCategoryPage(),
+                      );
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.add, color: kPrimaryColor, size: 32),
-                        SizedBox(height: 8), // Add spacing between the icon and the text
+                        SizedBox(height: 8),
+                        // Add spacing between the icon and the text
                         Text(
                           'Upload 2D Images',
                           style: TextStyle(
@@ -142,22 +148,22 @@ class _UploadImagePageState extends State<UploadImagePage> {
               child: images.isEmpty
                   ? Center(child: Text('No images selected'))
                   : ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: images.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: Image.file(
-                        images[index],
-                        fit: BoxFit.cover,
-                        width: 320,
-                      ),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: images.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: Image.file(
+                              images[index],
+                              fit: BoxFit.cover,
+                              width: 320,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
             SizedBox(height: 16),
             Padding(
@@ -254,7 +260,8 @@ class _UploadImagePageState extends State<UploadImagePage> {
                 backgroundColor: kPrimaryColor,
                 foregroundColor: Colors.white, // Background color
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50), // Button corner radius
+                  borderRadius:
+                      BorderRadius.circular(50), // Button corner radius
                 ),
               ),
             ),
@@ -274,7 +281,8 @@ class DottedBorderPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     var path = Path()
-      ..addRRect(RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, size.width, size.height), Radius.circular(8)));
+      ..addRRect(RRect.fromRectAndRadius(
+          Rect.fromLTWH(0, 0, size.width, size.height), Radius.circular(8)));
 
     var dashWidth = 4.0;
     var dashSpace = 4.0;
@@ -294,4 +302,372 @@ class DottedBorderPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+
+
+class UploadByCategoryPage extends StatefulWidget {
+  const UploadByCategoryPage({super.key});
+
+  @override
+  State<UploadByCategoryPage> createState() => _UploadByCategoryPageState();
+}
+
+class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
+  int _selectedCategory = 0; // Track selected category index
+  List<String> rooms = [
+    "Entrance",
+    "Driveway",
+    "Streetview",
+    "Dining Room",
+    "Kitchen",
+    "Lounge",
+    "Backgarden",
+    "Staircase",
+    "Bedroom 1",
+    "Bedroom 2",
+    "Bedroom 3",
+    "Master Bedroom",
+  ];
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _selectFromCamera() async {
+    PermissionStatus status = await Permission.camera.request();
+
+    if (status.isGranted) {
+      final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        // Handle the selected image
+        print('Image path: ${image.path}');
+      }
+    } else if (status.isDenied) {
+      // Permission denied, show a message to the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Camera permission is required to take photos.')),
+      );
+    } else if (status.isPermanentlyDenied) {
+      // Open app settings if the permission is permanently denied
+      openAppSettings();
+    }
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0),
+      ),
+      child: Container(
+        color: bWhite,
+        padding: EdgeInsets.all(20),
+        height: 740, // Adjust height as needed
+        width: 340,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Select Image Category',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: "Inter",
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.close, color: Colors.black),
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            SearchBarForDialogBox(), // Your search bar widget
+            SizedBox(height: 10),
+            Text(
+              'List of Rooms',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: kPrimaryColor,
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              height: 180, // Fixed height for the list container
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: kSecondaryButtonBorderColor,
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Scrollbar(
+                      child: ListView.builder(
+                        itemCount: rooms.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 20),
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _selectedCategory = index;
+                                });
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Radio(
+                                        value: index,
+                                        groupValue: _selectedCategory,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _selectedCategory = value as int;
+                                          });
+                                        },
+                                        activeColor: kPrimaryColor,
+                                      ),
+                                      Text(
+                                        rooms[index],
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                  Icon(
+                                    Icons.grid_view_outlined,
+                                    color: kPrimaryColor,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Sketch of Floor Plans',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: kPrimaryColor,
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Icon(Icons.broken_image_outlined,
+                              size: 24, color: kIconColour),
+                          SizedBox(height: 4),
+                          Text('Floor Plan',
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w500)),
+                          Text(
+                            "(Ground)",
+                            style: TextStyle(fontSize: 10),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Icon(Icons.broken_image_outlined,
+                              size: 24, color: kIconColour),
+                          SizedBox(height: 4),
+                          Text('Floor Plan',
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w500)),
+                          Text(
+                            "(1st Floor)",
+                            style: TextStyle(fontSize: 10),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Icon(Icons.broken_image_outlined,
+                              size: 24, color: kIconColour),
+                          SizedBox(height: 4),
+                          Text('Floor Plan',
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w500)),
+                          Text(
+                            "(2nd Floor)",
+                            style: TextStyle(fontSize: 10),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Company Logo',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: kPrimaryColor,
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              width: 50, // Adjust width as needed
+              height: 50, // Adjust height as needed
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: kGrey,
+              ),
+              child: IconButton(
+                icon: Icon(Icons.add, color: Colors.black, size: 24),
+                onPressed: () {
+                  // Add your onPressed action here
+                },
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Other Image',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: kPrimaryColor,
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              width: 50, // Adjust width as needed
+              height: 50, // Adjust height as needed
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: kGrey,
+              ),
+              child: IconButton(
+                icon: Icon(Icons.add, color: Colors.black, size: 24),
+                onPressed: () {
+                  // Add your onPressed action here
+                },
+              ),
+            ),
+            SizedBox(height: 10),
+            GestureDetector(
+              child: UploadButtonForDialogBox(
+                onPressed: _selectFromCamera,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SearchBarForDialogBox extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 326,
+            height: 40,
+            decoration: BoxDecoration(
+              color: bWhite,
+              border: Border.all(
+                color: kSecondaryButtonBorderColor, // Replace with your desired
+                // border color
+                width: 2.0, // Adjust the border width as needed
+              ), // Background color of the search bar
+              borderRadius: BorderRadius.circular(30.0),
+
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Colors.grey.withOpacity(0.5),
+              //     spreadRadius: 2,
+              //     blurRadius: 5,
+              //     offset: Offset(0, 3),
+              //   ),
+              // ],
+            ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(Icons.search, color: kSecondaryButtonBorderColor), // Search icon
+                ),
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search',
+                      hintStyle: TextStyle(color: kSecondaryButtonBorderColor),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(Icons.mic, color: kSecondaryButtonBorderColor), // Mic icon
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class UploadButtonForDialogBox extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  UploadButtonForDialogBox({required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 75, vertical: 10),
+          child: Text('Capture', style: TextStyle(fontSize: 18)),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: kPrimaryColor,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+          ),
+        ),
+      ),
+    );
+  }
 }
