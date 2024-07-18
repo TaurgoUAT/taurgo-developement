@@ -4,6 +4,7 @@ import 'package:taurgo_developement/pages/cameraScreen.dart';
 //fluimport 'package:taurgo_developement/pages/loginPage.dart';
 import 'package:taurgo_developement/pages/newProperty.dart';
 import 'package:taurgo_developement/pages/addProperty.dart';
+import 'package:taurgo_developement/pages/ediCaptureImages.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: NewPropertyScreen(),
+      home: EditImageScreen(),
     );
   }
 }
