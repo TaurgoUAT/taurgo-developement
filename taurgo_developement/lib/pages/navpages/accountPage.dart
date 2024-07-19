@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:taurgo_developement/pages/navpages/accountPageComponents/bottom_nav_bar.dart';
+import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/pages/navpages/accountPageComponents/change_password_button.dart';
 import 'package:taurgo_developement/pages/navpages/accountPageComponents/help_support_button.dart';
 import 'package:taurgo_developement/pages/navpages/accountPageComponents/profile_section.dart';
 import 'package:taurgo_developement/pages/navpages/accountPageComponents/setting_button.dart';
 import 'package:taurgo_developement/pages/navpages/accountPageComponents/susbcribtion_section.dart';
-import 'package:taurgo_developement/costants/AppColors.dart';
-
-
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -21,11 +18,14 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Account', style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          fontFamily: "Inter",
-        ),),
+        title: Text(
+          'Account',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            fontFamily: "Inter",
+          ),
+        ),
         centerTitle: true,
         backgroundColor: bWhite,
         leading: Padding(
@@ -35,11 +35,17 @@ class _AccountPageState extends State<AccountPage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications_none,color: kPrimaryColor,),
+            icon: Icon(
+              Icons.notifications_none,
+              color: kPrimaryColor,
+            ),
             onPressed: () {},
           ),
           IconButton(
-            icon: Icon(Icons.help_outline, color: kPrimaryColor,),
+            icon: Icon(
+              Icons.help_outline,
+              color: kPrimaryColor,
+            ),
             onPressed: () {},
           ),
         ],
@@ -50,7 +56,6 @@ class _AccountPageState extends State<AccountPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Center(child: ProfileSection()),
             SizedBox(height: 16),
             Padding(
@@ -109,7 +114,6 @@ class _AccountPageState extends State<AccountPage> {
             Container(
               padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 20.0),
               width: double.maxFinite,
-
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: ElevatedButton(
@@ -127,18 +131,15 @@ class _AccountPageState extends State<AccountPage> {
                     foregroundColor: bWhite, // Background color
                     shape: RoundedRectangleBorder(
                       borderRadius:
-                      BorderRadius.circular(50), // Button corner radius
+                          BorderRadius.circular(50), // Button corner radius
                     ),
                   ),
                 ),
               ),
             ),
-
           ],
         ),
       ),
     );
   }
 }
-
-
