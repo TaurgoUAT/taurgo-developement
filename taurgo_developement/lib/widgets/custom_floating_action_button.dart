@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/RicohTheta/ricohCameraPage.dart';
 import 'package:taurgo_developement/pages/newPropertyScreen.dart';
 
 class CustomFloatingActionButton extends StatelessWidget {
@@ -24,7 +25,7 @@ class CustomFloatingActionButton extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => NewPropertyScreen()));
+                builder: (context) => RicohCameraPage()));
       },
     );
   }

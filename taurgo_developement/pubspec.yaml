@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  theta_client_flutter:
+    path: ./packages/theta_client_flutter
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -50,6 +52,8 @@ dependencies:
   permission_handler: ^10.2.0
   flutter_launcher_icons: ^0.13.1
   url_launcher: ^6.1.5
+  ricoh_theta: ^1.0.0
+  video_player: ^2.8.1
 
 dev_dependencies:
   flutter_test:
