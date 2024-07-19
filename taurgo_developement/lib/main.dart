@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
-import 'package:taurgo_developement/pages/home.dart';
+import 'package:taurgo_developement/pages/navpages/onboarding/onboarding_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           // ),
         ),
       ),
-      home: Homepage(),
+      home: OnboardingPage(),
       //home: const Homepage(),
     );
   }
