@@ -9,10 +9,10 @@ class OnboardingPage extends StatelessWidget {
         children: [
           OnboardingScreen(
             logo: 'assets/logo/logo.png', // Replace with your logo asset
-            heading: '1. Capture',
+            heading: 'You Capture',
             image:
                 'assets/images/onboardingnew.png', // Replace with your image asset
-            subtext: 'capture all your images',
+            subtext: 'Capture all your images',
             isLastScreen: false,
             onSkip: () {
               // Handle skip action
@@ -22,7 +22,7 @@ class OnboardingPage extends StatelessWidget {
           ),
           OnboardingScreen(
             logo: 'assets/logo/logo.png', // Replace with your logo asset
-            heading: '2. Create',
+            heading: 'We Create',
             image:
                 'assets/images/onboarding2.png', // Replace with your image asset
             subtext: 'Create your virtual tour',
@@ -35,7 +35,7 @@ class OnboardingPage extends StatelessWidget {
           ),
           OnboardingScreen(
             logo: 'assets/logo/logo.png', // Replace with your logo asset
-            heading: '3. Share',
+            heading: 'You Share',
             image:
                 'assets/images/onboarding3.png', // Replace with your image asset
             subtext: 'Share with everyone',
