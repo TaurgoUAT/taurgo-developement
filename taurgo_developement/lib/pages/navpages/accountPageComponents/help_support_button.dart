@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/navpages/helpAndSupportPage.dart';
 
 class HelpSupportButton extends StatelessWidget {
   @override
@@ -10,7 +11,12 @@ class HelpSupportButton extends StatelessWidget {
         height: 50,
         width: double.maxFinite,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Helpandsupportpage()),
+            );
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: kSecondaryButtonColor,
             foregroundColor: kSecondaryButtonTextColor,
