@@ -44,9 +44,17 @@ class _Picture2DImageState extends State<Picture2DImage> {
           ),
           centerTitle: true,
           backgroundColor: bWhite,
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/logo/Taurgo Logo.png'),
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Homepage()), // Replace Homepage with your home page widget
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset('assets/logo/Taurgo Logo.png'), // Path to your company icon
+            ),
           ),
           actions: [
             IconButton(
@@ -70,6 +78,7 @@ class _Picture2DImageState extends State<Picture2DImage> {
             child: Scaffold(
               backgroundColor: bWhite,
               body: Container(
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: <Widget>[
                     Center(child: SearchBarSection()),

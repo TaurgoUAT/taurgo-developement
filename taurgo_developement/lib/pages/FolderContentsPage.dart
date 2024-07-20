@@ -50,9 +50,17 @@ class _FolderContentsPageState extends State<FolderContentsPage> {
         ),
         centerTitle: true,
         backgroundColor: bWhite,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/logo/Taurgo Logo.png'),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Homepage()), // Replace Homepage with your home page widget
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset('assets/logo/Taurgo Logo.png'), // Path to your company icon
+          ),
         ),
         actions: [
           IconButton(
@@ -109,12 +117,12 @@ class _FolderContentsPageState extends State<FolderContentsPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             InkWell(
                               onTap: () {
@@ -122,16 +130,16 @@ class _FolderContentsPageState extends State<FolderContentsPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => Picture2DImage(
-                                        subfolderName: 'Folder 1'),
+                                        subfolderName: '2D Picture'),
                                   ),
                                 );
                               },
                               child: const Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  Icon(Icons.folder,
-                                      size: 50.0, color: kAccentColor),
-                                  Text('Folder 1'),
+                                  Icon(Icons.image_outlined,
+                                      size: 50.0, color: kPrimaryColor),
+                                  Text('2D Picture'),
                                 ],
                               ),
                             ),
@@ -142,9 +150,9 @@ class _FolderContentsPageState extends State<FolderContentsPage> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  Icon(Icons.folder,
-                                      size: 50.0, color: kAccentColor),
-                                  Text('Folder 3'),
+                                  Icon(Icons.touch_app,
+                                      size: 50.0, color: kPrimaryColor),
+                                  Text('360 Virtual Tour'),
                                 ],
                               ),
                             ),
@@ -155,9 +163,9 @@ class _FolderContentsPageState extends State<FolderContentsPage> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  Icon(Icons.folder,
-                                      size: 50.0, color: kAccentColor),
-                                  Text('Folder 4'),
+                                  Icon(Icons.next_plan,
+                                      size: 50.0, color: kPrimaryColor),
+                                  Text('Floor Plan'),
                                 ],
                               ),
                             ),

@@ -98,6 +98,14 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          'Images',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            fontFamily: "Inter",
+          ),
+        ),
         centerTitle: true,
         backgroundColor: bWhite,
         leading: GestureDetector(
