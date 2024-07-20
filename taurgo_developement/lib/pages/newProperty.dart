@@ -1,111 +1,127 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'display_picture_screen.dart'; // Adjust the path as per your project structure
 
-void main() {
-  runApp(MyApp());
-}
+class NewPropertyScreen extends StatefulWidget {
+  final CameraDescription camera;
 
-class MyApp extends StatelessWidget {
+  NewPropertyScreen({required this.camera});
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: NewPropertyScreen(),
-    );
-  }
+  _NewPropertyScreenState createState() => _NewPropertyScreenState();
 }
 
-class NewPropertyScreen extends StatelessWidget {
+class _NewPropertyScreenState extends State<NewPropertyScreen> {
+  late CameraController _controller;
+  late Future<void> _initializeControllerFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = CameraController(
+      widget.camera,
+      ResolutionPreset.high,
+    );
+    _initializeControllerFuture = _controller.initialize();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _captureImage() async {
+    try {
+      await _initializeControllerFuture;
+      final image = await _controller.takePicture();
+      Get.to(() => DisplayPictureScreen(imagePath: image.path));
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.home),
-          onPressed: () {
-            // Add your onPressed code here!
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-              // Add your onPressed code here!
-            },
-          ),
-        ],
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Stack(
-        children: [
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/property_image.jpg'), // Replace with your image asset
-                fit: BoxFit.cover,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Top bar with home and settings icons
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(Icons.home, size: 30),
+                  Icon(Icons.settings, size: 30),
+                ],
               ),
             ),
-          ),
-          Center(
-            child: Text(
-              'Tap on screen to create new property',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.camera, color: Colors.white),
-                      onPressed: () {
-                        // Add your onPressed code here!
-                      },
+            // Camera preview area
+            Expanded(
+              child: Stack(
+                children: [
+                  FutureBuilder<void>(
+                    future: _initializeControllerFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return CameraPreview(_controller);
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
+                  // Center text
+                  Center(
+                    child: Text(
+                      'Tap on screen to create new property',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        // Add your onTap code here!
-                      },
+                  ),
+                  // Camera button at the center top
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
                       child: CircleAvatar(
                         radius: 30,
-                        backgroundColor: Colors.white.withOpacity(0.8),
-                        child: Icon(Icons.stop, color: Colors.grey, size: 30),
+                        backgroundColor: Color(0xFFBFDAD3),
+                        child:
+                            Icon(Icons.camera, color: Colors.white, size: 30),
                       ),
                     ),
-                    IconButton(
-                      icon: Icon(Icons.photo_library, color: Colors.white),
-                      onPressed: () {
-                        // Add your onPressed code here!
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Positioned(
-            top: 100,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.white.withOpacity(0.8),
-                child: Icon(Icons.camera_alt, color: Colors.cyan, size: 30),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+            // Bottom bar with camera controls
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Icon(Icons.camera_alt, size: 40),
+                  CircleAvatar(
+                    radius: 35,
+                    backgroundColor: Color(0xFFBFDAD3),
+                    child: IconButton(
+                      icon: Icon(Icons.stop, color: Colors.white, size: 40),
+                      onPressed: _captureImage,
+                    ),
+                  ),
+                  Icon(Icons.crop_square, size: 40),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

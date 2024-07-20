@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:taurgo_developement/pages/cameraScreen.dart';
-//import 'package:taurgo_developement/pages/cameraScreen.dart';
-//fluimport 'package:taurgo_developement/pages/loginPage.dart';
+import 'package:camera/camera.dart';
+import 'package:taurgo_developement/pages/loginPage.dart';
 import 'package:taurgo_developement/pages/newProperty.dart';
-import 'package:taurgo_developement/pages/addProperty.dart';
-import 'package:taurgo_developement/pages/ediCaptureImages.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Ensure cameras are initialized before runApp
+  final cameras = await availableCameras();
+  final firstCamera = cameras.first;
+
+  runApp(MyApp(camera: firstCamera));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final CameraDescription camera;
 
-  // This widget is the root of your application.
+  const MyApp({super.key, required this.camera});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: EditImageScreen(),
+      home: NewPropertyScreen(camera: camera),
     );
   }
 }
