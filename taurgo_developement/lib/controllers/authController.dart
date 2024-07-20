@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:taurgo_developement/pages/home.dart';
 import 'package:taurgo_developement/pages/landingPage.dart';
 import 'package:taurgo_developement/pages/navpages/homePage.dart';
+import 'package:taurgo_developement/pages/onBoardingPage.dart';
+import 'package:taurgo_developement/pages/splashScreen.dart';
 
 class AuthController extends GetxController{
   //Where should I need this Auth Controller
@@ -37,7 +39,7 @@ class AuthController extends GetxController{
   _initialScreen(User? user){
     if(user == null){
       print("LogIn Page");
-      Get.offAll(() => LandingPage());
+      Get.offAll(() => SplashScreen());
     }
     else{
       print("Home Page");
