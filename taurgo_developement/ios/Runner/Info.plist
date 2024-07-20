@@ -28,6 +28,8 @@
 	<true/>
 	<key>NSAllowsArbitraryLoads</key>
     <true/>
+    <key>NSCameraUsageDescription</key>
+    <string>We need to access your camera for taking photos</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to the camera to take photos.</string>
 	<key>NSMicrophoneUsageDescription</key>

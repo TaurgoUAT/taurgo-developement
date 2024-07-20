@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/RicohTheta/ricohCameraPage.dart';
+import 'package:taurgo_developement/pages/home.dart';
 import 'package:taurgo_developement/pages/navpages/imagePageComponents/search_bar_section.dart';
 import 'package:taurgo_developement/pages/navpages/shareImagePage.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
@@ -85,9 +87,12 @@ class _UploadImagePageState extends State<UploadImagePage> {
         backgroundColor: bWhite,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: kPrimaryColor),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Homepage()),
+              );
+            },
         ),
         actions: [
           IconButton(
@@ -100,6 +105,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
         ],
       ),
       body: Container(
+        color: bWhite,
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -577,11 +583,8 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
               ),
             ),
             SizedBox(height: 10),
-            GestureDetector(
-              child: UploadButtonForDialogBox(
-                onPressed: _selectFromCamera,
-              ),
-            )
+            CaptureImageButton(),
+
           ],
         ),
       ),
@@ -646,25 +649,39 @@ class SearchBarForDialogBox extends StatelessWidget {
   }
 }
 
-class UploadButtonForDialogBox extends StatelessWidget {
-  final VoidCallback onPressed;
-
-  UploadButtonForDialogBox({required this.onPressed});
-
+class CaptureImageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        onPressed: onPressed,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 75, vertical: 10),
-          child: Text('Capture', style: TextStyle(fontSize: 18)),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: kPrimaryColor,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
+    return Padding(
+      padding: const EdgeInsets.only(top: 5.0),
+      child: Container(
+        height: 40,
+        width: double.maxFinite,
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RicohCameraPage()),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kPrimaryColor,
+            foregroundColor: kPrimaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  Text('Capture',
+                      style: TextStyle(fontSize: 16, color: bWhite,),
+                    textAlign: TextAlign.center,),
+                ],
+              ),
+            ],
           ),
         ),
       ),

@@ -75,6 +75,10 @@ class _SignUpPageState extends State<SignUpPage> {
             TextField(
             decoration: InputDecoration(
               labelText: "Full Name",
+              labelStyle: TextStyle(
+                color: kPrimaryColor, // Hint text color
+                fontSize: 14,
+              ),
               suffixIcon: Icon(Icons.perm_identity_rounded, color: kPrimaryColor),
               border: UnderlineInputBorder(
                 borderSide: BorderSide(color: kPrimaryColor),
@@ -92,6 +96,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 controller: emailController,
                 decoration: InputDecoration(
                   labelText: "Email",
+                  labelStyle: TextStyle(
+                    color: kPrimaryColor, // Hint text color
+                    fontSize: 14,
+                  ),
                   suffixIcon: Icon(Icons.email_outlined, color: kPrimaryColor),
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(color: kPrimaryColor),
@@ -108,10 +116,15 @@ class _SignUpPageState extends State<SignUpPage> {
                 controller: passwordController,
                 decoration: InputDecoration(
                   labelText: "Password",
+                  labelStyle: TextStyle(
+                    color: kPrimaryColor, // Hint text color
+                    fontSize: 14,
+                  ),
                   suffixIcon: Icon(Icons.lock_outline, color: kPrimaryColor),
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(color: kPrimaryColor),
                   ),
+
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: kPrimaryColor),
                   ),
@@ -124,6 +137,10 @@ class _SignUpPageState extends State<SignUpPage> {
               TextField(
                 decoration: InputDecoration(
                   labelText: "Confirm Password",
+                  labelStyle: TextStyle(
+                    color: kPrimaryColor, // Hint text color
+                    fontSize: 14,
+                  ),
                   suffixIcon: Icon(Icons.lock_outline, color: kPrimaryColor),
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(color: kPrimaryColor),

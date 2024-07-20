@@ -6,6 +6,7 @@ import 'package:taurgo_developement/pages/authentication/signUpPage.dart';
 import 'package:taurgo_developement/pages/landingPage.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:taurgo_developement/pages/splashScreen.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,6 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Taurgo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
         scaffoldBackgroundColor: bWhite, // Set the default background color to white
         appBarTheme: AppBarTheme(
 

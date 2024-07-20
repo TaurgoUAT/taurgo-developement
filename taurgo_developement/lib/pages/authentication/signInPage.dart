@@ -48,6 +48,10 @@ class _SignInPageState extends State<SignInPage> {
                 controller: emailController,
                 decoration: InputDecoration(
                   labelText: "Email",
+                  labelStyle: TextStyle(
+                    color: kPrimaryColor, // Hint text color
+                    fontSize: 14,
+                  ),
                   suffixIcon: Icon(Icons.email_outlined, color: kPrimaryColor),
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(color: kPrimaryColor),
@@ -64,6 +68,10 @@ class _SignInPageState extends State<SignInPage> {
                 controller: passwordController,
                 decoration: InputDecoration(
                   labelText: "Password",
+                    labelStyle: TextStyle(
+                      color: kPrimaryColor, // Hint text color
+                      fontSize: 14,
+                    ),
                   suffixIcon: Icon(Icons.lock_outline, color: kPrimaryColor),
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(color: kPrimaryColor),

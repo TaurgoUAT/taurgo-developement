@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/captureVideo.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/fileListScreen.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/messageBox.dart';
@@ -11,6 +12,8 @@ import 'package:taurgo_developement/pages/navpages/accountPageComponents/profile
 import 'package:taurgo_developement/pages/navpages/accountPageComponents/setting_button.dart';
 import 'package:taurgo_developement/pages/navpages/accountPageComponents/susbcribtion_section.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/navpages/upload_image_page.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../controllers/authController.dart';
 import '../home.dart';
@@ -143,7 +146,8 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String camera = isInitialized ? 'connected! $thetaModel' : 'disconnected';
-
+    var image = Image.asset('assets/logo/Taurgo Logo.png',
+        height: 250, fit: BoxFit.scaleDown);
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -156,27 +160,21 @@ class Home extends StatelessWidget {
           ),
           centerTitle: true,
           backgroundColor: bWhite,
-          leading: GestureDetector(
-            onTap: () {
-              Navigator.pushReplacement(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: kPrimaryColor),
+            onPressed: () {
+              Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Homepage()), // Replace
-                // HomePage with your home page widget
+                MaterialPageRoute(builder: (context) => UploadImagePage()),
               );
             },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(
-                  'assets/logo/Taurgo Logo.png'), // Path to your company icon
-            ),
           ),
           actions: [
             IconButton(
-              icon: Icon(Icons.notifications_none, color: kPrimaryColor),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.help_outline, color: kPrimaryColor),
+              icon: Icon(
+                Icons.help_outline,
+                color: kPrimaryColor,
+              ),
               onPressed: () {},
             ),
           ],
@@ -186,11 +184,36 @@ class Home extends StatelessWidget {
           color: Colors.white,
           child: Column(
             children: [
-              Text(
-                'Camera Status: $camera\n',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500,
-                  fontFamily: "Inter",),
+              Center(
+                child: IconButton(
+                  icon: FaIcon(FontAwesomeIcons.camera,
+                      color: Colors.redAccent, size: 200),
+                  onPressed: () {},
+                ),
               ),
+              Center(
+                  child: RichText(
+                text: TextSpan(
+                    text: "Camera Status: ",
+                    style: TextStyle(
+                      color: kSecondaryTextColour,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: "Inter",
+                    ),
+                    children: [
+                      TextSpan(
+                        // status = $camera.toUpperCase()
+                          text: "$camera\n",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.redAccent,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: "Inter",
+                    ),)
+                    ]),
+              )),
+
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Container(
@@ -200,8 +223,8 @@ class Home extends StatelessWidget {
                     onPressed: isInitialized
                         ? null
                         : () {
-                      connectTheta();
-                    },
+                            connectTheta();
+                          },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kSecondaryButtonColor,
                       foregroundColor: kSecondaryButtonTextColor,
@@ -217,7 +240,8 @@ class Home extends StatelessWidget {
                             Icon(Icons.help_outline, color: Colors.black),
                             SizedBox(width: 8),
                             Text('Connect',
-                                style: TextStyle(fontSize: 14, color: Colors.black)),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.black)),
                           ],
                         ),
                         Icon(Icons.chevron_right, color: Colors.black),
@@ -236,9 +260,9 @@ class Home extends StatelessWidget {
                     onPressed: !isInitialized
                         ? null
                         : () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const TakePictureScreen()));
-                    },
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const TakePictureScreen()));
+                          },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kSecondaryButtonColor,
                       foregroundColor: kSecondaryButtonTextColor,
@@ -254,7 +278,8 @@ class Home extends StatelessWidget {
                             Icon(Icons.help_outline, color: Colors.black),
                             SizedBox(width: 8),
                             Text('Take Picture',
-                                style: TextStyle(fontSize: 14, color: Colors.black)),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.black)),
                           ],
                         ),
                         Icon(Icons.chevron_right, color: Colors.black),
@@ -269,12 +294,13 @@ class Home extends StatelessWidget {
                 child: Container(
                   height: 50,
                   width: double.maxFinite,
-                  child: ElevatedButton(onPressed: !isInitialized
-                      ? null
-                      : () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => const CaptureVideoScreen()));
-                  },
+                  child: ElevatedButton(
+                    onPressed: !isInitialized
+                        ? null
+                        : () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => const CaptureVideoScreen()));
+                          },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kSecondaryButtonColor,
                       foregroundColor: kSecondaryButtonTextColor,
@@ -290,7 +316,8 @@ class Home extends StatelessWidget {
                             Icon(Icons.help_outline, color: Colors.black),
                             SizedBox(width: 8),
                             Text('Capture Video',
-                                style: TextStyle(fontSize: 14, color: Colors.black)),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.black)),
                           ],
                         ),
                         Icon(Icons.chevron_right, color: Colors.black),
@@ -347,7 +374,6 @@ class Home extends StatelessWidget {
               // )
             ],
           ),
-        )
-    );
+        ));
   }
 }

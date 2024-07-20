@@ -82,7 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     )),
               ),
               SwitchListTile(
-                title: Text('Sound', style: TextStyle(fontSize: 12)),
+                title: Text('On Invoice', style: TextStyle(fontSize: 12)),
                 value: soundEnabled,
                 onChanged: (bool value) {
                   setState(() {
