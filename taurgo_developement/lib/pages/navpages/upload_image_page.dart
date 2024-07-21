@@ -104,174 +104,176 @@ class _UploadImagePageState extends State<UploadImagePage> {
           ),
         ],
       ),
-      body: Container(
-        color: bWhite,
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            CustomPaint(
-              painter: DottedBorderPainter(),
-              child: Container(
-                width: 300,
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 16),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => UploadByCategoryPage(),
-                      );
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add, color: kPrimaryColor, size: 32),
-                        SizedBox(height: 8),
-                        // Add spacing between the icon and the text
-                        Text(
-                          'Upload 2D Images',
-                          style: TextStyle(
-                            color: kPrimaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Container(
+          color: bWhite,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CustomPaint(
+                painter: DottedBorderPainter(),
+                child: Container(
+                  width: 300,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => UploadByCategoryPage(),
+                        );
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add, color: kPrimaryColor, size: 32),
+                          SizedBox(height: 8),
+                          // Add spacing between the icon and the text
+                          Text(
+                            'Upload 2D Images',
+                            style: TextStyle(
+                              color: kPrimaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+              Container(
+                height: 200,
+                child: images.isEmpty
+                    ? Center(child: Text('No images selected'))
+                    : ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: images.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: Image.file(
+                          images[index],
+                          fit: BoxFit.cover,
+                          width: 320,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Address',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Area',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Area',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Postal Code',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  '123456',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ShareImagePage()),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  child: Text(
+                    'Share with Taurgo',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kPrimaryColor,
+                  foregroundColor: Colors.white, // Background color
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.circular(50), // Button corner radius
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 16),
-            Container(
-              height: 200,
-              child: images.isEmpty
-                  ? Center(child: Text('No images selected'))
-                  : ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: images.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: Image.file(
-                              images[index],
-                              fit: BoxFit.cover,
-                              width: 320,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-            ),
-            SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Address',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Area',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Area',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Postal Code',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                '123456',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ShareImagePage()),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: Text(
-                  'Share with Taurgo',
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: kPrimaryColor,
-                foregroundColor: Colors.white, // Background color
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(50), // Button corner radius
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -321,6 +323,7 @@ class UploadByCategoryPage extends StatefulWidget {
 
 class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
   int _selectedCategory = 0; // Track selected category index
+  List<File> images = [];
   List<String> rooms = [
     "Entrance",
     "Driveway",
@@ -357,7 +360,26 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
     }
   }
 
+  Future<void> _selectFromGallery() async {
+    try {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile == null) return;
 
+      final imageTemp = File(pickedFile.path);
+
+      // Update images list
+      setState(() {
+        // Assuming you have a list to store selected images
+        images.add(imageTemp);
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Image selected from gallery')),
+      );
+    } catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -365,227 +387,236 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(0),
       ),
-      child: Container(
-        color: bWhite,
-        padding: EdgeInsets.all(20),
-        height: 740, // Adjust height as needed
-        width: 340,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Select Image Category',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: "Inter",
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.close, color: Colors.black),
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            SearchBarForDialogBox(), // Your search bar widget
-            SizedBox(height: 10),
-            Text(
-              'List of Rooms',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: kPrimaryColor,
-              ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              height: 180, // Fixed height for the list container
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: kSecondaryButtonBorderColor,
-                  width: 1.0,
-                ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Column(
+      child: SingleChildScrollView(
+        child: Container(
+          color: bWhite,
+          padding: EdgeInsets.all(16),
+          height: 761, // Adjust height as needed
+          width: 340,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Scrollbar(
-                      child: ListView.builder(
-                        itemCount: rooms.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 20),
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _selectedCategory = index;
-                                });
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Radio(
-                                        value: index,
-                                        groupValue: _selectedCategory,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _selectedCategory = value as int;
-                                          });
-                                        },
-                                        activeColor: kPrimaryColor,
-                                      ),
-                                      Text(
-                                        rooms[index],
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
-                                  Icon(
-                                    Icons.grid_view_outlined,
-                                    color: kPrimaryColor,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                  Text(
+                    'Select Image Category',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: "Inter",
                     ),
                   ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Sketch of Floor Plans',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: kPrimaryColor,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Icon(Icons.broken_image_outlined,
-                              size: 24, color: kIconColour),
-                          SizedBox(height: 4),
-                          Text('Floor Plan',
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.w500)),
-                          Text(
-                            "(Ground)",
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Icon(Icons.broken_image_outlined,
-                              size: 24, color: kIconColour),
-                          SizedBox(height: 4),
-                          Text('Floor Plan',
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.w500)),
-                          Text(
-                            "(1st Floor)",
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Icon(Icons.broken_image_outlined,
-                              size: 24, color: kIconColour),
-                          SizedBox(height: 4),
-                          Text('Floor Plan',
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.w500)),
-                          Text(
-                            "(2nd Floor)",
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
-                    ],
+                  IconButton(
+                    icon: Icon(Icons.close, color: Colors.black),
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
                   ),
                 ],
               ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Company Logo',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: kPrimaryColor,
+              SizedBox(height: 8),
+              SearchBarForDialogBox(), // Your search bar widget
+              SizedBox(height: 8),
+              Text(
+                'List of Rooms',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: kPrimaryColor,
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              width: 50, // Adjust width as needed
-              height: 50, // Adjust height as needed
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: kGrey,
+              SizedBox(height: 8),
+              Container(
+                height: 180, // Fixed height for the list container
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: kSecondaryButtonBorderColor,
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Scrollbar(
+                        child: ListView.builder(
+                          itemCount: rooms.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 20),
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedCategory = index;
+                                  });
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Radio(
+                                          value: index,
+                                          groupValue: _selectedCategory,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _selectedCategory = value as int;
+                                            });
+                                          },
+                                          activeColor: kPrimaryColor,
+                                        ),
+                                        Text(
+                                          rooms[index],
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                    Icon(
+                                      Icons.grid_view_outlined,
+                                      color: kPrimaryColor,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: IconButton(
-                icon: Icon(Icons.add, color: Colors.black, size: 24),
-                onPressed: () {
-                  // Add your onPressed action here
-                },
+              SizedBox(height: 8),
+              Text(
+                'Sketch of Floor Plans',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: kPrimaryColor,
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Other Image',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: kPrimaryColor,
+              Container(
+                padding: EdgeInsets.only(top: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            IconButton(onPressed: () {
+                              _selectFromGallery();
+                            }, icon: Icon(Icons.broken_image_outlined,
+                              size: 24, color: kIconColour,)),
+                            SizedBox(height: 4),
+                            Text('Floor Plan',
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w500)),
+                            Text(
+                              "(Ground)",
+                              style: TextStyle(fontSize: 10),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            IconButton(onPressed: () {
+                              _selectFromGallery();
+                            }, icon: Icon(Icons.broken_image_outlined,
+                              size: 24, color: kIconColour,)),
+                            SizedBox(height: 4),
+                            Text('Floor Plan',
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w500)),
+                            Text(
+                              "(1st Floor)",
+                              style: TextStyle(fontSize: 10),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            IconButton(onPressed: () {
+                              _selectFromGallery();
+                            }, icon: Icon(Icons.broken_image_outlined,
+                              size: 24, color: kIconColour,))
+                            ,
+                            SizedBox(height: 4),
+                            Text('Floor Plan',
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w500)),
+                            Text(
+                              "(2nd Floor)",
+                              style: TextStyle(fontSize: 10),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              width: 50, // Adjust width as needed
-              height: 50, // Adjust height as needed
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: kGrey,
+              SizedBox(height: 8),
+              Text(
+                'Company Logo',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: kPrimaryColor,
+                ),
               ),
-              child: IconButton(
-                icon: Icon(Icons.add, color: Colors.black, size: 24),
-                onPressed: () {
-                  // Add your onPressed action here
-                },
+              SizedBox(height: 8),
+              Container(
+                width: 50, // Adjust width as needed
+                height: 50, // Adjust height as needed
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: kGrey,
+                ),
+                child: IconButton(
+                  icon: Icon(Icons.add, color: Colors.black, size: 24),
+                  onPressed: () {
+                    _selectFromGallery();
+                  },
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            CaptureImageButton(),
+              SizedBox(height: 8),
+              Text(
+                'Other Image',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: kPrimaryColor,
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                width: 50, // Adjust width as needed
+                height: 50, // Adjust height as needed
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: kGrey,
+                ),
+                child: IconButton(
+                  icon: Icon(Icons.add, color: Colors.black, size: 24),
+                  onPressed: () {
+                    _selectFromGallery();
+                  },
+                ),
+              ),
+              SizedBox(height: 10),
+              CaptureImageButton(),
 
-          ],
+            ],
+          ),
         ),
       ),
     );

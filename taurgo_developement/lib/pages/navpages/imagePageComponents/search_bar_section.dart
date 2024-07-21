@@ -4,13 +4,15 @@ import 'package:taurgo_developement/costants/AppColors.dart'; // Make sure this 
 class SearchBarSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 326,
+            width: double.maxFinite,
             height: 40,
             decoration: BoxDecoration(
               color: bWhite,

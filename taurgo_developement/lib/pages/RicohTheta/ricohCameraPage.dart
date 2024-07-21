@@ -30,7 +30,7 @@ class _RicohCameraPageState extends State<RicohCameraPage>
     with WidgetsBindingObserver {
   String _platformVersion = 'Unknown';
   final _thetaClientFlutter = ThetaClientFlutter();
-  bool _isInitTheta = false;
+  bool _isInitTheta = true;
   bool _initializing = false;
   ThetaModel? _thetaModel;
 

@@ -66,7 +66,6 @@ class _AccountPageState extends State<AccountPage> {
       ),
       body: Container(
         color: bWhite,
-        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -102,32 +101,9 @@ class _AccountPageState extends State<AccountPage> {
               child: HelpSupportButton(),
             ),
             Spacer(),
-            // Center(
-            //   child: Padding(
-            //     padding: const EdgeInsets.symmetric(vertical: 20.0),
-            //     child: ElevatedButton(
-            //       onPressed: () {},
-            //       child: Padding(
-            //         padding: const EdgeInsets.symmetric(
-            //             horizontal: 100, vertical: 10),
-            //         child: Text(
-            //           'Logout',
-            //           style: TextStyle(fontSize: 18),
-            //         ),
-            //       ),
-            //       style: ElevatedButton.styleFrom(
-            //         backgroundColor: kPrimaryColor,
-            //         foregroundColor: bWhite, // Background color
-            //         shape: RoundedRectangleBorder(
-            //           borderRadius:
-            //           BorderRadius.circular(50), // Button corner radius
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+
             Container(
-              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 20.0),
+              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 30.0),
               width: double.maxFinite,
 
               child: Padding(
