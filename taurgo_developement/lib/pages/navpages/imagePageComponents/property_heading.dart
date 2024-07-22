@@ -11,10 +11,12 @@ class CompletedProperty extends StatelessWidget {
         children: [
           Text(
             'Completed Properties',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500,
-              fontFamily: "Inter",),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ),
           ),
-
         ],
       ),
     );

@@ -6,11 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraPage.dart';
 import 'package:taurgo_developement/pages/home.dart';
-import 'package:taurgo_developement/pages/navpages/imagePageComponents/search_bar_section.dart';
 import 'package:taurgo_developement/pages/navpages/shareImagePage.dart';
-import 'package:mongo_dart/mongo_dart.dart' as mongo;
-import 'package:path_provider/path_provider.dart';
-import 'package:taurgo_developement/pages/select_image.dart';
 
 class UploadImagePage extends StatefulWidget {
   const UploadImagePage({super.key});
@@ -87,12 +83,12 @@ class _UploadImagePageState extends State<UploadImagePage> {
         backgroundColor: bWhite,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: kPrimaryColor),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Homepage()),
-              );
-            },
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Homepage()),
+            );
+          },
         ),
         actions: [
           IconButton(
@@ -155,22 +151,22 @@ class _UploadImagePageState extends State<UploadImagePage> {
                 child: images.isEmpty
                     ? Center(child: Text('No images selected'))
                     : ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: images.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: Image.file(
-                          images[index],
-                          fit: BoxFit.cover,
-                          width: 320,
-                        ),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: images.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: Image.file(
+                                images[index],
+                                fit: BoxFit.cover,
+                                width: 320,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
               ),
               SizedBox(height: 16),
               Padding(
@@ -268,7 +264,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
                   foregroundColor: Colors.white, // Background color
                   shape: RoundedRectangleBorder(
                     borderRadius:
-                    BorderRadius.circular(50), // Button corner radius
+                        BorderRadius.circular(50), // Button corner radius
                   ),
                 ),
               ),
@@ -312,8 +308,6 @@ class DottedBorderPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
 
-
-
 class UploadByCategoryPage extends StatefulWidget {
   const UploadByCategoryPage({super.key});
 
@@ -352,7 +346,8 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
     } else if (status.isDenied) {
       // Permission denied, show a message to the user
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Camera permission is required to take photos.')),
+        SnackBar(
+            content: Text('Camera permission is required to take photos.')),
       );
     } else if (status.isPermanentlyDenied) {
       // Open app settings if the permission is permanently denied
@@ -391,7 +386,8 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
         child: Container(
           color: bWhite,
           padding: EdgeInsets.all(16),
-          height: 761, // Adjust height as needed
+          height: 761,
+          // Adjust height as needed
           width: 340,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -454,7 +450,7 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
                                 },
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -512,10 +508,15 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
                       children: [
                         Column(
                           children: [
-                            IconButton(onPressed: () {
-                              _selectFromGallery();
-                            }, icon: Icon(Icons.broken_image_outlined,
-                              size: 24, color: kIconColour,)),
+                            IconButton(
+                                onPressed: () {
+                                  _selectFromGallery();
+                                },
+                                icon: Icon(
+                                  Icons.broken_image_outlined,
+                                  size: 24,
+                                  color: kIconColour,
+                                )),
                             SizedBox(height: 4),
                             Text('Floor Plan',
                                 style: TextStyle(
@@ -528,10 +529,15 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
                         ),
                         Column(
                           children: [
-                            IconButton(onPressed: () {
-                              _selectFromGallery();
-                            }, icon: Icon(Icons.broken_image_outlined,
-                              size: 24, color: kIconColour,)),
+                            IconButton(
+                                onPressed: () {
+                                  _selectFromGallery();
+                                },
+                                icon: Icon(
+                                  Icons.broken_image_outlined,
+                                  size: 24,
+                                  color: kIconColour,
+                                )),
                             SizedBox(height: 4),
                             Text('Floor Plan',
                                 style: TextStyle(
@@ -544,11 +550,15 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
                         ),
                         Column(
                           children: [
-                            IconButton(onPressed: () {
-                              _selectFromGallery();
-                            }, icon: Icon(Icons.broken_image_outlined,
-                              size: 24, color: kIconColour,))
-                            ,
+                            IconButton(
+                                onPressed: () {
+                                  _selectFromGallery();
+                                },
+                                icon: Icon(
+                                  Icons.broken_image_outlined,
+                                  size: 24,
+                                  color: kIconColour,
+                                )),
                             SizedBox(height: 4),
                             Text('Floor Plan',
                                 style: TextStyle(
@@ -614,7 +624,6 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
               ),
               SizedBox(height: 10),
               CaptureImageButton(),
-
             ],
           ),
         ),
@@ -656,7 +665,8 @@ class SearchBarForDialogBox extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.search, color: kSecondaryButtonBorderColor), // Search icon
+                  child: Icon(Icons.search,
+                      color: kSecondaryButtonBorderColor), // Search icon
                 ),
                 Expanded(
                   child: TextField(
@@ -669,7 +679,8 @@ class SearchBarForDialogBox extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.mic, color: kSecondaryButtonBorderColor), // Mic icon
+                  child: Icon(Icons.mic,
+                      color: kSecondaryButtonBorderColor), // Mic icon
                 ),
               ],
             ),
@@ -707,9 +718,14 @@ class CaptureImageButton extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text('Capture',
-                      style: TextStyle(fontSize: 16, color: bWhite,),
-                    textAlign: TextAlign.center,),
+                  Text(
+                    'Capture',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: bWhite,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ],
               ),
             ],

@@ -50,7 +50,7 @@ class ShareImagePage extends StatelessWidget {
             Container(
               height: 200,
               child:
-              Image.asset('assets/images/prop-img.png', fit: BoxFit.cover),
+                  Image.asset('assets/images/prop-img.png', fit: BoxFit.cover),
             ),
             SizedBox(height: 20),
             Container(
@@ -61,11 +61,9 @@ class ShareImagePage extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
             ),
-
             Center(
               child: Column(
                 children: [
-
                   SizedBox(height: 8),
                   Text(
                     'Share image with Taurgo to create virtual tour',
@@ -94,7 +92,7 @@ class ShareImagePage extends StatelessWidget {
                       foregroundColor: Colors.white, // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius:
-                        BorderRadius.circular(50), // Button corner radius
+                            BorderRadius.circular(50), // Button corner radius
                       ),
                     ),
                   ),
@@ -158,11 +156,10 @@ class ShareImagePage extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kGrey,
                       shape: CircleBorder(), // Make the button circular
-                      padding: EdgeInsets.all(16), // Adjust padding to make it look like a circle
+                      padding: EdgeInsets.all(
+                          16), // Adjust padding to make it look like a circle
                     ),
                   ),
-
-
                 ],
               ),
             ),

@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/pages/home.dart';
-import 'package:taurgo_developement/pages/navpages/accountPageComponents/change_password_button.dart';
-import 'package:taurgo_developement/pages/navpages/accountPageComponents/help_support_button.dart';
-import 'package:taurgo_developement/pages/navpages/accountPageComponents/profile_section.dart';
-import 'package:taurgo_developement/pages/navpages/accountPageComponents/setting_button.dart';
-import 'package:taurgo_developement/pages/navpages/accountPageComponents/susbcribtion_section.dart';
 import 'package:taurgo_developement/pages/navpages/imagePageComponents/search_bar_section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:taurgo_developement/pages/navpages/imagePageComponents/description_section.dart';
@@ -118,7 +113,8 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin {
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/logo/Taurgo Logo.png'), // Path to your company icon
+            child: Image.asset(
+                'assets/logo/Taurgo Logo.png'), // Path to your company icon
           ),
         ),
         actions: [
@@ -132,7 +128,6 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin {
           ),
         ],
       ),
-
       body: Container(
         color: bWhite,
         child: Column(
@@ -181,6 +176,7 @@ class CircleTabIndicator extends Decoration {
   double radius;
 
   CircleTabIndicator({required this.color, required this.radius});
+
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
     return _CirclePainter(color: color, radius: radius);
@@ -192,6 +188,7 @@ class _CirclePainter extends BoxPainter {
   double radius;
 
   _CirclePainter({required this.color, required this.radius});
+
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
     Paint _paint = Paint();

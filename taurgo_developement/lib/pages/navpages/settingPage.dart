@@ -1,14 +1,5 @@
-// settings_page.dart
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
-import 'package:taurgo_developement/widgets/bottom_nav_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:taurgo_developement/costants/AppColors.dart';
-import 'package:taurgo_developement/pages/navpages/accountPage.dart';
-import 'package:taurgo_developement/pages/navpages/homePage.dart';
-import 'package:taurgo_developement/pages/navpages/propertyPage.dart';
-import 'package:taurgo_developement/pages/navpages/imagePage.dart';
-import 'package:taurgo_developement/widgets/bottom_nav_bar.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -21,18 +12,11 @@ class _SettingsPageState extends State<SettingsPage> {
   bool soundEnabled = true;
   bool notificationsEnabled = true;
   bool locationEnabled = true;
-  // int currentTab = 0;
-  //
-  // final List<Widget> pages = [
-  //   HomePage(),
-  //   ProperyPage(),
-  //   Imagepage(),
-  //   AccountPage(),
-  // ];
 
   void onTabSelected(int index) {
     setState(() {
-      Navigator.of(context).pop(); // Return to the previous page when a tab is selected
+      Navigator.of(context)
+          .pop(); // Return to the previous page when a tab is selected
     });
   }
 
@@ -159,21 +143,6 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   shape: CircleBorder(),
-      //   backgroundColor: kPrimaryColor,
-      //   foregroundColor: Colors.white,
-      //   child: Icon(
-      //     Icons.add,
-      //     size: 48,
-      //   ),
-      //   onPressed: () {},
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // bottomNavigationBar: CustomBottomNavBar(
-      //   currentTab: currentTab,
-      //   onTabSelected: onTabSelected,
-      // ),
     );
   }
 }

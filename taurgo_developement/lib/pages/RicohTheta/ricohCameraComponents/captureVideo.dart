@@ -4,7 +4,6 @@ import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/messa
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/videoScreen.dart';
 import 'package:theta_client_flutter/theta_client_flutter.dart';
 
-
 class CaptureVideoScreen extends StatefulWidget {
   const CaptureVideoScreen({super.key});
 
@@ -82,21 +81,21 @@ class _CaptureVideoScreen extends State<CaptureVideoScreen>
                 child: Center(
                   child: shooting
                       ? const Text(
-                    'Capturing...',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
-                  )
+                          'Capturing...',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        )
                       : Image.memory(
-                    frameData,
-                    errorBuilder: (a, b, c) {
-                      return Container(
-                        color: Colors.black,
-                      );
-                    },
-                    gaplessPlayback: true,
-                  ),
+                          frameData,
+                          errorBuilder: (a, b, c) {
+                            return Container(
+                              color: Colors.black,
+                            );
+                          },
+                          gaplessPlayback: true,
+                        ),
                 )),
             Container(
                 alignment: const Alignment(0, 0.8),
@@ -203,10 +202,10 @@ class _CaptureVideoScreen extends State<CaptureVideoScreen>
         final uri = Uri.parse(fileUrl);
         Navigator.of(context)
             .push(MaterialPageRoute(
-            builder: (_) => VideoScreen(
-              name: uri.pathSegments.last,
-              fileUrl: fileUrl,
-            )))
+                builder: (_) => VideoScreen(
+                      name: uri.pathSegments.last,
+                      fileUrl: fileUrl,
+                    )))
             .then((value) => startLivePreview());
       }
     }, (exception) {

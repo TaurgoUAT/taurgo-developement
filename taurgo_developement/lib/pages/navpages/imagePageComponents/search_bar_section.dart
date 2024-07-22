@@ -36,7 +36,8 @@ class SearchBarSection extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.search, color: kSecondaryButtonBorderColor), // Search icon
+                  child: Icon(Icons.search,
+                      color: kSecondaryButtonBorderColor), // Search icon
                 ),
                 Expanded(
                   child: TextField(
@@ -49,7 +50,8 @@ class SearchBarSection extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.mic, color: kSecondaryButtonBorderColor), // Mic icon
+                  child: Icon(Icons.mic,
+                      color: kSecondaryButtonBorderColor), // Mic icon
                 ),
               ],
             ),

@@ -48,10 +48,10 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  var emailController =  TextEditingController();
+  var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var image =
-  Image.asset('assets/logo/logo.png', height: 250, fit: BoxFit.scaleDown);
+      Image.asset('assets/logo/logo.png', height: 250, fit: BoxFit.scaleDown);
 
   @override
   Widget build(BuildContext context) {
@@ -73,24 +73,25 @@ class _SignUpPageState extends State<SignUpPage> {
               Center(
                 child: SignUpCard(),
               ),
-            TextField(
-            decoration: InputDecoration(
-              labelText: "Full Name",
-              labelStyle: TextStyle(
-                color: kPrimaryColor, // Hint text color
-                fontSize: 14,
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Full Name",
+                  labelStyle: TextStyle(
+                    color: kPrimaryColor, // Hint text color
+                    fontSize: 14,
+                  ),
+                  suffixIcon:
+                      Icon(Icons.perm_identity_rounded, color: kPrimaryColor),
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: kPrimaryColor),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: kPrimaryColor),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+                ),
+                // obscureText: true,
               ),
-              suffixIcon: Icon(Icons.perm_identity_rounded, color: kPrimaryColor),
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(color: kPrimaryColor),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: kPrimaryColor),
-              ),
-              contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
-            ),
-            // obscureText: true,
-          ),
               SizedBox(height: 30), // Increased spacing
 
               TextField(
@@ -125,7 +126,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(color: kPrimaryColor),
                   ),
-
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: kPrimaryColor),
                   ),
@@ -155,50 +155,53 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
 
               SizedBox(height: 70),
-        GestureDetector(
-          onTap: (){
-            AuthController.instance.registerUser(emailController.text.trim(),
-                passwordController.text.trim());
-          },
-          child: Center(
-            child: ElevatedButton(
-              onPressed: () {
-                AuthController.instance.registerUser(emailController.text.trim(),
-                    passwordController.text.trim());
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 10),
-                child: Text('Sign Up', style: TextStyle(fontSize: 18)),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: kPrimaryColor,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
+              GestureDetector(
+                onTap: () {
+                  AuthController.instance.registerUser(
+                      emailController.text.trim(),
+                      passwordController.text.trim());
+                },
+                child: Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      AuthController.instance.registerUser(
+                          emailController.text.trim(),
+                          passwordController.text.trim());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 100, vertical: 10),
+                      child: Text('Sign Up', style: TextStyle(fontSize: 18)),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kPrimaryColor,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
               SizedBox(
                 height: 10,
               ),
               Center(
                   child: RichText(
-                    text: TextSpan(
-                        text: "Already have an account?",
-                        style: TextStyle(color: Colors.grey[500], fontSize: 12),
-                        children: [
-                          TextSpan(
-                              text: " Sign In",
-                              style: TextStyle(
-                                  color: kPrimaryColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () => Get.to(() => SignInPage())),
-                        ]),
-                  ))
+                text: TextSpan(
+                    text: "Already have an account?",
+                    style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                    children: [
+                      TextSpan(
+                          text: " Sign In",
+                          style: TextStyle(
+                              color: kPrimaryColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => Get.to(() => SignInPage())),
+                    ]),
+              ))
             ],
           ),
         ),

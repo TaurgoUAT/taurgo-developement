@@ -1,13 +1,6 @@
-import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
-import 'package:taurgo_developement/pages/navpages/imagePageComponents/search_bar_section.dart';
-import 'package:taurgo_developement/pages/navpages/shareImagePage.dart';
-import 'package:mongo_dart/mongo_dart.dart' as mongo;
-import 'package:path_provider/path_provider.dart';
-import 'package:taurgo_developement/pages/select_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Helpandsupportpage extends StatefulWidget {
@@ -116,8 +109,8 @@ class _HelpandsupportpageState extends State<Helpandsupportpage> {
                   children: [
                     Text(
                       'For more information visit our web page',
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 20),
                     ElevatedButton.icon(
@@ -176,7 +169,8 @@ class SearchBarSection extends StatelessWidget {
             decoration: BoxDecoration(
               color: bWhite,
               border: Border.all(
-                color: kSecondaryButtonBorderColor, // Replace with your desired border color
+                color: kSecondaryButtonBorderColor,
+                // Replace with your desired border color
                 width: 2.0, // Adjust the border width as needed
               ), // Background color of the search bar
               borderRadius: BorderRadius.circular(30.0),
@@ -185,7 +179,8 @@ class SearchBarSection extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.search, color: kSecondaryButtonBorderColor), // Search icon
+                  child: Icon(Icons.search,
+                      color: kSecondaryButtonBorderColor), // Search icon
                 ),
                 Expanded(
                   child: TextField(
@@ -198,7 +193,8 @@ class SearchBarSection extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.mic, color: kSecondaryButtonBorderColor), // Mic icon
+                  child: Icon(Icons.mic,
+                      color: kSecondaryButtonBorderColor), // Mic icon
                 ),
               ],
             ),

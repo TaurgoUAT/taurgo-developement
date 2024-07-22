@@ -1,11 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/messageBox.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/photoScreen.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/videoScreen.dart';
 import 'package:theta_client_flutter/theta_client_flutter.dart';
-
 
 class FileListScreen extends StatefulWidget {
   const FileListScreen({super.key});
@@ -65,13 +63,13 @@ class _FileListScreen extends State<FileListScreen> {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => fileUrl.endsWith('.MP4')
                         ? VideoScreen(
-                      name: _fileInfoList[index].name,
-                      fileUrl: fileUrl,
-                    )
+                            name: _fileInfoList[index].name,
+                            fileUrl: fileUrl,
+                          )
                         : PhotoScreen(
-                      name: _fileInfoList[index].name,
-                      fileUrl: fileUrl,
-                    )));
+                            name: _fileInfoList[index].name,
+                            fileUrl: fileUrl,
+                          )));
               },
               leading: Image.network(
                 _fileInfoList[index].thumbnailUrl,

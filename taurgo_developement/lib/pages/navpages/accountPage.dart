@@ -10,8 +10,6 @@ import 'package:taurgo_developement/costants/AppColors.dart';
 import '../../controllers/authController.dart';
 import '../home.dart';
 
-
-
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
 
@@ -44,7 +42,8 @@ class _AccountPageState extends State<AccountPage> {
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/logo/Taurgo Logo.png'), // Path to your company icon
+            child: Image.asset(
+                'assets/logo/Taurgo Logo.png'), // Path to your company icon
           ),
         ),
         actions: [
@@ -69,7 +68,6 @@ class _AccountPageState extends State<AccountPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Center(child: ProfileSection()),
             SizedBox(height: 16),
             Padding(
@@ -105,14 +103,11 @@ class _AccountPageState extends State<AccountPage> {
             Container(
               padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 30.0),
               width: double.maxFinite,
-
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: ElevatedButton(
                   onPressed: () {
-
-                      AuthController.instance.logOut();
-
+                    AuthController.instance.logOut();
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -127,18 +122,15 @@ class _AccountPageState extends State<AccountPage> {
                     foregroundColor: bWhite, // Background color
                     shape: RoundedRectangleBorder(
                       borderRadius:
-                      BorderRadius.circular(50), // Button corner radius
+                          BorderRadius.circular(50), // Button corner radius
                     ),
                   ),
                 ),
               ),
             ),
-
           ],
         ),
       ),
     );
   }
 }
-
-

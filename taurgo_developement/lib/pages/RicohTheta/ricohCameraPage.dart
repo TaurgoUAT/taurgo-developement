@@ -1,22 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/captureVideo.dart';
-import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/fileListScreen.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/messageBox.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/takePicture.dart';
-import 'package:taurgo_developement/pages/navpages/accountPageComponents/bottom_nav_bar.dart';
-import 'package:taurgo_developement/pages/navpages/accountPageComponents/change_password_button.dart';
-import 'package:taurgo_developement/pages/navpages/accountPageComponents/help_support_button.dart';
-import 'package:taurgo_developement/pages/navpages/accountPageComponents/profile_section.dart';
-import 'package:taurgo_developement/pages/navpages/accountPageComponents/setting_button.dart';
-import 'package:taurgo_developement/pages/navpages/accountPageComponents/susbcribtion_section.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/pages/navpages/upload_image_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import '../../controllers/authController.dart';
-import '../home.dart';
 import 'package:theta_client_flutter/theta_client_flutter.dart';
 
 class RicohCameraPage extends StatefulWidget {
@@ -204,13 +193,14 @@ class Home extends StatelessWidget {
                     children: [
                       TextSpan(
                         // status = $camera.toUpperCase()
-                          text: "$camera\n",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.redAccent,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: "Inter",
-                    ),)
+                        text: "$camera\n",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "Inter",
+                        ),
+                      )
                     ]),
               )),
 
@@ -326,52 +316,6 @@ class Home extends StatelessWidget {
                   ),
                 ),
               ),
-              // Center(
-              //   child: Center(
-              //     child: Column(
-              //       mainAxisSize: MainAxisSize.min,
-              //       children: [
-              //         Text('Running on: $platformVersion\n'),
-              //         Text('Camera: $camera\n'),
-              //         // TextButton(
-              //         //   onPressed: isInitialized
-              //         //       ? null
-              //         //       : () {
-              //         //     connectTheta();
-              //         //   },
-              //         //   child: const Text('Connect'),
-              //         // ),
-              //         // TextButton(
-              //         //   onPressed: !isInitialized
-              //         //       ? null
-              //         //       : () {
-              //         //     Navigator.of(context).push(MaterialPageRoute(
-              //         //         builder: (_) => const TakePictureScreen()));
-              //         //   },
-              //         //   child: const Text('Take Picture'),
-              //         // ),
-              //         // TextButton(
-              //         //   onPressed: !isInitialized
-              //         //       ? null
-              //         //       : () {
-              //         //     Navigator.of(context).push(MaterialPageRoute(
-              //         //         builder: (_) => const CaptureVideoScreen()));
-              //         //   },
-              //         //   child: const Text('Capture Video'),
-              //         // ),
-              //         // TextButton(
-              //         //   onPressed: !isInitialized
-              //         //       ? null
-              //         //       : () {
-              //         //     Navigator.of(context).push(MaterialPageRoute(
-              //         //         builder: (_) => const FileListScreen()));
-              //         //   },
-              //         //   child: const Text('File List'),
-              //         // ),
-              //       ],
-              //     ),
-              //   ),
-              // )
             ],
           ),
         ));

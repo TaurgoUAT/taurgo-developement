@@ -7,24 +7,40 @@ import 'package:taurgo_developement/widgets/bottom_nav_bar.dart';
 import 'package:taurgo_developement/widgets/custom_floating_action_button.dart';
 
 class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+  final List<Widget> pages;
+  final int initialTab;
+
+  const Homepage({
+    Key? key,
+    this.pages = const [
+      HomePage(),
+      ProperyPage(
+        imagePath: 'assets/images/prop-img.png',
+        address: '123 Sample Street',
+        areaCode: '12345',
+        postalCode: '54321',
+      ),
+      Imagepage(),
+      AccountPage()
+    ],
+    this.initialTab = 0,
+  }) : super(key: key);
 
   @override
   State<Homepage> createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> {
-  int currentTab = 0;
-  final List<Widget> pages = [
-    HomePage(),
-    ProperyPage(),
-    Imagepage(),
-    AccountPage()
-  ];
-
+  late int currentTab;
+  late Widget currentScreen;
   final PageStorageBucket bucket = PageStorageBucket();
 
-  Widget currentScreen = HomePage();
+  @override
+  void initState() {
+    super.initState();
+    currentTab = widget.initialTab;
+    currentScreen = widget.pages[currentTab];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +52,14 @@ class _HomepageState extends State<Homepage> {
         bucket: bucket,
       ),
       floatingActionButton:
-      CustomFloatingActionButton(isVisible: !isKeyboardVisible),
+          CustomFloatingActionButton(isVisible: !isKeyboardVisible),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomBottomNavBar(
         currentTab: currentTab,
         onTabSelected: (int index) {
           setState(() {
             currentTab = index;
-            currentScreen = pages[index];
+            currentScreen = widget.pages[index];
           });
         },
       ),

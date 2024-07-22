@@ -4,13 +4,16 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      type: BottomNavigationBarType
-          .shifting, // Use shifting type for custom styles
-      selectedItemColor: Colors.white, // Selected item color
-      unselectedItemColor:
-      Colors.white.withOpacity(0.6), // Unselected item color
-      backgroundColor: Color(0xFF286167), // Background color
-      currentIndex: 4, // Current index of the selected item
+      type: BottomNavigationBarType.shifting,
+      // Use shifting type for custom styles
+      selectedItemColor: Colors.white,
+      // Selected item color
+      unselectedItemColor: Colors.white.withOpacity(0.6),
+      // Unselected item color
+      backgroundColor: Color(0xFF286167),
+      // Background color
+      currentIndex: 4,
+      // Current index of the selected item
 
       // Items in the bottom navigation bar
       items: [

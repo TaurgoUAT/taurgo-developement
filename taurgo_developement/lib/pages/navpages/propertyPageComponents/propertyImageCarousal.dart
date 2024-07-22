@@ -26,7 +26,6 @@ class PropertyImageCarousel extends StatelessWidget {
             left: 140,
             child: Text(
               'Lounge',
-
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,

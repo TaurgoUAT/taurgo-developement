@@ -11,10 +11,12 @@ class CapturedImage extends StatelessWidget {
         children: [
           Text(
             'Captured Images',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500,
-                fontFamily: "Inter",),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ),
           ),
-
         ],
       ),
     );

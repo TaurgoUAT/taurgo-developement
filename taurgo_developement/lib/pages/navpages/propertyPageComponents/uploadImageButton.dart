@@ -9,7 +9,8 @@ class UploadImagesButton extends StatelessWidget {
 
   Future<void> selectFromGallery(BuildContext context) async {
     try {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedFile == null) return;
 
       final imageTemp = File(pickedFile.path);
@@ -28,7 +29,8 @@ class UploadImagesButton extends StatelessWidget {
 
   Future<void> selectFromCamera(BuildContext context) async {
     try {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.camera);
       if (pickedFile == null) return;
 
       final imageTemp = File(pickedFile.path);
@@ -57,33 +59,33 @@ class UploadImagesButton extends StatelessWidget {
         ),
         padding: EdgeInsets.symmetric(vertical: 16),
         child: Center(
-          child: GestureDetector(
-            onTap: () {
-              selectFromGallery(context); // Call method to open gallery
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.add, color: kPrimaryColor, size: 32),
-                SizedBox(height: 8), // Add spacing between the icon and the text
-                GestureDetector(
-                  onTap: () {
-                    selectFromGallery(context); // Call method to open gallery
-                  },
-                  child: Text(
-                    'Upload 2D Images',
-                    style: TextStyle(
-                      color: kPrimaryColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
+            child: GestureDetector(
+          onTap: () {
+            selectFromGallery(context); // Call method to open gallery
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.add, color: kPrimaryColor, size: 32),
+              SizedBox(height: 8),
+              // Add spacing between the icon and the text
+              GestureDetector(
+                onTap: () {
+                  selectFromGallery(context); // Call method to open gallery
+                },
+                child: Text(
+                  'Upload 2D Images',
+                  style: TextStyle(
+                    color: kPrimaryColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-              ],
-            ),
-          )
-        ),
+              ),
+            ],
+          ),
+        )),
       ),
     );
   }
@@ -98,7 +100,8 @@ class DottedBorderPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     var path = Path()
-      ..addRRect(RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, size.width, size.height), Radius.circular(8)));
+      ..addRRect(RRect.fromRectAndRadius(
+          Rect.fromLTWH(0, 0, size.width, size.height), Radius.circular(8)));
 
     var dashWidth = 4.0;
     var dashSpace = 4.0;

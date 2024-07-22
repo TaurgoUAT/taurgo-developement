@@ -69,10 +69,10 @@ class _SignInPageState extends State<SignInPage> {
                 controller: passwordController,
                 decoration: InputDecoration(
                   labelText: "Password",
-                    labelStyle: TextStyle(
-                      color: kPrimaryColor, // Hint text color
-                      fontSize: 14,
-                    ),
+                  labelStyle: TextStyle(
+                    color: kPrimaryColor, // Hint text color
+                    fontSize: 14,
+                  ),
                   suffixIcon: Icon(Icons.lock_outline, color: kPrimaryColor),
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(color: kPrimaryColor),
@@ -87,18 +87,20 @@ class _SignInPageState extends State<SignInPage> {
 
               SizedBox(height: 70),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   AuthController.instance.logInUser(emailController.text.trim(),
                       passwordController.text.trim());
                 },
                 child: Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      AuthController.instance.logInUser(emailController.text.trim(),
+                      AuthController.instance.logInUser(
+                          emailController.text.trim(),
                           passwordController.text.trim());
                     },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 100, vertical: 10),
                       child: Text('Sign In', style: TextStyle(fontSize: 18)),
                     ),
                     style: ElevatedButton.styleFrom(

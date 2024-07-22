@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/messageBox.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/photoScreen.dart';
 import 'package:theta_client_flutter/theta_client_flutter.dart';
+
 class TakePictureScreen extends StatefulWidget {
   const TakePictureScreen({super.key});
 
@@ -79,21 +80,21 @@ class _TakePictureScreen extends State<TakePictureScreen>
                 child: Center(
                   child: shooting
                       ? const Text(
-                    'Take Picture...',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
-                  )
+                          'Take Picture...',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        )
                       : Image.memory(
-                    frameData,
-                    errorBuilder: (a, b, c) {
-                      return Container(
-                        color: Colors.black,
-                      );
-                    },
-                    gaplessPlayback: true,
-                  ),
+                          frameData,
+                          errorBuilder: (a, b, c) {
+                            return Container(
+                              color: Colors.black,
+                            );
+                          },
+                          gaplessPlayback: true,
+                        ),
                 )),
             Container(
                 alignment: const Alignment(0, 0.8),
@@ -195,10 +196,10 @@ class _TakePictureScreen extends State<TakePictureScreen>
       if (fileUrl != null) {
         Navigator.of(context)
             .push(MaterialPageRoute(
-            builder: (_) => PhotoScreen(
-              name: 'Take Picture',
-              fileUrl: fileUrl,
-            )))
+                builder: (_) => PhotoScreen(
+                      name: 'Take Picture',
+                      fileUrl: fileUrl,
+                    )))
             .then((value) => startLivePreview());
       } else {
         setState(() {

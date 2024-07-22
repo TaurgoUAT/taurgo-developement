@@ -43,7 +43,8 @@ class _HomePageState extends State<HomePage> {
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/logo/Taurgo Logo.png'), // Path to your company icon
+            child: Image.asset(
+                'assets/logo/Taurgo Logo.png'), // Path to your company icon
           ),
         ),
         actions: [
@@ -142,9 +143,24 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          buildTourContainer(context, FolderContentsPage(), "assets/images/prop-img.png", "Address", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua."),
-                          buildTourContainer(context, UploadImagePage(), "assets/images/prop-img.png", "Address", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua."),
-                          buildTourContainer(context, UploadImagePage(), "assets/images/prop-img.png", "Address", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua."),
+                          buildTourContainer(
+                              context,
+                              FolderContentsPage(),
+                              "assets/images/prop-img.png",
+                              "Address",
+                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua."),
+                          buildTourContainer(
+                              context,
+                              UploadImagePage(),
+                              "assets/images/prop-img.png",
+                              "Address",
+                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua."),
+                          buildTourContainer(
+                              context,
+                              UploadImagePage(),
+                              "assets/images/prop-img.png",
+                              "Address",
+                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua."),
                         ],
                       ),
                     ),
@@ -161,7 +177,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildTourContainer(BuildContext context, Widget page, String imagePath, String title, String description) {
+  Widget buildTourContainer(BuildContext context, Widget page, String imagePath,
+      String title, String description) {
     return GestureDetector(
       onTap: () {
         Navigator.push(

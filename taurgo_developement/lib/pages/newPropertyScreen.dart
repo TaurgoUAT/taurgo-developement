@@ -102,7 +102,8 @@ class _NewPropertyScreenState extends State<NewPropertyScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(imagePath: image.path),
+                builder: (context) =>
+                    DisplayPictureScreen(imagePath: image.path),
               ),
             );
           } catch (e) {

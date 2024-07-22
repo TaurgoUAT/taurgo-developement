@@ -7,7 +7,6 @@ class SettingsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
-
       child: Container(
         height: 50,
         width: double.maxFinite,

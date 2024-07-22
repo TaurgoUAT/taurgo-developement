@@ -7,9 +7,7 @@ const kGrey = Color(0xFFE9E9E9);
 const kPrimaryColor = Color(0xFF286167);
 const kButtonColour = Color(0xFFF19447);
 
-
 const kIconColour = Color(0xFF1F2937);
-
 
 const kSecondaryButtonColor = Color(0xFFF1F1F1);
 const kSecondaryButtonBorderColor = Color(0xFFD9D9D9);
@@ -19,6 +17,7 @@ const kSecondaryButtonTextColor = Color(0xFF000000);
 const kSecondaryTextColour = Color(0xff6C757D);
 const kSecondaryTextColourTwo = Color(0xff444444);
 const kPrimaryTextColour = Color(0xff0E0F11);
+const kPrimaryTextColourTwo = Color(0xff717171);
 
 const kPrimaryLightColor = Color(0xFFddb892);
 const kSecondaryLightColor = Color(0xFFb08968);

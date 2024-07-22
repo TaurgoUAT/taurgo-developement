@@ -15,6 +15,7 @@ import '../widgets/custom_floating_action_button.dart';
 
 class FolderContentsPage extends StatefulWidget {
   final String folderName;
+
   const FolderContentsPage({
     super.key,
     this.folderName = 'Default Folder Name',
@@ -28,12 +29,18 @@ class _FolderContentsPageState extends State<FolderContentsPage> {
   int currentTab = 0;
   final List<Widget> pages = [
     HomePage(),
-    ProperyPage(),
+    ProperyPage(
+      imagePath: 'assets/images/prop-img.png',
+      address: '123 Sample Street',
+      areaCode: '12345',
+      postalCode: '54321',
+    ),
     Imagepage(),
     AccountPage()
   ];
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = HomePage();
+
   @override
   Widget build(BuildContext context) {
     bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom != 0;
@@ -54,12 +61,15 @@ class _FolderContentsPageState extends State<FolderContentsPage> {
           onTap: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => Homepage()), // Replace Homepage with your home page widget
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Homepage()), // Replace Homepage with your home page widget
             );
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/logo/Taurgo Logo.png'), // Path to your company icon
+            child: Image.asset(
+                'assets/logo/Taurgo Logo.png'), // Path to your company icon
           ),
         ),
         actions: [
@@ -96,8 +106,11 @@ class _FolderContentsPageState extends State<FolderContentsPage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Completed Properties',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500,
-                          fontFamily: "Inter",),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "Inter",
+                        ),
                       ),
                     ),
                   ),
@@ -179,8 +192,9 @@ class _FolderContentsPageState extends State<FolderContentsPage> {
             ),
           ),
           floatingActionButton:
-          CustomFloatingActionButton(isVisible: !isKeyboardVisible),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+              CustomFloatingActionButton(isVisible: !isKeyboardVisible),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: CustomBottomNavBar(
             currentTab: currentTab,
             onTabSelected: (int index) {

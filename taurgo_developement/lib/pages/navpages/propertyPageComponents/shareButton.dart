@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/pages/navpages/shareImagePage.dart';
 
-
 class ShareButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -11,10 +11,12 @@ class SignUpCard extends StatelessWidget {
         children: [
           Text(
             'Craete an Account',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500,
-              fontFamily: "Inter",),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ),
           ),
-
         ],
       ),
     );

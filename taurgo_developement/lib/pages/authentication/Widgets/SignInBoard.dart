@@ -11,10 +11,12 @@ class SignInCard extends StatelessWidget {
         children: [
           Text(
             'Sign In',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500,
-              fontFamily: "Inter",),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ),
           ),
-
         ],
       ),
     );
