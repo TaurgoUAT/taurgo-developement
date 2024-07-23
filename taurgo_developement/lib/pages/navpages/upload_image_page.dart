@@ -423,6 +423,16 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
                 ),
               ),
               SizedBox(height: 8),
+
+              Text(
+                'Select the rooms that you wish you capture',
+                style: TextStyle(
+                  fontSize: 8,
+                  fontWeight: FontWeight.bold,
+                  color: kPrimaryColor,
+                ),
+              ),
+              SizedBox(height: 6),
               Container(
                 height: 180, // Fixed height for the list container
                 decoration: BoxDecoration(
@@ -471,7 +481,7 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
                                       ],
                                     ),
                                     Icon(
-                                      Icons.grid_view_outlined,
+                                      Icons.add_circle_outline,
                                       color: kPrimaryColor,
                                     ),
                                   ],
@@ -490,6 +500,16 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
                 'Sketch of Floor Plans',
                 style: TextStyle(
                   fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: kPrimaryColor,
+                ),
+              ),
+              SizedBox(height: 3),
+
+              Text(
+                'Select your Floor Plans',
+                style: TextStyle(
+                  fontSize: 8,
                   fontWeight: FontWeight.bold,
                   color: kPrimaryColor,
                 ),
