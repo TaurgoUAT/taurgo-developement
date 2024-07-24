@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/pages/home.dart';
+import 'package:taurgo_developement/services/mogo_service.dart';
 import 'dart:io';
 import '../../costants/AppColors.dart';
 import '../../model/PropertyDetailsDto.dart';
 import '../navpages/propertyPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:taurgo_developement/pages/home.dart';
-import 'dart:io';
-import '../../costants/AppColors.dart';
-import '../navpages/propertyPage.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await MongoDatabase.connect();
+}
+
+
 class AddPropertyDetailsPage extends StatefulWidget {
+  
   final String imagePath;
 
   const AddPropertyDetailsPage({Key? key, required this.imagePath})
@@ -28,6 +31,14 @@ class _AddPropertyDetailsPageState extends State<AddPropertyDetailsPage> {
   final TextEditingController _areaCodeController = TextEditingController();
   final TextEditingController _postalCodeController = TextEditingController();
 
+  List<File> _imageFiles = [];
+  @override
+  void initState() {
+    super.initState();
+    MongoDatabase.connect();
+    _imageFiles.add(File(widget.imagePath));
+  }
+
   @override
   void dispose() {
     _addressController.dispose();
@@ -35,52 +46,71 @@ class _AddPropertyDetailsPageState extends State<AddPropertyDetailsPage> {
     _postalCodeController.dispose();
     super.dispose();
   }
+  Future<void> _uploadSelectedImages() async {
+    if (_imageFiles.isNotEmpty) {
+      await MongoDatabase.insertImageDatas(_imageFiles);
+      // Reset the selection after upload
+      setState(() {
+        _imageFiles = [];
+      });
+    }
+  }
 
   void _saveDetails() async{
     final address = _addressController.text;
     final areaCode = _areaCodeController.text;
     final postalCode = _postalCodeController.text;
 
-    final propertyDetails = PropertyDetailsDto(
-      address: address,
-      areaCode: areaCode,
-      postalCode: postalCode,
+    // final propertyDetails = PropertyDetailsDto(
+    //   address: address,
+    //   areaCode: areaCode,
+    //   postalCode: postalCode,
+    // );
+    await MongoDatabase.insertData({
+      'address': address,
+      'areaCode': areaCode,
+      'postalCode': postalCode,
+    }, imageFiles: _imageFiles);
+
+    // Reset the selection after upload
+    setState(() {
+      _imageFiles = [];
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProperyPage(
+          imagePath: widget.imagePath,
+          address: address,
+          areaCode: areaCode,
+          postalCode: postalCode,
+        ),
+      ),
     );
 
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => ProperyPage(
-    //       imagePath: widget.imagePath,
-    //       address: address,
-    //       areaCode: areaCode,
-    //       postalCode: postalCode,
+    // try {
+    //   await uploadPropertyDetails(widget.imagePath, propertyDetails);
+    //   // Navigate to PropertyPage if successful
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => ProperyPage(
+    //         imagePath: widget.imagePath,
+    //         address: address,
+    //         areaCode: areaCode,
+    //         postalCode: postalCode,
+    //       ),
     //     ),
-    //   ),
-    // );
-
-    try {
-      await uploadPropertyDetails(widget.imagePath, propertyDetails);
-      // Navigate to PropertyPage if successful
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProperyPage(
-            imagePath: widget.imagePath,
-            address: address,
-            areaCode: areaCode,
-            postalCode: postalCode,
-          ),
-        ),
-      );
-    } catch (error) {
-      print('Failed to upload details: $error');
-      // You can show a Snackbar or dialog to notify the user of the error
-    }
+    //   );
+    // } catch (error) {
+    //   print('Failed to upload details: $error');
+    //   // You can show a Snackbar or dialog to notify the user of the error
+    // }
   }
 
   Future<void> uploadPropertyDetails(String imagePath, PropertyDetailsDto details) async {
-    final url = Uri.parse('http://192.168.8.100:9090/property-details/add-deatils'); // Replace with your actual IP address
+    final url = Uri.parse('http://192.168.8.101:9090/property-details/add-deatils'); // Replace with your  IP address
 
     // Convert image to MultipartFile
     final image = File(imagePath);
