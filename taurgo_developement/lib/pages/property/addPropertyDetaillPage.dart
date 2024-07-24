@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/pages/home.dart';
+import 'package:taurgo_developement/services/mongo.dart';
 import 'dart:io';
 import '../../costants/AppColors.dart';
 import '../navpages/propertyPage.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await MongoDatabase.connect();
+}
 
 class AddPropertyDetailsPage extends StatefulWidget {
   final String imagePath;
@@ -18,6 +24,13 @@ class _AddPropertyDetailsPageState extends State<AddPropertyDetailsPage> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _areaCodeController = TextEditingController();
   final TextEditingController _postalCodeController = TextEditingController();
+  List<File> _imageFiles = [];
+  @override
+  void initState() {
+    super.initState();
+    MongoDatabase.connect();
+    _imageFiles.add(File(widget.imagePath));
+  }
 
   @override
   void dispose() {
@@ -27,11 +40,35 @@ class _AddPropertyDetailsPageState extends State<AddPropertyDetailsPage> {
     super.dispose();
   }
 
-  void _saveDetails() {
+  Future<void> _uploadSelectedImages() async {
+    if (_imageFiles.isNotEmpty) {
+      await MongoDatabase.insertImageDatas(_imageFiles);
+      // Reset the selection after upload
+      setState(() {
+        _imageFiles = [];
+      });
+    }
+  }
+
+  void _saveDetails() async {
+    // Extract values from the text controllers
     final address = _addressController.text;
     final areaCode = _areaCodeController.text;
     final postalCode = _postalCodeController.text;
 
+    // Insert property details into MongoDB with image data
+    await MongoDatabase.insertData({
+      'address': address,
+      'areaCode': areaCode,
+      'postalCode': postalCode,
+    }, imageFiles: _imageFiles);
+
+    // Reset the selection after upload
+    setState(() {
+      _imageFiles = [];
+    });
+
+    // Navigate to the PropertyPage
     Navigator.push(
       context,
       MaterialPageRoute(
