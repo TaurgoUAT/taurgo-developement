@@ -3,7 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/pages/FolderContentsPage.dart';
 import 'package:taurgo_developement/pages/home.dart';
+import 'package:taurgo_developement/pages/navpages/helpAndSupportPage.dart';
 import 'package:taurgo_developement/pages/navpages/imagePageComponents/search_bar_section.dart';
+import 'package:taurgo_developement/pages/navpages/notification/notificationPage.dart';
 import 'package:taurgo_developement/pages/navpages/upload_image_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -53,14 +55,27 @@ class _HomePageState extends State<HomePage> {
               Icons.notifications_none,
               color: kPrimaryColor,
             ),
-            onPressed: () {},
+
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Notificationpage()), // Replace
+                // HomePage with your home page widget
+              );
+            },
           ),
           IconButton(
             icon: Icon(
               Icons.help_outline,
               color: kPrimaryColor,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Helpandsupportpage()), // Replace
+                // HomePage with your home page widget
+              );
+            },
           ),
         ],
       ),
@@ -71,7 +86,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: bWhite,
           body: Column(
             children: <Widget>[
-              SearchBarSection(),
+              SearchBarSectionHomePage(),
               const SizedBox(height: 20),
               const Padding(
                 padding: EdgeInsets.only(left: 16.0),
@@ -87,8 +102,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              SizedBox(height: 8,),
               const TabBar(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 unselectedLabelColor: kPrimaryColor,
                 labelColor: kPrimaryColor,
                 unselectedLabelStyle: TextStyle(fontSize: 13),
@@ -297,3 +313,66 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
+class SearchBarSectionHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.maxFinite,
+            height: 40,
+            decoration: BoxDecoration(
+              color: bWhite,
+              border: Border.all(
+                color: kSecondaryButtonBorderColor,
+                width: 2.0, // Adjust the border width as needed
+              ), // Background color of the search bar
+              borderRadius: BorderRadius.circular(30.0),
+
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Colors.grey.withOpacity(0.5),
+              //     spreadRadius: 2,
+              //     blurRadius: 5,
+              //     offset: Offset(0, 3),
+              //   ),
+              // ],
+            ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(Icons.search,
+                      color: kSecondaryButtonBorderColor), // Search icon
+                ),
+                Expanded(
+                  child: TextField(
+                    cursorColor: kPrimaryColor,
+                    decoration: InputDecoration(
+                      hintText: 'Search',
+                      hintStyle: TextStyle(color: kSecondaryButtonBorderColor),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(Icons.mic,
+                      color: kSecondaryButtonBorderColor), // Mic icon
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+

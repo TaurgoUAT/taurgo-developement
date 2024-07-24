@@ -2,8 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:taurgo_developement/pages/home.dart';
 import 'dart:io';
 import '../../costants/AppColors.dart';
+import '../../model/PropertyDetailsDto.dart';
 import '../navpages/propertyPage.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:taurgo_developement/pages/home.dart';
+import 'dart:io';
+import '../../costants/AppColors.dart';
+import '../navpages/propertyPage.dart';
 class AddPropertyDetailsPage extends StatefulWidget {
   final String imagePath;
 
@@ -27,22 +36,77 @@ class _AddPropertyDetailsPageState extends State<AddPropertyDetailsPage> {
     super.dispose();
   }
 
-  void _saveDetails() {
+  void _saveDetails() async{
     final address = _addressController.text;
     final areaCode = _areaCodeController.text;
     final postalCode = _postalCodeController.text;
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProperyPage(
-          imagePath: widget.imagePath,
-          address: address,
-          areaCode: areaCode,
-          postalCode: postalCode,
-        ),
-      ),
+    final propertyDetails = PropertyDetailsDto(
+      address: address,
+      areaCode: areaCode,
+      postalCode: postalCode,
     );
+
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => ProperyPage(
+    //       imagePath: widget.imagePath,
+    //       address: address,
+    //       areaCode: areaCode,
+    //       postalCode: postalCode,
+    //     ),
+    //   ),
+    // );
+
+    try {
+      await uploadPropertyDetails(widget.imagePath, propertyDetails);
+      // Navigate to PropertyPage if successful
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProperyPage(
+            imagePath: widget.imagePath,
+            address: address,
+            areaCode: areaCode,
+            postalCode: postalCode,
+          ),
+        ),
+      );
+    } catch (error) {
+      print('Failed to upload details: $error');
+      // You can show a Snackbar or dialog to notify the user of the error
+    }
+  }
+
+  Future<void> uploadPropertyDetails(String imagePath, PropertyDetailsDto details) async {
+    final url = Uri.parse('http://192.168.8.100:9090/property-details/add-deatils'); // Replace with your actual IP address
+
+    // Convert image to MultipartFile
+    final image = File(imagePath);
+    final imageBytes = await image.readAsBytes();
+    final base64Image = base64Encode(imageBytes);
+
+    // Prepare the request
+    final request = http.MultipartRequest('POST', url)
+      ..fields['address'] = details.address
+      ..fields['areaCode'] = details.areaCode
+      ..fields['postalCode'] = details.postalCode
+      ..files.add(http.MultipartFile.fromBytes(
+        'image',
+        imageBytes,
+        filename: image.path.split('/').last,
+      ));
+
+    // Send the request
+    final response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('Details uploaded successfully');
+    } else {
+      print('Failed to upload details: ${response.statusCode}');
+      throw Exception('Failed to upload details');
+    }
   }
 
   @override
@@ -197,3 +261,6 @@ class _AddPropertyDetailsPageState extends State<AddPropertyDetailsPage> {
     );
   }
 }
+
+//8a215308-5375-478c-8b46-88daa06ceb21 - Private
+//mcnwoeuo - Public
