@@ -3,10 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraPage.dart';
 import 'package:taurgo_developement/pages/home.dart';
+import 'package:taurgo_developement/pages/navpages/propertyPageComponents/uploadImageButton.dart';
 import 'package:taurgo_developement/pages/navpages/shareImagePage.dart';
+import 'package:taurgo_developement/services/mogo_service.dart';
 
 class UploadImagePage extends StatefulWidget {
   const UploadImagePage({super.key});
@@ -21,7 +25,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
   Future<void> selectFromGallery(BuildContext context) async {
     try {
       final pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
+      await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedFile == null) return;
 
       final imageTemp = File(pickedFile.path);
@@ -42,7 +46,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
   Future<void> selectFromCamera(BuildContext context) async {
     try {
       final pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.camera);
+      await ImagePicker().pickImage(source: ImageSource.camera);
       if (pickedFile == null) return;
 
       final imageTemp = File(pickedFile.path);
@@ -60,11 +64,45 @@ class _UploadImagePageState extends State<UploadImagePage> {
     }
   }
 
+  void _updateImageList(List<File> newImages) {
+    setState(() {
+      images = newImages; // Update the images list with new images
+    });
+  }
+
   void onTabSelected(int index) {
     setState(() {
       Navigator.of(context)
           .pop(); // Return to the previous page when a tab is selected
     });
+  }
+
+  // Upload Images to Firebase Storage
+  Future<void> uploadImages() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    if (user == null) {
+      print('User not authenticated');
+      return;
+    }
+
+    final String userEmail = user.email!;
+    final FirebaseStorage storage = FirebaseStorage.instance;
+
+    for (var image in images) {
+      try {
+        String filePath =
+            'images/$userEmail/${DateTime.now().millisecondsSinceEpoch}.jpg';
+        await storage.ref(filePath).putFile(image);
+        print('Upload successful for $filePath');
+      } catch (e) {
+        print('Failed to upload image: $e');
+      }
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Images uploaded successfully')),
+    );
   }
 
   @override
@@ -121,7 +159,9 @@ class _UploadImagePageState extends State<UploadImagePage> {
                       onTap: () {
                         showDialog(
                           context: context,
-                          builder: (context) => UploadByCategoryPage(),
+                          builder: (context) => UploadByCategoryPage(
+                            onImagesSelected: _updateImageList, // Pass the callback
+                          ),
                         );
                       },
                       child: Column(
@@ -151,22 +191,22 @@ class _UploadImagePageState extends State<UploadImagePage> {
                 child: images.isEmpty
                     ? Center(child: Text('No images selected'))
                     : ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: images.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
-                              child: Image.file(
-                                images[index],
-                                fit: BoxFit.cover,
-                                width: 320,
-                              ),
-                            ),
-                          );
-                        },
+                  scrollDirection: Axis.horizontal,
+                  itemCount: images.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: Image.file(
+                          images[index],
+                          fit: BoxFit.cover,
+                          width: 320,
+                        ),
                       ),
+                    );
+                  },
+                ),
               ),
               SizedBox(height: 16),
               Padding(
@@ -246,7 +286,8 @@ class _UploadImagePageState extends State<UploadImagePage> {
               ),
               SizedBox(height: 32),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  await uploadImages(); // Upload images before navigating
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ShareImagePage()),
@@ -264,7 +305,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
                   foregroundColor: Colors.white, // Background color
                   shape: RoundedRectangleBorder(
                     borderRadius:
-                        BorderRadius.circular(50), // Button corner radius
+                    BorderRadius.circular(50), // Button corner radius
                   ),
                 ),
               ),
@@ -276,40 +317,10 @@ class _UploadImagePageState extends State<UploadImagePage> {
   }
 }
 
-class DottedBorderPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint()
-      ..color = kPrimaryColor
-      ..strokeWidth = 1
-      ..style = PaintingStyle.stroke;
-
-    var path = Path()
-      ..addRRect(RRect.fromRectAndRadius(
-          Rect.fromLTWH(0, 0, size.width, size.height), Radius.circular(8)));
-
-    var dashWidth = 4.0;
-    var dashSpace = 4.0;
-    var distance = 0.0;
-
-    for (PathMetric pathMetric in path.computeMetrics()) {
-      while (distance < pathMetric.length) {
-        canvas.drawPath(
-          pathMetric.extractPath(distance, distance + dashWidth),
-          paint,
-        );
-        distance += dashWidth + dashSpace;
-      }
-      distance = 0.0;
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
 class UploadByCategoryPage extends StatefulWidget {
-  const UploadByCategoryPage({super.key});
+  final Function(List<File>) onImagesSelected; // Callback to pass images back
+
+  const UploadByCategoryPage({super.key, required this.onImagesSelected});
 
   @override
   State<UploadByCategoryPage> createState() => _UploadByCategoryPageState();
@@ -331,6 +342,8 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
     "Bedroom 2",
     "Bedroom 3",
     "Master Bedroom",
+    "Floor Plans",
+    "Logo",
   ];
   final ImagePicker _picker = ImagePicker();
 
@@ -340,417 +353,187 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
     if (status.isGranted) {
       final XFile? image = await _picker.pickImage(source: ImageSource.camera);
       if (image != null) {
-        // Handle the selected image
-        print('Image path: ${image.path}');
+        final imageTemp = File(image.path);
+        setState(() {
+          images.add(imageTemp);
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Image captured from camera')),
+        );
       }
-    } else if (status.isDenied) {
-      // Permission denied, show a message to the user
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('Camera permission is required to take photos.')),
-      );
-    } else if (status.isPermanentlyDenied) {
-      // Open app settings if the permission is permanently denied
-      openAppSettings();
+    } else {
+      print('Camera permission not granted');
     }
   }
 
   Future<void> _selectFromGallery() async {
-    try {
-      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile == null) return;
+    PermissionStatus status = await Permission.storage.request();
 
-      final imageTemp = File(pickedFile.path);
-
-      // Update images list
-      setState(() {
-        // Assuming you have a list to store selected images
-        images.add(imageTemp);
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Image selected from gallery')),
-      );
-    } catch (e) {
-      print('Failed to pick image: $e');
+    if (status.isGranted) {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        final imageTemp = File(image.path);
+        setState(() {
+          images.add(imageTemp);
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Image selected from gallery')),
+        );
+      }
+    } else {
+      print('Gallery permission not granted');
     }
   }
 
+  void _onDoneButtonPressed() {
+    widget.onImagesSelected(images); // Invoke the callback with selected images
+    Navigator.of(context).pop(); // Close the page
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: bWhite,
+        elevation: 1,
+        title: Text(
+          'Upload By Category',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: kPrimaryColor,
+          ),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: kPrimaryColor),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
-      child: SingleChildScrollView(
-        child: Container(
-          color: bWhite,
-          padding: EdgeInsets.all(16),
-          height: 761,
-          // Adjust height as needed
-          width: 340,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Select Image Category',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: "Inter",
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.close, color: Colors.black),
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              SearchBarForDialogBox(), // Your search bar widget
-              SizedBox(height: 8),
-              Text(
-                'List of Rooms',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: kPrimaryColor,
-                ),
-              ),
-              SizedBox(height: 8),
-
-              Text(
-                'Select the rooms that you wish you capture',
-                style: TextStyle(
-                  fontSize: 8,
-                  fontWeight: FontWeight.bold,
-                  color: kPrimaryColor,
-                ),
-              ),
-              SizedBox(height: 6),
-              Container(
-                height: 180, // Fixed height for the list container
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: kSecondaryButtonBorderColor,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Scrollbar(
-                        child: ListView.builder(
-                          itemCount: rooms.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 20),
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _selectedCategory = index;
-                                  });
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Radio(
-                                          value: index,
-                                          groupValue: _selectedCategory,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              _selectedCategory = value as int;
-                                            });
-                                          },
-                                          activeColor: kPrimaryColor,
-                                        ),
-                                        Text(
-                                          rooms[index],
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.add_circle_outline,
-                                      color: kPrimaryColor,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            height: 80,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: rooms.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedCategory = index; // Update selected category index
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: _selectedCategory == index
+                            ? kPrimaryColor
+                            : Colors.grey[200],
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Center(
+                        child: Text(
+                          rooms[index],
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: _selectedCategory == index
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Sketch of Floor Plans',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: kPrimaryColor,
-                ),
-              ),
-              SizedBox(height: 3),
-
-              Text(
-                'Select your Floor Plans',
-                style: TextStyle(
-                  fontSize: 8,
-                  fontWeight: FontWeight.bold,
-                  color: kPrimaryColor,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  _selectFromGallery();
-                                },
-                                icon: Icon(
-                                  Icons.broken_image_outlined,
-                                  size: 24,
-                                  color: kIconColour,
-                                )),
-                            SizedBox(height: 4),
-                            Text('Floor Plan',
-                                style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w500)),
-                            Text(
-                              "(Ground)",
-                              style: TextStyle(fontSize: 10),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  _selectFromGallery();
-                                },
-                                icon: Icon(
-                                  Icons.broken_image_outlined,
-                                  size: 24,
-                                  color: kIconColour,
-                                )),
-                            SizedBox(height: 4),
-                            Text('Floor Plan',
-                                style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w500)),
-                            Text(
-                              "(1st Floor)",
-                              style: TextStyle(fontSize: 10),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  _selectFromGallery();
-                                },
-                                icon: Icon(
-                                  Icons.broken_image_outlined,
-                                  size: 24,
-                                  color: kIconColour,
-                                )),
-                            SizedBox(height: 4),
-                            Text('Floor Plan',
-                                style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w500)),
-                            Text(
-                              "(2nd Floor)",
-                              style: TextStyle(fontSize: 10),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Company Logo',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: kPrimaryColor,
-                ),
-              ),
-              SizedBox(height: 8),
-              Container(
-                width: 50, // Adjust width as needed
-                height: 50, // Adjust height as needed
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: kGrey,
-                ),
-                child: IconButton(
-                  icon: Icon(Icons.add, color: Colors.black, size: 24),
-                  onPressed: () {
-                    _selectFromGallery();
-                  },
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Other Image',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: kPrimaryColor,
-                ),
-              ),
-              SizedBox(height: 10),
-              Container(
-                width: 50, // Adjust width as needed
-                height: 50, // Adjust height as needed
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: kGrey,
-                ),
-                child: IconButton(
-                  icon: Icon(Icons.add, color: Colors.black, size: 24),
-                  onPressed: () {
-                    _selectFromGallery();
-                  },
-                ),
-              ),
-              SizedBox(height: 10),
-              CaptureImageButton(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class SearchBarForDialogBox extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 326,
-            height: 40,
-            decoration: BoxDecoration(
-              color: bWhite,
-              border: Border.all(
-                color: kSecondaryButtonBorderColor, // Replace with your desired
-                // border color
-                width: 2.0, // Adjust the border width as needed
-              ), // Background color of the search bar
-              borderRadius: BorderRadius.circular(30.0),
-
-              // boxShadow: [
-              //   BoxShadow(
-              //     color: Colors.grey.withOpacity(0.5),
-              //     spreadRadius: 2,
-              //     blurRadius: 5,
-              //     offset: Offset(0, 3),
-              //   ),
-              // ],
+                  ),
+                );
+              },
             ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.search,
-                      color: kSecondaryButtonBorderColor), // Search icon
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(16),
+              child: images.isEmpty
+                  ? Center(child: Text('No images selected'))
+                  : GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
                 ),
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search',
-                      hintStyle: TextStyle(color: kSecondaryButtonBorderColor),
-                      border: InputBorder.none,
+                itemCount: images.length,
+                itemBuilder: (context, index) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Image.file(
+                      images[index],
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => RicohCameraPage()),
+                    );
+                  },
+                  icon: Icon(Icons.camera),
+                  label: Text('Camera'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kPrimaryColor,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.mic,
-                      color: kSecondaryButtonBorderColor), // Mic icon
+                ElevatedButton.icon(
+                  onPressed: _selectFromGallery,
+                  icon: Icon(Icons.photo_library),
+                  label: Text('Gallery'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kPrimaryColor,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class CaptureImageButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 5.0),
-      child: Container(
-        height: 40,
-        width: double.maxFinite,
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => RicohCameraPage()),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: kPrimaryColor,
-            foregroundColor: kPrimaryColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: _onDoneButtonPressed,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                child: Text(
+                  'Done',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kPrimaryColor,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+              ),
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    'Capture',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: bWhite,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        ],
       ),
     );
   }

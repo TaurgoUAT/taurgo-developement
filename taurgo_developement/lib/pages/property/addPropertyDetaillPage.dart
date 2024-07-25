@@ -46,15 +46,15 @@ class _AddPropertyDetailsPageState extends State<AddPropertyDetailsPage> {
     _postalCodeController.dispose();
     super.dispose();
   }
-  Future<void> _uploadSelectedImages() async {
-    if (_imageFiles.isNotEmpty) {
-      await MongoDatabase.insertImageDatas(_imageFiles);
-      // Reset the selection after upload
-      setState(() {
-        _imageFiles = [];
-      });
-    }
-  }
+  // Future<void> _uploadSelectedImages() async {
+  //   if (_imageFiles.isNotEmpty) {
+  //     await MongoDatabase.insertImageDatas(_imageFiles);
+  //     // Reset the selection after upload
+  //     setState(() {
+  //       _imageFiles = [];
+  //     });
+  //   }
+  // }
 
   void _saveDetails() async{
     final address = _addressController.text;

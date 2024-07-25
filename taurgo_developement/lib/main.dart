@@ -4,9 +4,11 @@ import 'package:taurgo_developement/controllers/authController.dart';
 import 'package:taurgo_developement/pages/landingPage.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:taurgo_developement/services/mogo_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // await MongoDatabase.connect();
   await Firebase.initializeApp().then((value) => Get.put(AuthController()));
   runApp(const MyApp());
 }
