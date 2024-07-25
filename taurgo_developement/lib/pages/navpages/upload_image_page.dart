@@ -20,6 +20,7 @@ class UploadImagePage extends StatefulWidget {
 }
 
 class _UploadImagePageState extends State<UploadImagePage> {
+
   List<File> images = []; // List to store selected images
 
   Future<void> selectFromGallery(BuildContext context) async {
@@ -70,12 +71,34 @@ class _UploadImagePageState extends State<UploadImagePage> {
     });
   }
 
+  @override
+  void dispose() {
+    // Clean up resources here
+    super.dispose();
+  }
+
   void onTabSelected(int index) {
     setState(() {
       Navigator.of(context)
           .pop(); // Return to the previous page when a tab is selected
     });
   }
+  Future<void> someAsyncOperation() async {
+    try {
+      // Perform some async operation
+      await Future.delayed(Duration(seconds: 1)); // Example delay
+      if (mounted) {
+        setState(() {
+          // Update state only if the widget is still mounted
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        // Handle error if needed
+      }
+    }
+  }
+
 
   // Upload Images to Firebase Storage
   Future<void> uploadImages() async {
@@ -90,20 +113,34 @@ class _UploadImagePageState extends State<UploadImagePage> {
     final FirebaseStorage storage = FirebaseStorage.instance;
 
     for (var image in images) {
-      try {
-        String filePath =
-            'images/$userEmail/${DateTime.now().millisecondsSinceEpoch}.jpg';
-        await storage.ref(filePath).putFile(image);
-        print('Upload successful for $filePath');
-      } catch (e) {
-        print('Failed to upload image: $e');
+      if (image.existsSync()) {
+        try {
+          String filePath =
+              'images/${DateTime.now().millisecondsSinceEpoch}.jpg';
+          await storage.ref(filePath).putFile(image);
+          if (mounted) {
+            setState(() {
+              // Perform state update if needed
+            });
+          }
+          print('Upload successful for $filePath');
+        } catch (e) {
+          print('Failed to upload image: $e');
+        }
+      } else {
+        print('Image file does not exist');
       }
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Images uploaded successfully')),
-    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Images uploaded successfully')),
+      );
+    }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
