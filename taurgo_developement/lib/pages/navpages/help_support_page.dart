@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/pages/navpages/capturingPicturedGuidePage.dart';
 import 'package:taurgo_developement/pages/navpages/pictureTipsGuidePage.dart';
+import 'package:taurgo_developement/pages/navpages/privacyPolicyPage.dart';
 import 'package:taurgo_developement/pages/navpages/ricohThetaZ1GuidePage.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -62,7 +63,11 @@ class HelpSupportPage extends StatelessWidget {
               Center(
                 child: TextButton(
                   onPressed: () {
-                    // Handle privacy policy link press
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PrivacyPolicyPage()),
+                    );
                   },
                   child: Text(
                     'Privacy Policy',
