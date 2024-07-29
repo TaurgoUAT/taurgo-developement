@@ -57,6 +57,8 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/amplify_db_common-0.4.3" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_storage-12.1.1" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_storage_web-3.9.11" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/cloud_firestore_web-4.0.3" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/cloud_firestore-5.1.0" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

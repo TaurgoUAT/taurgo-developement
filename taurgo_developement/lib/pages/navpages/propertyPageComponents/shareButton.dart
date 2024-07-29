@@ -9,7 +9,7 @@ class ShareButton extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ShareImagePage()),
+          MaterialPageRoute(builder: (context) => ShareImagePage(referenceCode: '',)),
         );
       },
       child: Padding(

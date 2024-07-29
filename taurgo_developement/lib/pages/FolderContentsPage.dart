@@ -29,12 +29,7 @@ class _FolderContentsPageState extends State<FolderContentsPage> {
   int currentTab = 0;
   final List<Widget> pages = [
     HomePage(),
-    ProperyPage(
-      imagePath: 'assets/images/prop-img.png',
-      address: '123 Sample Street',
-      areaCode: '12345',
-      postalCode: '54321',
-    ),
+    ProperyPage(),
     Imagepage(),
     AccountPage()
   ];

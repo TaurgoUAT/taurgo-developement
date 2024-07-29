@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/costants/status.dart';
 import 'package:taurgo_developement/pages/FolderContentsPage.dart';
 import 'package:taurgo_developement/pages/home.dart';
 import 'package:taurgo_developement/pages/navpages/helpAndSupportPage.dart';
-import 'package:taurgo_developement/pages/navpages/imagePageComponents/search_bar_section.dart';
 import 'package:taurgo_developement/pages/navpages/notification/notificationPage.dart';
 import 'package:taurgo_developement/pages/navpages/upload_image_page.dart';
 
@@ -20,7 +21,57 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+
+
 class _HomePageState extends State<HomePage> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  List<Map<String, dynamic>> completedProperties = [];
+  List<Map<String, dynamic>> pendingProperties = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProperties();
+  }
+
+  Future<void> fetchProperties() async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        QuerySnapshot snapshot = await _firestore
+            .collection('to-be-completed')
+            .doc(referenceNumber) // Corrected: using user.uid instead of referenceNumber
+            .collection('properties')
+            .orderBy('createdAt', descending: true)
+            .get();
+
+        List<Map<String, dynamic>> allProperties = snapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList();
+
+        // Separate properties based on status
+        completedProperties = allProperties
+            .where((property) => property['status'] == status[1])
+            .toList();
+        pendingProperties = allProperties
+            .where((property) => property['status'] == status[0])
+            .toList();
+
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print("Failed to fetch properties: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,31 +90,17 @@ class _HomePageState extends State<HomePage> {
           onTap: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => Homepage()), // Replace
-              // HomePage with your home page widget
+              MaterialPageRoute(builder: (context) => Homepage()), // Replace HomePage with your home page widget
             );
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Image.asset(
-                'assets/logo/Taurgo Logo.png'), // Path to your company icon
+              'assets/logo/Taurgo Logo.png', // Path to your company icon
+            ),
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.notifications_none,
-              color: kPrimaryColor,
-            ),
-
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => Notificationpage()), // Replace
-                // HomePage with your home page widget
-              );
-            },
-          ),
           IconButton(
             icon: Icon(
               Icons.help_outline,
@@ -72,117 +109,69 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => Helpandsupportpage()), // Replace
-                // HomePage with your home page widget
+                MaterialPageRoute(builder: (context) => Helpandsupportpage()), // Replace HomePage with your home page widget
               );
             },
           ),
         ],
       ),
       body: DefaultTabController(
-        length: 4,
+        length: 2,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: bWhite,
           body: Column(
             children: <Widget>[
-              SearchBarSectionHomePage(),
-              const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.only(left: 16.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Completed Properties',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: "Inter",
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 8,),
-              const TabBar(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                unselectedLabelColor: kPrimaryColor,
+              const SizedBox(height: 18),
+              // Padding(
+              //   padding: EdgeInsets.only(left: 16.0),
+              //   child: Row(
+              //     children: [
+              //
+              //       Text(
+              //         'Taurgo',
+              //         style: TextStyle(
+              //           color: kPrimaryColor,
+              //           fontSize: 18,
+              //           fontWeight: FontWeight.w700,
+              //           fontFamily: "Inter",
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // Padding(
+              //   padding: EdgeInsets.only(left: 16.0, bottom: 16.0, top: 4),
+              //   child: Text(
+              //     'Tours',
+              //     style: TextStyle(
+              //       fontSize: 36,
+              //       fontWeight: FontWeight.w900,
+              //       fontFamily: "Inter",
+              //       color: Colors.black,
+              //     ),
+              //   ),
+              // ),
+              TabBar(
+                padding: EdgeInsets.all(16.0),
+                indicatorColor: kPrimaryColor,
                 labelColor: kPrimaryColor,
-                unselectedLabelStyle: TextStyle(fontSize: 13),
+                unselectedLabelColor: Colors.grey,
                 labelStyle: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
+                  fontFamily: "Inter",
                 ),
                 tabs: [
-                  Tab(
-                    child: Text(
-                      'All Tours',
-                      style: TextStyle(
-                        fontSize: 9.0, // Set your desired font size here
-                        color: kPrimaryColor, // Optionally, set the text color
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      'Your Tours',
-                      style: TextStyle(
-                        fontSize: 9.0, // Set your desired font size here
-                        color: kPrimaryColor, // Optionally, set the text color
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      'Taurgo Tours',
-                      style: TextStyle(
-                        fontSize: 9.0, // Set your desired font size here
-                        color: kPrimaryColor, // Optionally, set the text color
-                      ),
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      'Hybrid Tours',
-                      style: TextStyle(
-                        fontSize: 9.0, // Set your desired font size here
-                        color: kPrimaryColor, // Optionally, set the text color
-                      ),
-                    ),
-                  ),
+                  Tab(text: 'Completed Tours'),
+                  Tab(text: 'Pending Tours'),
                 ],
               ),
-              SizedBox(height: 20),
               Expanded(
                 child: TabBarView(
                   children: [
-                    SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          buildTourContainer(
-                              context,
-                              FolderContentsPage(),
-                              "assets/images/prop-img.png",
-                              "Address",
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua."),
-                          buildTourContainer(
-                              context,
-                              UploadImagePage(),
-                              "assets/images/prop-img.png",
-                              "Address",
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua."),
-                          buildTourContainer(
-                              context,
-                              UploadImagePage(),
-                              "assets/images/prop-img.png",
-                              "Address",
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua."),
-                        ],
-                      ),
-                    ),
-                    Center(child: Text('Your Tours')),
-                    Center(child: Text('Taurgo Tours')),
-                    Center(child: Text('Hybrid Tours')),
+                    buildPropertyList(completedProperties),
+                    buildPropertyList(pendingProperties),
                   ],
                 ),
               ),
@@ -193,185 +182,100 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildTourContainer(BuildContext context, Widget page, String imagePath,
-      String title, String description) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => page,
+  Widget buildPropertyList(List<Map<String, dynamic>> properties) {
+    if (isLoading) {
+      return Center(
+        child: CircularProgressIndicator(
+          color: kPrimaryColor, // Set the color to your primary color
+          strokeWidth: 6.0,
+          strokeCap: StrokeCap.square,// Set the stroke width
+        ),
+      );
+    }
+
+    if (properties.isEmpty) {
+      return Center(
+        child: Text(
+          'No Properties Found.',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            fontFamily: "Inter",
+            color: Colors.grey,
+          ),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: properties.length,
+      itemBuilder: (context, index) {
+        var property = properties[index];
+
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+          child: Card(
+            color: kPrimaryColor,
+            elevation: 2.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ListTile(
+              leading: (property['imageUrls'] != null &&
+                  property['imageUrls'].isNotEmpty)
+                  ? Image.network(
+                property['imageUrls'][0],
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              )
+                  : Image.asset(
+                'assets/images/placeholder.png',
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              ),
+              title: Text(
+                property['address'] ?? '',
+                style: TextStyle(
+                  color: bWhite,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: "Inter",
+                ),
+              ),
+              subtitle: Text(
+                'Area Code: ${property['areaCode'] ?? ''}',
+                style: TextStyle(
+                  color: Colors.white30,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: "Inter",
+                ),
+              ),
+              trailing: Text(
+                property['status'].toUpperCase() ?? ''.toUpperCase(),
+                style: TextStyle(
+                  color: property['status'] == status[1]
+                      ? Colors.green
+                      : Colors.orange,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: "Inter",
+                ),
+              ),
+              onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => PropertyDetailsPage(property),
+                //   ),
+                // );
+              },
+            ),
           ),
         );
       },
-      child: Container(
-        height: 310,
-        margin: EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 8.0,
-              spreadRadius: 2.0,
-              offset: Offset(2.0, 2.0),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(16.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20.0),
-                  bottom: Radius.circular(20.0),
-                ),
-                child: Image.asset(
-                  imagePath,
-                  width: double.infinity,
-                  height: 150.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 16.0, right: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    description,
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                      fontSize: 11.0,
-                      color: kSecondaryTextColourTwo,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 12.0),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: [
-                      Text(
-                        "Area : ",
-                        style: TextStyle(
-                          fontSize: 11.0,
-                          color: kPrimaryTextColour,
-                        ),
-                      ),
-                      Text(
-                        "Area",
-                        style: TextStyle(
-                          fontSize: 11.0,
-                          color: kSecondaryTextColourTwo,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Postalcode : ",
-                        style: TextStyle(
-                          fontSize: 11.0,
-                          color: kPrimaryTextColour,
-                        ),
-                      ),
-                      Text(
-                        "123345",
-                        style: TextStyle(
-                          fontSize: 11.0,
-                          color: kSecondaryTextColourTwo,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 16.0),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-
-class SearchBarSectionHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: double.maxFinite,
-            height: 40,
-            decoration: BoxDecoration(
-              color: bWhite,
-              border: Border.all(
-                color: kSecondaryButtonBorderColor,
-                width: 2.0, // Adjust the border width as needed
-              ), // Background color of the search bar
-              borderRadius: BorderRadius.circular(30.0),
-
-              // boxShadow: [
-              //   BoxShadow(
-              //     color: Colors.grey.withOpacity(0.5),
-              //     spreadRadius: 2,
-              //     blurRadius: 5,
-              //     offset: Offset(0, 3),
-              //   ),
-              // ],
-            ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.search,
-                      color: kSecondaryButtonBorderColor), // Search icon
-                ),
-                Expanded(
-                  child: TextField(
-                    cursorColor: kPrimaryColor,
-                    decoration: InputDecoration(
-                      hintText: 'Search',
-                      hintStyle: TextStyle(color: kSecondaryButtonBorderColor),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.mic,
-                      color: kSecondaryButtonBorderColor), // Mic icon
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

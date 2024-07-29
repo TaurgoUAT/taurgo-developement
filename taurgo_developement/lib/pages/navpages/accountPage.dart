@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/pages/navpages/accountPageComponents/bottom_nav_bar.dart';
 import 'package:taurgo_developement/pages/navpages/accountPageComponents/change_password_button.dart';
@@ -18,6 +20,55 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // List<Map<String, dynamic>> userDetails = [];
+  Map<String, dynamic>? userDetails;
+
+
+
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserDetails();
+  }
+
+  Future<void> fetchUserDetails() async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        QuerySnapshot snapshot = await _firestore
+            .collection('users-deatils')
+            .doc(user.uid)
+            .collection('users')
+            .orderBy('createdAt', descending: true)
+            .limit(1) // Fetch only the most recent document
+            .get();
+
+        if (snapshot.docs.isNotEmpty) {
+          setState(() {
+            userDetails = snapshot.docs.first.data() as Map<String, dynamic>;
+            isLoading = false;
+          });
+        } else {
+          print("No user details found for this user.");
+          setState(() {
+            isLoading = false;
+          });
+        }
+      }
+    } catch (e) {
+      print("Failed to fetch user details: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +119,38 @@ class _AccountPageState extends State<AccountPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: ProfileSection()),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Profile',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Name',
+                          style: TextStyle(fontSize: 14, color: Color(0xFF777777))),
+                      Text(userDetails?['userName'] ?? '',
+                          style: TextStyle(fontSize: 14, color: Colors.black)),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Email Address',
+                          style: TextStyle(fontSize: 14, color: Color(0xFF777777))),
+                      Text(userDetails?['email'] ?? '', style: TextStyle
+                        (fontSize: 14)),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),

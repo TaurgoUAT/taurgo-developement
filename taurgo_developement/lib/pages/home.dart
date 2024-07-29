@@ -14,12 +14,8 @@ class Homepage extends StatefulWidget {
     Key? key,
     this.pages = const [
       HomePage(),
-      ProperyPage(
-        imagePath: 'assets/images/prop-img.png',
-        address: '123 Sample Street',
-        areaCode: '12345',
-        postalCode: '54321',
-      ),
+      ProperyPage(),
+      // ProperyPage(),
       Imagepage(),
       AccountPage()
     ],

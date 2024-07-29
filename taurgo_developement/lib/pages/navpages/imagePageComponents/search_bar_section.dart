@@ -41,6 +41,7 @@ class SearchBarSection extends StatelessWidget {
                 ),
                 Expanded(
                   child: TextField(
+                    cursorColor: kPrimaryColor,
                     decoration: InputDecoration(
                       hintText: 'Search',
                       hintStyle: TextStyle(color: kSecondaryButtonBorderColor),

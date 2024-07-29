@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +8,7 @@ import 'package:taurgo_developement/pages/landingPage.dart';
 import 'package:taurgo_developement/pages/navpages/homePage.dart';
 import 'package:taurgo_developement/pages/onBoardingPage.dart';
 import 'package:taurgo_developement/pages/splashScreen.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
 class AuthController extends GetxController {
   //Where should I need this Auth Controller
   //
@@ -20,12 +21,13 @@ class AuthController extends GetxController {
 
   //Instance of Auth Controller Class
   static AuthController instance = Get.find();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance; // Access Firestore
 
   //Email, Password, UserName
   late Rx<User?> _user;
 
   FirebaseAuth auth = FirebaseAuth.instance;
-
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   @override
   void onReady() {
     super.onReady();
@@ -47,10 +49,23 @@ class AuthController extends GetxController {
     }
   }
 
-  void registerUser(String email, password) async {
+  void registerUser(String email, password, String name) async {
     try {
-      await auth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      User? user = userCredential.user;
+      print(user?.email);
+      await firestore.collection('users-deatils').doc(user!.uid).collection
+        ('users').add({
+        'userName': name,
+        // 'email': email,
+        'email': user?.email,
+        'userId': user?.uid,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+      print(name);
+      print(user?.email);
+
     } catch (e) {
       Get.snackbar("About User", "User Message",
           snackPosition: SnackPosition.BOTTOM,

@@ -1,32 +1,50 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/costants/status.dart';
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraPage.dart';
 import 'package:taurgo_developement/pages/home.dart';
 import 'package:taurgo_developement/pages/navpages/propertyPageComponents/uploadImageButton.dart';
 import 'package:taurgo_developement/pages/navpages/shareImagePage.dart';
-import 'package:taurgo_developement/services/mogo_service.dart';
 
 class UploadImagePage extends StatefulWidget {
-  const UploadImagePage({super.key});
+  final String address;
+  final String areaCode;
+  final String postalCode;
+  final String imagePath;
+
+  const UploadImagePage({
+    super.key,
+    required this.address,
+    required this.areaCode,
+    required this.postalCode, required this.imagePath,
+  });
 
   @override
   State<UploadImagePage> createState() => _UploadImagePageState();
 }
 
 class _UploadImagePageState extends State<UploadImagePage> {
-
+  //This set Image has to be Uploaded to the Server
   List<File> images = []; // List to store selected images
+
+  List<File> imagesToUpload = [];
+
+  List<File> logoUpload = [];
+
+  List<File> floorPlansUpload = [];
 
   Future<void> selectFromGallery(BuildContext context) async {
     try {
       final pickedFile =
-      await ImagePicker().pickImage(source: ImageSource.gallery);
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedFile == null) return;
 
       final imageTemp = File(pickedFile.path);
@@ -44,10 +62,92 @@ class _UploadImagePageState extends State<UploadImagePage> {
     }
   }
 
+  Future<void> selectFromGalleryForLogo(BuildContext context) async {
+    try {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile == null) return;
+
+      final imageTemp = File(pickedFile.path);
+
+      // Update images list
+      setState(() {
+        //Condition to Add Only Image has to be added
+        images.add(imageTemp);
+        // logoUpload.add(imageTemp);
+        // imagesToUpload.add(imageTemp);
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            backgroundColor: kPrimaryColor,
+            content: Text(
+                'Logo '
+                'has been '
+                'Selected',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: "Inter",
+                ))),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Sorry for the Inconvenience: $e',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ))),
+      );
+    }
+  }
+
+  Future<void> selectFromGalleryForFloorPlans(BuildContext context) async {
+    try {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile == null) return;
+
+      final imageTemp = File(pickedFile.path);
+
+      // Update images list
+      setState(() {
+        //Condition to Add Only Image has to be added
+        images.add(imageTemp);
+        // imagesToUpload.add(imageTemp);
+        // floorPlansUpload.add(imageTemp);
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(backgroundColor:kPrimaryColor,content: Text('Floor Plan has '
+            'been Selected',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ))),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Sorry for the Inconvenience: $e',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ))),
+      );
+    }
+  }
+
   Future<void> selectFromCamera(BuildContext context) async {
     try {
       final pickedFile =
-      await ImagePicker().pickImage(source: ImageSource.camera);
+          await ImagePicker().pickImage(source: ImageSource.camera);
       if (pickedFile == null) return;
 
       final imageTemp = File(pickedFile.path);
@@ -58,7 +158,13 @@ class _UploadImagePageState extends State<UploadImagePage> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Image captured from camera')),
+        SnackBar(content: Text('Image captured from camera',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ))),
       );
     } catch (e) {
       print('Failed to pick image: $e');
@@ -83,6 +189,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
           .pop(); // Return to the previous page when a tab is selected
     });
   }
+
   Future<void> someAsyncOperation() async {
     try {
       // Perform some async operation
@@ -99,46 +206,151 @@ class _UploadImagePageState extends State<UploadImagePage> {
     }
   }
 
+  String generateCustomReference(String userId) {
+    DateTime now = DateTime.now();
+    int randomNumber = Random().nextInt(99999); // Generate a random number
+    return 'REF-${userId.substring(0, 4)}-${now.year}${now.month}${now.day}-${randomNumber.toString().padLeft(5, '0')}';
+  }
 
   // Upload Images to Firebase Storage
   Future<void> uploadImages() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
+
     if (user == null) {
       print('User not authenticated');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please sign in to upload images.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ))),
+      );
       return;
     }
 
-    final String userEmail = user.email!;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(
+            color: kPrimaryColor, // Set the color to your primary color
+            strokeWidth: 6.0,
+            strokeCap: StrokeCap.square, // Set the stroke width
+          ),
+        );
+      },
+    );
     final FirebaseStorage storage = FirebaseStorage.instance;
+    final FirebaseFirestore firestore =
+        FirebaseFirestore.instance; // Access Firestore
+    List<String> imageUrls = []; // List to store image URLs
 
     for (var image in images) {
       if (image.existsSync()) {
         try {
           String filePath =
-              'images/${DateTime.now().millisecondsSinceEpoch}.jpg';
+              'images/${user.email}/${DateTime.now().millisecondsSinceEpoch}.jpg';
           await storage.ref(filePath).putFile(image);
-          if (mounted) {
-            setState(() {
-              // Perform state update if needed
-            });
-          }
+          final Reference ref = storage.ref().child(filePath);
+          final UploadTask uploadTask = ref.putFile(image);
+          final TaskSnapshot snapshot = await uploadTask;
+
+          // Retrieve the download URL of the uploaded image
+          final String downloadUrl = await snapshot.ref.getDownloadURL();
+
+          // Add the download URL to the list of image URLs
+          imageUrls.add(downloadUrl);
+          // if (mounted) {
+          //   ScaffoldMessenger.of(context).showSnackBar(
+          //     SnackBar(content: Text('Images uploaded successfully')),
+          //   );
+          // }
           print('Upload successful for $filePath');
         } catch (e) {
           print('Failed to upload image: $e');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to upload image: $e',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: "Inter",
+                ))),
+          );
         }
       } else {
         print('Image file does not exist');
       }
-    }
 
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Images uploaded successfully')),
-      );
+      try {
+        await firestore
+            .collection('to-be-completed')
+            .doc(referenceNumber) // Use user ID for unique identification
+            .collection('properties')
+            .add({
+          'address': widget.address,
+          'areaCode': widget.areaCode,
+          'postalCode': widget.postalCode,
+          'imageUrls': imageUrls, // This should be a list of URLs
+          'email': user.email,
+          'userId': user.uid,
+          'referanceNumber': referenceNumber,
+          'status': status[0],
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+
+        print('Property details uploaded successfully');
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(backgroundColor:kPrimaryColor,content: Text('Well Done! Your files are now with Taurgo, and will be sent back to you within 24 hours.',
+
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                fontFamily: "Inter",
+              ))),
+        );
+
+        // Navigate to PropertyPage
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ShareImagePage(referenceCode:
+            referenceNumber,),
+          ),
+        );
+      } catch (e) {
+        print('Failed to upload property details: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(backgroundColor:Colors.redAccent,content: Text('Failed to upload property details: $e',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                fontFamily: "Inter",
+              ))),
+        );
+      }
+
+      try {
+        await firestore
+            .collection('all-images')
+            .doc("images") // Use user ID for unique identification
+            .collection('images')
+            .add({
+          'imageUrls': imageUrls, // This should be a list of URLs
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+        print("Images Uploaded to the Server");
+      } catch (e) {
+        print('Failed to upload Images to the Server: $e');
+      }
     }
   }
-
 
 
 
@@ -197,7 +409,8 @@ class _UploadImagePageState extends State<UploadImagePage> {
                         showDialog(
                           context: context,
                           builder: (context) => UploadByCategoryPage(
-                            onImagesSelected: _updateImageList, // Pass the callback
+                            onImagesSelected:
+                                _updateImageList, // Pass the callback
                           ),
                         );
                       },
@@ -208,7 +421,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
                           SizedBox(height: 8),
                           // Add spacing between the icon and the text
                           Text(
-                            'Upload 2D Images',
+                            'Upload Images',
                             style: TextStyle(
                               color: kPrimaryColor,
                               fontSize: 16,
@@ -222,30 +435,106 @@ class _UploadImagePageState extends State<UploadImagePage> {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomPaint(
+                    painter: DottedBorderPainter(),
+                    child: Container(
+                      width: 175,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            selectFromGalleryForLogo(context);
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.add, color: kPrimaryColor, size: 32),
+                              SizedBox(height: 8),
+                              // Add spacing between the icon and the text
+                              Text(
+                                'Upload Logo',
+                                style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  CustomPaint(
+                    painter: DottedBorderPainter(),
+                    child: Container(
+                      width: 175,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            selectFromGalleryForFloorPlans(context);
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.add, color: kPrimaryColor, size: 32),
+                              SizedBox(height: 8),
+                              // Add spacing between the icon and the text
+                              Text(
+                                'Upload Floor Plans',
+                                style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 12),
               Container(
                 height: 200,
                 child: images.isEmpty
                     ? Center(child: Text('No images selected'))
                     : ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: images.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: Image.file(
-                          images[index],
-                          fit: BoxFit.cover,
-                          width: 320,
-                        ),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: images.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: Image.file(
+                                images[index],
+                                fit: BoxFit.cover,
+                                width: 320,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
@@ -260,13 +549,13 @@ class _UploadImagePageState extends State<UploadImagePage> {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut et dolore magna aliqua.',
+                      widget.address,
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],
                       ),
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -283,7 +572,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
                             Row(
                               children: [
                                 Text(
-                                  'Area',
+                                  widget.areaCode,
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[600],
@@ -306,7 +595,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
                             Row(
                               children: [
                                 Text(
-                                  '123456',
+                                  widget.postalCode,
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[600],
@@ -321,14 +610,10 @@ class _UploadImagePageState extends State<UploadImagePage> {
                   ],
                 ),
               ),
-              SizedBox(height: 32),
+              SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () async {
                   await uploadImages(); // Upload images before navigating
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ShareImagePage()),
-                  );
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -342,7 +627,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
                   foregroundColor: Colors.white, // Background color
                   shape: RoundedRectangleBorder(
                     borderRadius:
-                    BorderRadius.circular(50), // Button corner radius
+                        BorderRadius.circular(50), // Button corner radius
                   ),
                 ),
               ),
@@ -395,7 +680,13 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
           images.add(imageTemp);
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image captured from camera')),
+          const SnackBar(content: Text('Image captured from camera',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                fontFamily: "Inter",
+              ))),
         );
       }
     } else {
@@ -414,7 +705,15 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
           images.add(imageTemp);
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image selected from gallery')),
+          const SnackBar(backgroundColor:kPrimaryColor,content: Text('Image '
+              'selected from '
+              'gallery',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                fontFamily: "Inter",
+              ))),
         );
       }
     } else {
@@ -459,13 +758,15 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
                 return GestureDetector(
                   onTap: () {
                     setState(() {
-                      _selectedCategory = index; // Update selected category index
+                      _selectedCategory =
+                          index; // Update selected category index
                     });
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
                         color: _selectedCategory == index
                             ? kPrimaryColor
@@ -495,22 +796,22 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
               child: images.isEmpty
                   ? Center(child: Text('No images selected'))
                   : GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                ),
-                itemCount: images.length,
-                itemBuilder: (context, index) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Image.file(
-                      images[index],
-                      fit: BoxFit.cover,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                      ),
+                      itemCount: images.length,
+                      itemBuilder: (context, index) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.file(
+                            images[index],
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ),
           Padding(
@@ -522,7 +823,8 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => RicohCameraPage()),
+                      MaterialPageRoute(
+                          builder: (context) => RicohCameraPage()),
                     );
                   },
                   icon: Icon(Icons.camera),

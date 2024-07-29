@@ -152,10 +152,10 @@ class Home extends StatelessWidget {
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: kPrimaryColor),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => UploadImagePage()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => UploadImagePage()),
+              // );
             },
           ),
           actions: [

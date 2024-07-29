@@ -55,7 +55,7 @@ class _LandingPageState extends State<LandingPage> {
               child: Text(
                 "Bringing Properties to Life",
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 18,
                   color: kSecondaryTextColour,
                   fontWeight: FontWeight.w400,
                   fontFamily: "Inter",

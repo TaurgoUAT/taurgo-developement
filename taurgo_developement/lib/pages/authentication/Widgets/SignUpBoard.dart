@@ -10,10 +10,20 @@ class SignUpCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Craete an Account',
+            'Sign Up Now',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 24,
               fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ),
+          ),
+          SizedBox(height: 12,),
+          Text(
+            'Enter the details and Create an Account',
+            style: TextStyle(
+              color: kSecondaryTextColour,
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
               fontFamily: "Inter",
             ),
           ),

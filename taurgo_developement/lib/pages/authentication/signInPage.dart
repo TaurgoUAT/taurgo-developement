@@ -42,10 +42,9 @@ class _SignInPageState extends State<SignInPage> {
                   child: image,
                 ),
               ),
-              Center(
-                child: SignInCard(),
-              ),
+             SignInCard(),
               TextField(
+                cursorColor: kPrimaryColor,
                 controller: emailController,
                 decoration: InputDecoration(
                   labelText: "Email",
@@ -66,6 +65,7 @@ class _SignInPageState extends State<SignInPage> {
               ),
               SizedBox(height: 30), // Increased spacing
               TextField(
+                cursorColor: kPrimaryColor,
                 controller: passwordController,
                 decoration: InputDecoration(
                   labelText: "Password",

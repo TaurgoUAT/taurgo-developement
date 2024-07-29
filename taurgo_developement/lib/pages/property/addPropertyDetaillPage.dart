@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/pages/home.dart';
-import 'package:taurgo_developement/services/mogo_service.dart';
 import 'dart:io';
 import '../../costants/AppColors.dart';
-import '../../model/PropertyDetailsDto.dart';
-import '../navpages/propertyPage.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await MongoDatabase.connect();
-}
-
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await MongoDatabase.connect();
+// }
+//
 
 class AddPropertyDetailsPage extends StatefulWidget {
-  
   final String imagePath;
 
   const AddPropertyDetailsPage({Key? key, required this.imagePath})
@@ -30,114 +26,205 @@ class _AddPropertyDetailsPageState extends State<AddPropertyDetailsPage> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _areaCodeController = TextEditingController();
   final TextEditingController _postalCodeController = TextEditingController();
+  List<File> images = []; // List to store selected images
 
   List<File> _imageFiles = [];
+
   @override
   void initState() {
     super.initState();
-    MongoDatabase.connect();
+    //This is where we are adding Images to the
     _imageFiles.add(File(widget.imagePath));
+  }
+
+  void _updateImageList(List<File> newImages) {
+    setState(() {
+      _imageFiles = newImages; // Update the images list with new images
+    });
   }
 
   @override
   void dispose() {
-    _addressController.dispose();
-    _areaCodeController.dispose();
-    _postalCodeController.dispose();
+    // _addressController.dispose();
+    // _areaCodeController.dispose();
+    // _postalCodeController.dispose();
     super.dispose();
   }
-  // Future<void> _uploadSelectedImages() async {
-  //   if (_imageFiles.isNotEmpty) {
-  //     await MongoDatabase.insertImageDatas(_imageFiles);
-  //     // Reset the selection after upload
-  //     setState(() {
-  //       _imageFiles = [];
-  //     });
-  //   }
-  // }
 
-  void _saveDetails() async{
+  void onTabSelected(int index) {
+    setState(() {
+      Navigator.of(context)
+          .pop(); // Return to the previous page when a tab is selected
+    });
+  }
+
+  Future<void> someAsyncOperation() async {
+    try {
+      // Perform some async operation
+      await Future.delayed(Duration(seconds: 1)); // Example delay
+      if (mounted) {
+        setState(() {
+          // Update state only if the widget is still mounted
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        // Handle error if needed
+      }
+    }
+  }
+
+  Future<void> addPropertyDetails() async {
+    // Retrieve user input from text fields
     final address = _addressController.text;
     final areaCode = _areaCodeController.text;
     final postalCode = _postalCodeController.text;
 
-    // final propertyDetails = PropertyDetailsDto(
-    //   address: address,
-    //   areaCode: areaCode,
-    //   postalCode: postalCode,
-    // );
-    await MongoDatabase.insertData({
-      'address': address,
-      'areaCode': areaCode,
-      'postalCode': postalCode,
-    }, imageFiles: _imageFiles);
+    if (address.isEmpty || areaCode.isEmpty || postalCode.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(backgroundColor:Colors.redAccent,content: Text('All fields '
+            'are required.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ))),
+      );
+      return;
+    }
 
-    // Reset the selection after upload
-    setState(() {
-      _imageFiles = [];
-    });
+    // Access Firebase authentication instance
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProperyPage(
-          imagePath: widget.imagePath,
-          address: address,
-          areaCode: areaCode,
-          postalCode: postalCode,
-        ),
-      ),
+    // Check if the user is authenticated
+    if (user == null) {
+      // Print error message and notify the user if not authenticated
+      print('User not authenticated');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(backgroundColor:Colors.redAccent,content: Text('Please sign in to upload images.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ))),
+      );
+      return; // Exit the function if user is not authenticated
+    }
+    print(user.email);
+
+    // Access Firebase Storage and Firestore instances
+    final FirebaseStorage storage = FirebaseStorage.instance;
+    final FirebaseFirestore firestore =
+        FirebaseFirestore.instance; // Access Firestore
+    List<String> imageUrls = []; // List to store image URLs
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(
+            color: kPrimaryColor, // Set the color to your primary color
+            strokeWidth: 6.0,
+            strokeCap: StrokeCap.square,// Set the stroke width
+          ),
+        );
+      },
     );
+    // Loop through each image and attempt to upload it
+    for (var image in _imageFiles) {
+      // Check if the image file exists
+      if (image.existsSync()) {
+        try {
+          // Construct the file path using the user's email and current timestamp
+          String filePath =
+              'property-details/${user.email}/${DateTime.now().millisecondsSinceEpoch}.jpg';
 
-    // try {
-    //   await uploadPropertyDetails(widget.imagePath, propertyDetails);
-    //   // Navigate to PropertyPage if successful
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => ProperyPage(
-    //         imagePath: widget.imagePath,
-    //         address: address,
-    //         areaCode: areaCode,
-    //         postalCode: postalCode,
-    //       ),
-    //     ),
-    //   );
-    // } catch (error) {
-    //   print('Failed to upload details: $error');
-    //   // You can show a Snackbar or dialog to notify the user of the error
-    // }
-  }
+          // Upload the image file and await the completion of the upload task
+          final Reference ref = storage.ref().child(filePath);
+          final UploadTask uploadTask = ref.putFile(image);
+          final TaskSnapshot snapshot = await uploadTask;
 
-  Future<void> uploadPropertyDetails(String imagePath, PropertyDetailsDto details) async {
-    final url = Uri.parse('http://192.168.8.101:9090/property-details/add-deatils'); // Replace with your  IP address
+          // Retrieve the download URL of the uploaded image
+          final String downloadUrl = await snapshot.ref.getDownloadURL();
 
-    // Convert image to MultipartFile
-    final image = File(imagePath);
-    final imageBytes = await image.readAsBytes();
-    final base64Image = base64Encode(imageBytes);
+          // Add the download URL to the list of image URLs
+          imageUrls.add(downloadUrl);
 
-    // Prepare the request
-    final request = http.MultipartRequest('POST', url)
-      ..fields['address'] = details.address
-      ..fields['areaCode'] = details.areaCode
-      ..fields['postalCode'] = details.postalCode
-      ..files.add(http.MultipartFile.fromBytes(
-        'image',
-        imageBytes,
-        filename: image.path.split('/').last,
-      ));
+          // Print success message for the upload
+          print('Upload successful for $filePath');
+        } catch (e) {
+          // Print and notify the user if the image upload fails
+          print('Failed to upload image: $e');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(backgroundColor:Colors.redAccent,content: Text('Failed to upload image: $e',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: "Inter",
+                ))),
+          );
+        }
+      } else {
+        // Print message if the image file does not exist
+        print('Image file does not exist');
+      }
+    }
 
-    // Send the request
-    final response = await request.send();
+    // After all images are uploaded, store the property details in Firestore
+    // Adding Property Details to Firestore
+    try {
+      await firestore
+          .collection('users')
+          .doc(user.uid) // Use user ID for unique identification
+          .collection('properties')
+          .add({
+        'address': address,
+        'areaCode': areaCode,
+        'postalCode': postalCode,
+        'imageUrls': imageUrls, // This should be a list of URLs
+        'email': user.email,
+        'userId': user.uid,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
 
-    if (response.statusCode == 200) {
-      print('Details uploaded successfully');
-    } else {
-      print('Failed to upload details: ${response.statusCode}');
-      throw Exception('Failed to upload details');
+      print('Property details uploaded successfully');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(backgroundColor:kPrimaryColor,content: Text('Property details uploaded '
+            'successfully',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ))),
+      );
+
+      // Navigate to PropertyPage
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Homepage(),
+        ),
+      );
+    } catch (e) {
+      print('Failed to upload property details: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(backgroundColor:Colors.redAccent,content: Text('Failed to upload property details: $e',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ))),
+      );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -211,6 +298,7 @@ class _AddPropertyDetailsPageState extends State<AddPropertyDetailsPage> {
             ),
             SizedBox(height: 16),
             TextField(
+              cursorColor: kPrimaryColor,
               controller: _addressController,
               decoration: InputDecoration(
                 labelText: "Address",
@@ -230,6 +318,7 @@ class _AddPropertyDetailsPageState extends State<AddPropertyDetailsPage> {
             ),
             SizedBox(height: 16),
             TextField(
+              cursorColor: kPrimaryColor,
               controller: _areaCodeController,
               decoration: InputDecoration(
                 labelText: "Area Code",
@@ -249,6 +338,7 @@ class _AddPropertyDetailsPageState extends State<AddPropertyDetailsPage> {
             ),
             SizedBox(height: 16),
             TextField(
+              cursorColor: kPrimaryColor,
               controller: _postalCodeController,
               decoration: InputDecoration(
                 labelText: "Postal Code",
@@ -270,7 +360,7 @@ class _AddPropertyDetailsPageState extends State<AddPropertyDetailsPage> {
             SizedBox(height: 16),
             Center(
               child: ElevatedButton(
-                onPressed: _saveDetails,
+                onPressed: addPropertyDetails,
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 100, vertical: 10),
@@ -291,6 +381,3 @@ class _AddPropertyDetailsPageState extends State<AddPropertyDetailsPage> {
     );
   }
 }
-
-//8a215308-5375-478c-8b46-88daa06ceb21 - Private
-//mcnwoeuo - Public

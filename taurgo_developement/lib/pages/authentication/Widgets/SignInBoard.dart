@@ -10,10 +10,20 @@ class SignInCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Sign In',
+            'Welcome Back',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 24,
               fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ),
+          ),
+          SizedBox(height: 12,),
+          Text(
+            'Please Sign In to Continue',
+            style: TextStyle(
+              color: kSecondaryTextColour,
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
               fontFamily: "Inter",
             ),
           ),

@@ -21,22 +21,6 @@ import 'package:taurgo_developement/pages/authentication/Widgets/SignUpButton.da
 
 import 'package:taurgo_developement/pages/authentication/Widgets/SignUpBoard'
     '.dart';
-import 'package:taurgo_developement/pages/navpages/changePasswordComponent'
-    '/update_button.dart';
-import 'package:taurgo_developement/pages/navpages/changePasswordComponent'
-    '/change_password_input.dart';
-
-// settings_page.dart
-import 'package:flutter/material.dart';
-import 'package:taurgo_developement/costants/AppColors.dart';
-import 'package:taurgo_developement/widgets/bottom_nav_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:taurgo_developement/costants/AppColors.dart';
-import 'package:taurgo_developement/pages/navpages/accountPage.dart';
-import 'package:taurgo_developement/pages/navpages/homePage.dart';
-import 'package:taurgo_developement/pages/navpages/propertyPage.dart';
-import 'package:taurgo_developement/pages/navpages/imagePage.dart';
-import 'package:taurgo_developement/widgets/bottom_nav_bar.dart';
 
 import '../../controllers/authController.dart';
 
@@ -49,6 +33,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   var emailController = TextEditingController();
+  var nameController = TextEditingController();
   var passwordController = TextEditingController();
   var image =
       Image.asset('assets/logo/logo.png', height: 250, fit: BoxFit.scaleDown);
@@ -70,10 +55,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: image,
                 ),
               ),
-              Center(
-                child: SignUpCard(),
-              ),
+              SignUpCard(),
               TextField(
+                cursorColor: kPrimaryColor,
+                controller: nameController,
                 decoration: InputDecoration(
                   labelText: "Full Name",
                   labelStyle: TextStyle(
@@ -95,6 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(height: 30), // Increased spacing
 
               TextField(
+                cursorColor: kPrimaryColor,
                 controller: emailController,
                 decoration: InputDecoration(
                   labelText: "Email",
@@ -115,6 +101,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               SizedBox(height: 30), // Increased spacing
               TextField(
+                cursorColor: kPrimaryColor,
                 controller: passwordController,
                 decoration: InputDecoration(
                   labelText: "Password",
@@ -136,6 +123,7 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(height: 30), // Increased spacing
 
               TextField(
+                cursorColor: kPrimaryColor,
                 decoration: InputDecoration(
                   labelText: "Confirm Password",
                   labelStyle: TextStyle(
@@ -159,14 +147,16 @@ class _SignUpPageState extends State<SignUpPage> {
                 onTap: () {
                   AuthController.instance.registerUser(
                       emailController.text.trim(),
-                      passwordController.text.trim());
+                      passwordController.text.trim(),
+                      nameController.text.trim());
                 },
                 child: Center(
                   child: ElevatedButton(
                     onPressed: () {
                       AuthController.instance.registerUser(
                           emailController.text.trim(),
-                          passwordController.text.trim());
+                          passwordController.text.trim(),
+                          nameController.text.trim());
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(

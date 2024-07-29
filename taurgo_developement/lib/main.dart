@@ -8,6 +8,8 @@ import 'package:taurgo_developement/services/mogo_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   // await MongoDatabase.connect();
   await Firebase.initializeApp().then((value) => Get.put(AuthController()));
   runApp(const MyApp());

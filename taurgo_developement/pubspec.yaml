@@ -65,6 +65,7 @@ dependencies:
   amplify_datastore:
   amplify_auth_cognito:
   amplify_storage_s3:
+  cloud_firestore:
 
 dev_dependencies:
   flutter_test:
