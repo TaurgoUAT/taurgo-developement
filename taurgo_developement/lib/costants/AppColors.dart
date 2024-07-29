@@ -3,8 +3,17 @@ import 'package:flutter/material.dart';
 const bWhite = Color(0xFFFFFFFF);
 const kPrimaryColor = Color(0xFF286167);
 const kButtonColour = Color(0xFFF19447);
-const kSecondaryTextColour = Color(0xffffffff);
-const kPrimaryTextColour = Color(0xff4F4846);
+
+
+const kSecondaryButtonColor = Color(0xFFF1F1F1);
+const kSecondaryButtonBorderColor = Color(0xFFD9D9D9);
+
+const kSecondaryBorderColor = Color(0xFF777777);
+const kSecondaryButtonTextColor = Color(0xFF000000);
+const kSecondaryTextColour = Color(0xff6C757D);
+const kSecondaryTextColourTwo = Color(0xff444444);
+const kPrimaryTextColour = Color(0xff0E0F11);
+
 const kPrimaryLightColor = Color(0xFFddb892);
 const kSecondaryLightColor = Color(0xFFb08968);
 const iconColor = Color(0xFFF4ECE5);
