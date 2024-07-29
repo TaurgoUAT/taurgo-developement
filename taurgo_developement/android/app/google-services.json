@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "64279042130",
+    "project_id": "taurgo-uat",
+    "storage_bucket": "taurgo-uat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64279042130:android:07383e7d2992863b9e278b",
+        "android_client_info": {
+          "package_name": "com.taurgo.taurgoDevelopement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfrVSj4faQ7lGGoTW8ijwFcr3mHoYTFvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
