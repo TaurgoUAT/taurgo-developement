@@ -361,6 +361,9 @@ class _UploadImagePageState extends State<UploadImagePage> {
           'userId': user.uid,
           'referanceNumber': referenceNumber,
           'status': status[0],
+          '2dPlanUrl':"",
+          'floorPlanUrl':"",
+          '360Tour':"",
           'createdAt': FieldValue.serverTimestamp(),
         });
         // await sendEmail(referenceNumber, 'highoncode09@gmail.com');

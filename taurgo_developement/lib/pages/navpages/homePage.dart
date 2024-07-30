@@ -5,6 +5,7 @@ import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/costants/status.dart';
 import 'package:taurgo_developement/pages/FolderContentsPage.dart';
 import 'package:taurgo_developement/pages/home.dart';
+import 'package:taurgo_developement/pages/navpages/completedPropertyPage.dart';
 import 'package:taurgo_developement/pages/navpages/helpAndSupportPage.dart';
 import 'package:taurgo_developement/pages/navpages/notification/notificationPage.dart';
 import 'package:taurgo_developement/pages/navpages/upload_image_page.dart';
@@ -260,7 +261,7 @@ class _HomePageState extends State<HomePage> {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
           child: Card(
-            color: kPrimaryColor,
+            color: kPrimaryColor.withOpacity(1),
             elevation: 2.0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -290,10 +291,10 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               subtitle: Text(
-                'Area Code: ${property['areaCode'] ?? ''}',
+                'Ref No: ${property['referanceNumber'] ?? ''}',
                 style: TextStyle(
                   color: Colors.white30,
-                  fontSize: 12,
+                  fontSize: 10,
                   fontWeight: FontWeight.w400,
                   fontFamily: "Inter",
                 ),
@@ -309,13 +310,46 @@ class _HomePageState extends State<HomePage> {
                   fontFamily: "Inter",
                 ),
               ),
+
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => PropertyDetailsPage(property),
-                //   ),
-                // );
+                if (property['status'] == status[1]) {
+                  // Only navigate if the property is completed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CompletedPropertyPage(
+                        virtualTourUrl: property['360Tour'],
+                        floorPlanUrl: property['floorPlanUrl'],
+                        twoDimensionPlanUrl: property['2dPlanUrl'],
+                      ),
+                    ),
+                  );
+                } else {
+                  // Optionally show a message if the property is not completed
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Tour Not Completed',style: TextStyle(
+                          color: kPrimaryColor,
+                        fontSize: 16
+                      )),
+                      content: Text(
+                          'This tour is still pending. We will upload your '
+                              'Tour Soon',style: TextStyle(
+                          color: Colors.black,
+                        fontWeight: FontWeight.w100
+                      )),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('OK',style: TextStyle(
+                            color: kPrimaryColor
+                          ),),
+                        ),
+                      ],
+                    ),
+                  );
+                }
               },
             ),
           ),
