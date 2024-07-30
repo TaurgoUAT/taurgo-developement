@@ -8,6 +8,8 @@ import 'package:taurgo_developement/pages/navpages/upload_image_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:theta_client_flutter/theta_client_flutter.dart';
 
+import '../navpages/helpAndSupportPage.dart';
+
 class RicohCameraPage extends StatefulWidget {
   const RicohCameraPage({super.key});
 
@@ -19,7 +21,7 @@ class _RicohCameraPageState extends State<RicohCameraPage>
     with WidgetsBindingObserver {
   String _platformVersion = 'Unknown';
   final _thetaClientFlutter = ThetaClientFlutter();
-  bool _isInitTheta = true;
+  bool _isInitTheta = false;
   bool _initializing = false;
   ThetaModel? _thetaModel;
 
@@ -134,14 +136,16 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String camera = isInitialized ? 'connected! $thetaModel' : 'disconnected';
-    var image = Image.asset('assets/logo/Taurgo Logo.png',
-        height: 250, fit: BoxFit.scaleDown);
+
+    String camera = isInitialized ? 'CONNECTED! $thetaModel' : 'DISCONNECTED!';
+    Color iconColor = isInitialized ? kPrimaryColor : Colors.redAccent;
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
             'Capture Property',
             style: TextStyle(
+              color: kPrimaryColor,
               fontSize: 16,
               fontWeight: FontWeight.w500,
               fontFamily: "Inter",
@@ -152,10 +156,7 @@ class Home extends StatelessWidget {
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: kPrimaryColor),
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => UploadImagePage()),
-              // );
+
             },
           ),
           actions: [
@@ -164,7 +165,14 @@ class Home extends StatelessWidget {
                 Icons.help_outline,
                 color: kPrimaryColor,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          Helpandsupportpage()), // Replace HomePage with your home page widget
+                );
+              },
             ),
           ],
         ),
@@ -176,7 +184,7 @@ class Home extends StatelessWidget {
               Center(
                 child: IconButton(
                   icon: FaIcon(FontAwesomeIcons.camera,
-                      color: Colors.redAccent, size: 200),
+                      color: iconColor, size: 200),
                   onPressed: () {},
                 ),
               ),
@@ -254,8 +262,8 @@ class Home extends StatelessWidget {
                                 builder: (_) => const TakePictureScreen()));
                           },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: kSecondaryButtonColor,
-                      foregroundColor: kSecondaryButtonTextColor,
+                      backgroundColor: kPrimaryColor,
+                      foregroundColor: kPrimaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
@@ -292,8 +300,8 @@ class Home extends StatelessWidget {
                                 builder: (_) => const CaptureVideoScreen()));
                           },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: kSecondaryButtonColor,
-                      foregroundColor: kSecondaryButtonTextColor,
+                      backgroundColor: kPrimaryColor,
+                      foregroundColor: kPrimaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),

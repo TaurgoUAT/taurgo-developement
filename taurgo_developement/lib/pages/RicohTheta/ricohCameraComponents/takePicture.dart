@@ -4,6 +4,10 @@ import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/messa
 import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/photoScreen.dart';
 import 'package:theta_client_flutter/theta_client_flutter.dart';
 
+import '../../../costants/AppColors.dart';
+import '../../home.dart';
+import '../../navpages/helpAndSupportPage.dart';
+
 class TakePictureScreen extends StatefulWidget {
   const TakePictureScreen({super.key});
 
@@ -71,7 +75,51 @@ class _TakePictureScreen extends State<TakePictureScreen>
     return PopScope(
       canPop: true,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Take Picture')),
+        appBar: AppBar(
+          title: Text(
+            'Taek Pictures',
+            style: TextStyle(
+              color: kPrimaryColor,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ),
+          ),
+          centerTitle: true,
+          backgroundColor: bWhite,
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Homepage()), // Replace HomePage with your home page widget
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                'assets/logo/Taurgo Logo.png', // Path to your company icon
+              ),
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.help_outline,
+                color: kPrimaryColor,
+              ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          Helpandsupportpage()), // Replace HomePage with your home page widget
+                );
+              },
+            ),
+          ],
+        ),
         body: Stack(
           fit: StackFit.expand,
           children: [

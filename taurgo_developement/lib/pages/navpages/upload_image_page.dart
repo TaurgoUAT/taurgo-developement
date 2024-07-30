@@ -424,7 +424,8 @@ class _UploadImagePageState extends State<UploadImagePage> {
         title: Text(
           'Properties',
           style: TextStyle(
-            fontSize: 18,
+            color: kPrimaryColor,
+            fontSize: 16,
             fontWeight: FontWeight.w500,
             fontFamily: "Inter",
           ),
@@ -453,7 +454,8 @@ class _UploadImagePageState extends State<UploadImagePage> {
       body: SingleChildScrollView(
         child: Container(
           color: bWhite,
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(top: 16.0,right: 16.0,left: 16.0,bottom:
+          16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -673,7 +675,27 @@ class _UploadImagePageState extends State<UploadImagePage> {
                   ],
                 ),
               ),
-              SizedBox(height: 24),
+              SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Once you have uploaded all your pictures, share with us to create your project.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: kSecondaryTextColour,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "Inter",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 12),
+
               ElevatedButton(
                 onPressed: () async {
                   await uploadImages(); // Upload images before navigating
@@ -803,7 +825,7 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
         title: Text(
           'Upload By Category',
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: FontWeight.w500,
             color: kPrimaryColor,
           ),
@@ -816,6 +838,7 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+
         children: [
           SizedBox(
             height: 80,
