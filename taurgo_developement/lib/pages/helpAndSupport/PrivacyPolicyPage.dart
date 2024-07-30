@@ -23,15 +23,14 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
 
   Future<void> loadPDF() async {
     try {
-      final ByteData data =
-          await rootBundle.load('assets/pdf/PrivacyPolicy.pdf');
+      final ByteData data = await rootBundle.load('assets/pdf/Privacy Policy.pdf');
       final Directory tempDir = await getTemporaryDirectory();
-      final File tempFile = File('${tempDir.path}/PrivacyPolicy.pdf');
+      final File tempFile = File('${tempDir.path}/Privacy Policy.pdf');
       await tempFile.writeAsBytes(data.buffer.asUint8List(), flush: true);
       setState(() {
         pathPDF = tempFile.path;
-        print("PDF loaded successfully: $pathPDF");
       });
+      print("PDF loaded successfully: $pathPDF");
     } catch (e) {
       print("Error loading PDF: $e");
     }
@@ -50,21 +49,30 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
             fontFamily: "Inter",
           ),
         ),
+        backgroundColor: Colors.white, // Ensure the AppBar color contrasts with the text
+        iconTheme: IconThemeData(color: kPrimaryColor), // Ensure the back icon color is visible
       ),
       body: pathPDF.isNotEmpty
           ? PDFView(
-              filePath: pathPDF,
-            )
+        filePath: pathPDF,
+        enableSwipe: true,
+        swipeHorizontal: true,
+        autoSpacing: false,
+        pageFling: true,
+        pageSnap: true,
+        fitPolicy: FitPolicy.BOTH,
+      )
           : Center(
-              child: SizedBox(
-              width: 60.0,
-              height: 60.0,
-              child: CircularProgressIndicator(
-                color: kPrimaryColor, // Set the color to your primary color
-                strokeWidth: 6.0,
-                strokeCap: StrokeCap.square, // Set the stroke width
-              ),
-            )),
+        child: SizedBox(
+          width: 60.0,
+          height: 60.0,
+          child: CircularProgressIndicator(
+            color: kPrimaryColor,
+            strokeWidth: 6.0,
+            strokeCap: StrokeCap.square,
+          ),
+        ),
+      ),
     );
   }
 }
