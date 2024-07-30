@@ -44,7 +44,7 @@ class HelpSupportPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SearchBarSection(),
+              // SearchBarSection(),
               SizedBox(height: 20),
               _buildNavigationButton(context, 'Connecting to Ricoh Theta Z1',
                   RicohThetaZ1GuidePage()),
@@ -242,49 +242,49 @@ class HelpSupportPage extends StatelessWidget {
   }
 }
 
-class SearchBarSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 326,
-            height: 40,
-            decoration: BoxDecoration(
-              color: bWhite,
-              border: Border.all(
-                color: kSecondaryButtonBorderColor,
-                width: 2.0,
-              ),
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.search, color: kSecondaryButtonBorderColor),
-                ),
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search',
-                      hintStyle: TextStyle(color: kSecondaryButtonBorderColor),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(Icons.mic, color: kSecondaryButtonBorderColor),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// class SearchBarSection extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 10.0),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Container(
+//             width: 326,
+//             height: 40,
+//             decoration: BoxDecoration(
+//               color: bWhite,
+//               border: Border.all(
+//                 color: kSecondaryButtonBorderColor,
+//                 width: 2.0,
+//               ),
+//               borderRadius: BorderRadius.circular(30.0),
+//             ),
+//             child: Row(
+//               children: [
+//                 Padding(
+//                   padding: const EdgeInsets.all(8.0),
+//                   child: Icon(Icons.search, color: kSecondaryButtonBorderColor),
+//                 ),
+//                 Expanded(
+//                   child: TextField(
+//                     decoration: InputDecoration(
+//                       hintText: 'Search',
+//                       hintStyle: TextStyle(color: kSecondaryButtonBorderColor),
+//                       border: InputBorder.none,
+//                     ),
+//                   ),
+//                 ),
+//                 Padding(
+//                   padding: const EdgeInsets.all(8.0),
+//                   child: Icon(Icons.mic, color: kSecondaryButtonBorderColor),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
