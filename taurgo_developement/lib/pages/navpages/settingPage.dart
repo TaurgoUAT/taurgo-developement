@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -11,13 +12,55 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   bool soundEnabled = true;
   bool notificationsEnabled = true;
-  bool locationEnabled = true;
+  bool locationEnabled = false;
 
-  void onTabSelected(int index) {
-    setState(() {
-      Navigator.of(context)
-          .pop(); // Return to the previous page when a tab is selected
-    });
+  @override
+  void initState() {
+    super.initState();
+    _checkLocationPermission();
+  }
+
+  Future<void> _checkLocationPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
+        setState(() {
+          locationEnabled = false;
+        });
+      } else {
+        setState(() {
+          locationEnabled = true;
+        });
+      }
+    } else {
+      setState(() {
+        locationEnabled = true;
+      });
+    }
+  }
+
+  Future<void> _updateLocationPermission(bool enable) async {
+    if (enable) {
+      // Request location permission
+      LocationPermission permission = await Geolocator.requestPermission();
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
+        setState(() {
+          locationEnabled = false;
+        });
+        return;
+      }
+    } else {
+      // Handle the case where location services should be disabled
+      // Clearing or storing any location data may be handled here
+      // but disabling location services programmatically isn't possible
+      setState(() {
+        locationEnabled = false;
+      });
+    }
   }
 
   @override
@@ -66,7 +109,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     )),
               ),
               SwitchListTile(
-                title: Text('On Invoice', style: TextStyle(fontSize: 12)),
+                title: Text('Sound', style: TextStyle(fontSize: 12)),
                 value: soundEnabled,
                 onChanged: (bool value) {
                   setState(() {
@@ -93,9 +136,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 title: Text('Location', style: TextStyle(fontSize: 12)),
                 value: locationEnabled,
                 onChanged: (bool value) {
-                  setState(() {
-                    locationEnabled = value;
-                  });
+                  _updateLocationPermission(value);
                 },
                 activeColor: kPrimaryColor,
                 inactiveThumbColor: Colors.grey,

@@ -4,6 +4,8 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +15,7 @@ import 'package:taurgo_developement/pages/RicohTheta/ricohCameraPage.dart';
 import 'package:taurgo_developement/pages/home.dart';
 import 'package:taurgo_developement/pages/navpages/propertyPageComponents/uploadImageButton.dart';
 import 'package:taurgo_developement/pages/navpages/shareImagePage.dart';
+import 'package:mailer/smtp_server.dart';
 
 class UploadImagePage extends StatefulWidget {
   final String address;
@@ -40,6 +43,12 @@ class _UploadImagePageState extends State<UploadImagePage> {
   List<File> logoUpload = [];
 
   List<File> floorPlansUpload = [];
+  List<String> rooms = [
+    "Entrance", "Driveway", "Streetview", "Dining Room", "Kitchen",
+    "Lounge", "Backgarden", "Staircase", "Bedroom 1", "Bedroom 2",
+    "Bedroom 3", "Master Bedroom", "Floor Plans", "Logo",
+  ];
+
 
   Future<void> selectFromGallery(BuildContext context) async {
     try {
@@ -212,6 +221,55 @@ class _UploadImagePageState extends State<UploadImagePage> {
     return 'REF-${userId.substring(0, 4)}-${now.year}${now.month}${now.day}-${randomNumber.toString().padLeft(5, '0')}';
   }
 
+  Future<void> sendEmail(String referenceCode, String email) async {
+    // SMTP server configuration
+    String username = 'uat@taurgo.co.uk';  // Replace with your email
+    String password = 'AJTesting11!';  // Replace with your email password or app password
+
+    final smtpServer = gmail(username, password);
+
+    // Create a message
+    final message = Message()
+      ..from = Address(username, 'Taurgo Support')
+      ..recipients.add(email)
+      ..subject = 'New Property has been Uploaded to the server'
+      ..text = 'Hello, your reference code is $referenceCode.\n\nThank you for using Taurgo!';
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Email sent: ' + sendReport.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: kPrimaryColor,
+          content: Text(
+            'Email with reference code sent successfully!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ),
+          ),
+        ),
+      );
+    } on MailerException catch (e) {
+      print('Message not sent. \n' + e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.redAccent,
+          content: Text(
+            'Failed to send email: $e',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontFamily: "Inter",
+            ),
+          ),
+        ),
+      );
+    }
+  }
   // Upload Images to Firebase Storage
   Future<void> uploadImages() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -235,10 +293,14 @@ class _UploadImagePageState extends State<UploadImagePage> {
       context: context,
       builder: (BuildContext context) {
         return Center(
-          child: CircularProgressIndicator(
-            color: kPrimaryColor, // Set the color to your primary color
-            strokeWidth: 6.0,
-            strokeCap: StrokeCap.square, // Set the stroke width
+          child: SizedBox(
+            width: 60.0,
+            height: 60.0,
+            child: CircularProgressIndicator(
+              color: kPrimaryColor, // Set the color to your primary color
+              strokeWidth: 6.0,
+              strokeCap: StrokeCap.square,// Set the stroke width
+            ),
           ),
         );
       },
@@ -288,7 +350,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
       try {
         await firestore
             .collection('to-be-completed')
-            .doc(referenceNumber) // Use user ID for unique identification
+            .doc(user.uid) // Use user ID for unique identification
             .collection('properties')
             .add({
           'address': widget.address,
@@ -301,6 +363,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
           'status': status[0],
           'createdAt': FieldValue.serverTimestamp(),
         });
+        // await sendEmail(referenceNumber, 'highoncode09@gmail.com');
 
         print('Property details uploaded successfully');
 
@@ -668,6 +731,7 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
     "Logo",
   ];
   final ImagePicker _picker = ImagePicker();
+  // final DateFormat _dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss'); // For date formatting
 
   Future<void> _selectFromCamera() async {
     PermissionStatus status = await Permission.camera.request();
@@ -677,7 +741,11 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
       if (image != null) {
         final imageTemp = File(image.path);
         setState(() {
-          images.add(imageTemp);
+          images.add(ImageData(
+            imageFile: imageTemp,
+            category: rooms[_selectedCategory],
+            date: DateTime.now(),
+          ) as File);
         });
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image captured from camera',
@@ -876,4 +944,15 @@ class _UploadByCategoryPageState extends State<UploadByCategoryPage> {
       ),
     );
   }
+}
+class ImageData {
+  final File imageFile;
+  final String category;
+  final DateTime date;
+
+  ImageData({
+    required this.imageFile,
+    required this.category,
+    required this.date,
+  });
 }

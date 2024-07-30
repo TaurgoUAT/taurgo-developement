@@ -11,6 +11,7 @@ import 'package:taurgo_developement/costants/AppColors.dart';
 
 import '../../controllers/authController.dart';
 import '../home.dart';
+import 'helpAndSupportPage.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -76,6 +77,7 @@ class _AccountPageState extends State<AccountPage> {
         title: Text(
           'Account',
           style: TextStyle(
+            color: kPrimaryColor,
             fontSize: 16,
             fontWeight: FontWeight.w500,
             fontFamily: "Inter",
@@ -98,19 +100,26 @@ class _AccountPageState extends State<AccountPage> {
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.notifications_none,
-              color: kPrimaryColor,
-            ),
-            onPressed: () {},
-          ),
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.notifications_none,
+          //     color: kPrimaryColor,
+          //   ),
+          //   onPressed: () {},
+          // ),
           IconButton(
             icon: Icon(
               Icons.help_outline,
               color: kPrimaryColor,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Helpandsupportpage()), // Replace HomePage with your home page widget
+              );
+            },
           ),
         ],
       ),
@@ -126,7 +135,7 @@ class _AccountPageState extends State<AccountPage> {
                 children: [
                   Text(
                     'Profile',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 8),
                   Row(
@@ -152,12 +161,12 @@ class _AccountPageState extends State<AccountPage> {
               ),
             ),
             SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Divider(thickness: 1, color: Color(0xFFC2C2C2)),
-            ),
-            SizedBox(height: 16),
-            SubscriptionSection(),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            //   child: Divider(thickness: 1, color: Color(0xFFC2C2C2)),
+            // ),
+            SizedBox(height: 48),
+            // SubscriptionSection(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Divider(thickness: 1, color: Color(0xFFC2C2C2)),

@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:taurgo_developement/pages/home.dart';
-import 'package:taurgo_developement/pages/navpages/imagePageComponents/search_bar_section.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:taurgo_developement/pages/navpages/imagePageComponents/description_section.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
+import 'package:taurgo_developement/pages/home.dart';
+
+import 'helpAndSupportPage.dart';
 
 class Imagepage extends StatefulWidget {
   const Imagepage({super.key});
@@ -12,57 +13,39 @@ class Imagepage extends StatefulWidget {
   State<Imagepage> createState() => _ImagepageState();
 }
 
-class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin {
-  late TabController _tabController;
+class _ImagepageState extends State<Imagepage> {
+  late Stream<List<String>> imageStream;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    imageStream = _fetchImageUrls();
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+  Stream<List<String>> _fetchImageUrls() async* {
+    User? user = _auth.currentUser;
+    final userId = user?.uid; // Replace with the actual user ID
+    final firestore = FirebaseFirestore.instance;
+    final querySnapshot = await firestore
+        .collection('to-be-completed')
+        .doc(userId)
+        .collection('properties')
+        .get();
 
-  List<String> allImage = [
-    "prop-img.png",
-    "prop-img-2.png",
-    "prop-img.png",
-    "prop-img.png",
-    "prop-img-2.png",
-    "prop-img.png",
-    "prop-img-2.png",
-    "prop-img-2.png",
-    "prop-img.png",
-  ];
-  List<String> latestImages = [
-    "prop-img-2.png",
-    "prop-img.png",
-    "prop-img-2.png",
-    "prop-img-2.png",
-    "prop-img.png",
-    "prop-img.png",
-    "prop-img.png",
-    "prop-img.png",
-    "prop-img.png",
-  ];
-  List<String> deletedImages = [
-    "prop-img.png",
-    "prop-img-2.png",
-    "prop-img.png",
-    "prop-img-2.png",
-    "prop-img.png",
-    "prop-img-2.png",
-    "prop-img.png",
-    "prop-img-2.png",
-    "prop-img.png",
-  ];
+    List<String> imageUrls = [];
+    for (var doc in querySnapshot.docs) {
+      final data = doc.data();
+      final urls = List<String>.from(data['imageUrls'] ?? []);
+      imageUrls.addAll(urls);
+    }
+    yield imageUrls;
+  }
 
   Widget buildGridView(List<String> images) {
     return GridView.builder(
+      padding: EdgeInsets.all(16),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         crossAxisSpacing: 10,
@@ -75,11 +58,12 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin {
             // Handle tap on image
           },
           child: Container(
+            padding: EdgeInsets.all(12),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: Colors.white,
               image: DecorationImage(
-                image: AssetImage("assets/images/" + images[index]),
+                image: NetworkImage(images[index]),
                 fit: BoxFit.cover,
               ),
             ),
@@ -96,6 +80,7 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin {
         title: Text(
           'Images',
           style: TextStyle(
+            color: kPrimaryColor,
             fontSize: 16,
             fontWeight: FontWeight.w500,
             fontFamily: "Inter",
@@ -108,7 +93,6 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => Homepage()), // Replace
-              // HomePage with your home page widget
             );
           },
           child: Padding(
@@ -118,86 +102,54 @@ class _ImagepageState extends State<Imagepage> with TickerProviderStateMixin {
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.notifications_none, color: kPrimaryColor),
-            onPressed: () {},
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.notifications_none, color: kPrimaryColor),
+          //   onPressed: () {},
+          // ),
           IconButton(
             icon: Icon(Icons.help_outline, color: kPrimaryColor),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Helpandsupportpage()), // Replace HomePage with your home page widget
+              );
+            },
           ),
         ],
       ),
       body: Container(
+
         color: bWhite,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(child: SearchBarSection()),
-            CapturedImage(),
-            Container(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: TabBar(
-                  controller: _tabController,
-                  labelColor: kPrimaryColor,
-                  unselectedLabelColor: kSecondaryBorderColor,
-                  indicator: BoxDecoration(),
-                  tabs: [
-                    Tab(text: "All Images"),
-                    Tab(text: "Latest"),
-                    Tab(text: "Deleted"),
-                  ],
+        child: StreamBuilder<List<String>>(
+          stream: imageStream,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                  child: SizedBox(
+                width: 60.0,
+                height: 60.0,
+                child: CircularProgressIndicator(
+                  color: kPrimaryColor,
+                  // Set the color to your primary color
+                  strokeWidth: 6.0,
+                  strokeCap: StrokeCap.square, // Set the stroke width
                 ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    buildGridView(allImage),
-                    buildGridView(latestImages),
-                    buildGridView(deletedImages),
-                  ],
-                ),
-              ),
-            ),
-          ],
+              ));
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text('No images found.'));
+            }
+
+            final images = snapshot.data!;
+            return buildGridView(images);
+          },
         ),
       ),
     );
-  }
-}
-
-class CircleTabIndicator extends Decoration {
-  final Color color;
-  double radius;
-
-  CircleTabIndicator({required this.color, required this.radius});
-
-  @override
-  BoxPainter createBoxPainter([VoidCallback? onChanged]) {
-    return _CirclePainter(color: color, radius: radius);
-  }
-}
-
-class _CirclePainter extends BoxPainter {
-  final Color color;
-  double radius;
-
-  _CirclePainter({required this.color, required this.radius});
-
-  @override
-  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    Paint _paint = Paint();
-    _paint.color = color;
-    _paint.isAntiAlias = true;
-    final Offset circleOffset = Offset(
-      configuration.size!.width / 2 - radius / 2,
-      configuration.size!.height,
-    );
-    canvas.drawCircle(offset + circleOffset, radius, _paint);
   }
 }

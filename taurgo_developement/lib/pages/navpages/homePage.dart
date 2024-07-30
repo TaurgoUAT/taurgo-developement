@@ -21,11 +21,10 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-
-
 class _HomePageState extends State<HomePage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  Map<String, dynamic>? userDetails;
 
   List<Map<String, dynamic>> completedProperties = [];
   List<Map<String, dynamic>> pendingProperties = [];
@@ -34,16 +33,51 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    fetchUserDetails();
     fetchProperties();
+  }
+
+  Future<void> fetchUserDetails() async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        QuerySnapshot snapshot = await _firestore
+            .collection('users-deatils')
+            .doc(user.uid)
+            .collection('users')
+            .orderBy('createdAt', descending: true)
+            .limit(1) // Fetch only the most recent document
+            .get();
+
+        if (snapshot.docs.isNotEmpty) {
+          setState(() {
+            userDetails = snapshot.docs.first.data() as Map<String, dynamic>;
+            isLoading = false;
+          });
+        } else {
+          print("No user details found for this user.");
+          setState(() {
+            isLoading = false;
+          });
+        }
+      }
+    } catch (e) {
+      print("Failed to fetch user details: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   Future<void> fetchProperties() async {
     try {
       User? user = _auth.currentUser;
       if (user != null) {
+        //Need to chnage
         QuerySnapshot snapshot = await _firestore
             .collection('to-be-completed')
-            .doc(referenceNumber) // Corrected: using user.uid instead of referenceNumber
+            .doc(
+                user.uid) // Corrected: using user.uid instead of referenceNumber
             .collection('properties')
             .orderBy('createdAt', descending: true)
             .get();
@@ -79,6 +113,7 @@ class _HomePageState extends State<HomePage> {
         title: Text(
           'My Tours',
           style: TextStyle(
+            color: kPrimaryColor,
             fontSize: 16,
             fontWeight: FontWeight.w500,
             fontFamily: "Inter",
@@ -90,7 +125,9 @@ class _HomePageState extends State<HomePage> {
           onTap: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => Homepage()), // Replace HomePage with your home page widget
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Homepage()), // Replace HomePage with your home page widget
             );
           },
           child: Padding(
@@ -109,7 +146,9 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => Helpandsupportpage()), // Replace HomePage with your home page widget
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Helpandsupportpage()), // Replace HomePage with your home page widget
               );
             },
           ),
@@ -121,41 +160,43 @@ class _HomePageState extends State<HomePage> {
           resizeToAvoidBottomInset: false,
           backgroundColor: bWhite,
           body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            // Aligns children to the left
             children: <Widget>[
-              const SizedBox(height: 18),
-              // Padding(
-              //   padding: EdgeInsets.only(left: 16.0),
-              //   child: Row(
-              //     children: [
-              //
-              //       Text(
-              //         'Taurgo',
-              //         style: TextStyle(
-              //           color: kPrimaryColor,
-              //           fontSize: 18,
-              //           fontWeight: FontWeight.w700,
-              //           fontFamily: "Inter",
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // Padding(
-              //   padding: EdgeInsets.only(left: 16.0, bottom: 16.0, top: 4),
-              //   child: Text(
-              //     'Tours',
-              //     style: TextStyle(
-              //       fontSize: 36,
-              //       fontWeight: FontWeight.w900,
-              //       fontFamily: "Inter",
-              //       color: Colors.black,
-              //     ),
-              //   ),
-              // ),
+              const SizedBox(height: 24),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  // Horizontal padding
+                  child: RichText(
+                    text: TextSpan(
+                        text: "Welcome Back,",
+                        style: TextStyle(color: kPrimaryColor, fontSize: 20),
+                        children: [
+                          TextSpan(
+                            text: userDetails?['userName'] ?? '',
+                            style: TextStyle(
+                                color: Colors.grey[500],
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ]),
+                  )),
+              const SizedBox(height: 24),
+
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  // Horizontal padding
+                  child: Text('“It’s great to see you again!"',
+                      style: TextStyle(fontSize: 16, color: kPrimaryColor.withOpacity(0.6))
+                  ),),
+
+
+              const SizedBox(height: 2),
               TabBar(
                 padding: EdgeInsets.all(16.0),
                 indicatorColor: kPrimaryColor,
                 labelColor: kPrimaryColor,
+                dividerColor: kPrimaryColor.withOpacity(0.4),
                 unselectedLabelColor: Colors.grey,
                 labelStyle: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -185,10 +226,14 @@ class _HomePageState extends State<HomePage> {
   Widget buildPropertyList(List<Map<String, dynamic>> properties) {
     if (isLoading) {
       return Center(
-        child: CircularProgressIndicator(
-          color: kPrimaryColor, // Set the color to your primary color
-          strokeWidth: 6.0,
-          strokeCap: StrokeCap.square,// Set the stroke width
+        child: SizedBox(
+          width: 60.0,
+          height: 60.0,
+          child: CircularProgressIndicator(
+            color: kPrimaryColor, // Set the color to your primary color
+            strokeWidth: 6.0,
+            strokeCap: StrokeCap.square,// Set the stroke width
+          ),
         ),
       );
     }
@@ -222,19 +267,19 @@ class _HomePageState extends State<HomePage> {
             ),
             child: ListTile(
               leading: (property['imageUrls'] != null &&
-                  property['imageUrls'].isNotEmpty)
+                      property['imageUrls'].isNotEmpty)
                   ? Image.network(
-                property['imageUrls'][0],
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-              )
+                      property['imageUrls'][0],
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    )
                   : Image.asset(
-                'assets/images/placeholder.png',
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-              ),
+                      'assets/images/placeholder.png',
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
               title: Text(
                 property['address'] ?? '',
                 style: TextStyle(
@@ -279,4 +324,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

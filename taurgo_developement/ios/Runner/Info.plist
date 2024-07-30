@@ -30,6 +30,10 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to the camera to take photos.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>We need your location to provide better service</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>We need your location to provide better service</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need access to the microphone for recording audio.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

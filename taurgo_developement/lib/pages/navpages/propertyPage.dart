@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart'; // Firebase Auth import
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/pages/navpages/upload_image_page.dart';
 import '../home.dart';
+import 'helpAndSupportPage.dart';
 
 class ProperyPage extends StatefulWidget {
   const ProperyPage({Key? key}) : super(key: key);
@@ -58,6 +59,7 @@ class _ProperyPageState extends State<ProperyPage> {
         title: Text(
           'Properties',
           style: TextStyle(
+            color: kPrimaryColor,
             fontSize: 16,
             fontWeight: FontWeight.w500,
             fontFamily: "Inter",
@@ -83,7 +85,14 @@ class _ProperyPageState extends State<ProperyPage> {
               Icons.help_outline,
               color: kPrimaryColor,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Helpandsupportpage()), // Replace HomePage with your home page widget
+              );
+            },
           ),
         ],
       ),

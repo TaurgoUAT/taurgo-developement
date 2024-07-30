@@ -66,6 +66,8 @@ dependencies:
   amplify_auth_cognito:
   amplify_storage_s3:
   cloud_firestore:
+  mailer: ^6.1.2
+  geolocator: ^12.0.0
 
 dev_dependencies:
   flutter_test:
