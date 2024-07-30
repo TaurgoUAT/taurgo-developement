@@ -4,6 +4,7 @@ import 'package:taurgo_developement/pages/navpages/capturingPicturedGuidePage.da
 import 'package:taurgo_developement/pages/navpages/pictureTipsGuidePage.dart';
 import 'package:taurgo_developement/pages/navpages/privacyPolicyPage.dart';
 import 'package:taurgo_developement/pages/navpages/ricohThetaZ1GuidePage.dart';
+import 'package:taurgo_developement/pages/navpages/termsAndConditionsPage.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class HelpSupportPage extends StatelessWidget {
@@ -71,6 +72,24 @@ class HelpSupportPage extends StatelessWidget {
                   },
                   child: Text(
                     'Privacy Policy',
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TermsandConidtions()),
+                    );
+                  },
+                  child: Text(
+                    'Terms and Conditions',
                     style: TextStyle(
                       color: kPrimaryColor,
                       decoration: TextDecoration.underline,
