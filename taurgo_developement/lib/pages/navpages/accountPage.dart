@@ -51,22 +51,29 @@ class _AccountPageState extends State<AccountPage> {
             .get();
 
         if (snapshot.docs.isNotEmpty) {
-          setState(() {
-            userDetails = snapshot.docs.first.data() as Map<String, dynamic>;
-            isLoading = false;
-          });
+          if (mounted) {
+            setState(() {
+              userDetails = snapshot.docs.first.data() as Map<String, dynamic>;
+              isLoading = false;
+            });
+          }
+
         } else {
           print("No user details found for this user.");
-          setState(() {
-            isLoading = false;
-          });
+          if (mounted) {
+            setState(() {
+              isLoading = false;
+            });
+          }
         }
       }
     } catch (e) {
       print("Failed to fetch user details: $e");
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 

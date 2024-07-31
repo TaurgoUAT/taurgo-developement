@@ -149,7 +149,15 @@ class _CameraPreviewPageState extends State<CameraPreviewPage> {
               ],
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: SizedBox(
+              width: 60.0,
+              height: 60.0,
+              child: CircularProgressIndicator(
+                color: kPrimaryColor, // Set the color to your primary color
+                strokeWidth: 6.0,
+                strokeCap: StrokeCap.square,// Set the stroke width
+              ),
+            ));
           }
         },
       ),

@@ -37,18 +37,23 @@ class _ProperyPageState extends State<ProperyPage> {
             .orderBy('createdAt', descending: true)
             .get();
 
-        setState(() {
-          properties = snapshot.docs
-              .map((doc) => doc.data() as Map<String, dynamic>)
-              .toList();
-          isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            properties = snapshot.docs
+                .map((doc) => doc.data() as Map<String, dynamic>)
+                .toList();
+            isLoading = false;
+          });
+        }
+
       }
     } catch (e) {
       print("Failed to fetch properties: $e");
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -117,8 +122,10 @@ class _ProperyPageState extends State<ProperyPage> {
             child: Text(
               'No properties available',
               style: TextStyle(
-                fontSize: 18.0,
-                color: kPrimaryColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                fontFamily: "Inter",
+                color: Colors.grey,
               ),
             ),
           ),

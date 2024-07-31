@@ -246,14 +246,17 @@ class _UploadImagePageState extends State<UploadImagePage> {
       String userEmail,
       String address,
       String areCode) async {
-    final smtpServer = SmtpServer(
-      'smtp.office365.com',
-      port: 587,
-      ssl: false,
-      username: 'abishan.09@outlook.com', // Replace with your email
-      password:
-          'Personal@29', // Replace with your email password or app password
-    );
+    // final smtpServer = SmtpServer(
+    //   'smtp.office365.com',
+    //   port: 587,
+    //   ssl: false,
+    //   username: 'abishan.09@outlook.com', // Replace with your email
+    //   password:
+    //       'Personal@29', // Replace with your email password or app password
+    // );
+    String username = 'info.taurgo@gmail.com';  // Your email
+    String password = 'ujbu pwim jgtv trvb';
+    final smtpServer = gmail(username, password);
 
     final message = Message()
       ..from = Address('abishan.09@outlook.com', 'Taurgo Support')
@@ -262,7 +265,7 @@ class _UploadImagePageState extends State<UploadImagePage> {
       ..text = 'Dear Team, \n \n'
           "It's time, We got a new project to be done. Please fine the "
           "attachments here"
-          "\nEmail: $userEmail"
+          "\n\nEmail: $userEmail"
           "\nAddress: $address"
           "\nArea Code: $areCode"
           '\nReference Code: $referenceCode.'

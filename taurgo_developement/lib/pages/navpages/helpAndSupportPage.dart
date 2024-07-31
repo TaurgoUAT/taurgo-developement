@@ -167,64 +167,115 @@ class _HelpandsupportpageState extends State<Helpandsupportpage> {
         ExpansionTile(
           title: Text(
             'What is Taurgo and how can it benefit real estate professionals?',
+    style: TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    fontFamily: "Inter",
+    color: Colors.grey,
+    )
           ),
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 'Taurgo is a virtual tour app designed to help real estate professionals create immersive virtual tours for their property listings. It allows you to capture 360-degree photos, including floor plans, and share them with potential buyers or tenants, enhancing your property marketing efforts.',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: "Inter",
+                    color: Colors.grey,
+                  )),
+            ),
+          ],
+        ),
+        ExpansionTile(
+          title: Text(
+            'How do I capture virtual tour photos, including floor plans, using Taurgo and a compatible camera?',style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            fontFamily: "Inter",
+            color: Colors.grey,
+          )
+          ),
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'To capture virtual tour photos, including floor plans, you can connect the Taurgo app with a compatible camera, such as the Ricoh Theta Z1. Using the Taurgo app, you can capture 360-degree images of your property, and if desired, integrate floor plans into the virtual tour.',style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                fontFamily: "Inter",
+                color: Colors.grey,
+              )
               ),
             ),
           ],
         ),
         ExpansionTile(
           title: Text(
-            'How do I capture virtual tour photos, including floor plans, using Taurgo and a compatible camera?',
+            'Is it easy to upload, edit, and share photos, including floor plans, with the Taurgo team?',style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            fontFamily: "Inter",
+            color: Colors.grey,
+          )
           ),
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'To capture virtual tour photos, including floor plans, you can connect the Taurgo app with a compatible camera, such as the Ricoh Theta Z1. Using the Taurgo app, you can capture 360-degree images of your property, and if desired, integrate floor plans into the virtual tour.',
+                'Absolutely! Taurgo makes it easy to upload, edit, and share your virtual tour photos, including floor plans, with the Taurgo team. Once you have captured the photos using the app, you can upload them directly and make any necessary edits or enhancements. You can also include floor plans in the virtual tour to provide a comprehensive view of the property.',style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                fontFamily: "Inter",
+                color: Colors.grey,
+              )
               ),
             ),
           ],
         ),
         ExpansionTile(
           title: Text(
-            'Is it easy to upload, edit, and share photos, including floor plans, with the Taurgo team?',
+            'How long does it take for the Taurgo team to process and send back the completed virtual tour package, including floor plans?',style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            fontFamily: "Inter",
+            color: Colors.grey,
+          )
           ),
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Absolutely! Taurgo makes it easy to upload, edit, and share your virtual tour photos, including floor plans, with the Taurgo team. Once you have captured the photos using the app, you can upload them directly and make any necessary edits or enhancements. You can also include floor plans in the virtual tour to provide a comprehensive view of the property.',
+                'The Taurgo team strives to process and send back the completed virtual tour package, including floor plans, within 24 hours. This allows you to quickly incorporate the final photos and floor plans into your property listings, providing potential buyers or tenants with a comprehensive view of the property.',style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                fontFamily: "Inter",
+                color: Colors.grey,
+              )
               ),
             ),
           ],
         ),
         ExpansionTile(
           title: Text(
-            'How long does it take for the Taurgo team to process and send back the completed virtual tour package, including floor plans?',
+            'What should I do if I encounter any issues or have questions while using Taurgo?',style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            fontFamily: "Inter",
+            color: Colors.grey,
+          )
           ),
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'The Taurgo team strives to process and send back the completed virtual tour package, including floor plans, within 24 hours. This allows you to quickly incorporate the final photos and floor plans into your property listings, providing potential buyers or tenants with a comprehensive view of the property.',
-              ),
-            ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text(
-            'What should I do if I encounter any issues or have questions while using Taurgo?',
-          ),
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'If you encounter any issues or have questions while using Taurgo, the Taurgo team is there to assist you. Simply send an email to info@taurgo.co.uk, and they will be happy to help you resolve any problems or address any inquiries you may have regarding capturing and including floor plans in your virtual tours.',
+                'If you encounter any issues or have questions while using Taurgo, the Taurgo team is there to assist you. Simply send an email to info@taurgo.co.uk, and they will be happy to help you resolve any problems or address any inquiries you may have regarding capturing and including floor plans in your virtual tours.',style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                fontFamily: "Inter",
+                color: Colors.grey,
+              )
               ),
             ),
           ],

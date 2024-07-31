@@ -120,7 +120,6 @@ class _ImagepageState extends State<Imagepage> {
         ],
       ),
       body: Container(
-
         color: bWhite,
         child: StreamBuilder<List<String>>(
           stream: imageStream,
@@ -142,7 +141,14 @@ class _ImagepageState extends State<Imagepage> {
               return Center(child: Text('Error: ${snapshot.error}'));
             }
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text('No images found.'));
+              return Center(
+                  child: Text('No images found.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: "Inter",
+                        color: Colors.grey,
+                      )));
             }
 
             final images = snapshot.data!;
