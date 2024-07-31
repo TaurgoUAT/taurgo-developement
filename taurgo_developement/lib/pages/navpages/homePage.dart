@@ -3,19 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/costants/status.dart';
-import 'package:taurgo_developement/pages/FolderContentsPage.dart';
 import 'package:taurgo_developement/pages/home.dart';
 import 'package:taurgo_developement/pages/navpages/completedPropertyPage.dart';
 import 'package:taurgo_developement/pages/navpages/helpAndSupportPage.dart';
-import 'package:taurgo_developement/pages/navpages/notification/notificationPage.dart';
-import 'package:taurgo_developement/pages/navpages/upload_image_page.dart';
 
 class HomePage extends StatefulWidget {
-  final String folderName;
 
   const HomePage({
     super.key,
-    this.folderName = 'Default Folder Name',
   });
 
   @override
@@ -51,22 +46,30 @@ class _HomePageState extends State<HomePage> {
             .get();
 
         if (snapshot.docs.isNotEmpty) {
-          setState(() {
-            userDetails = snapshot.docs.first.data() as Map<String, dynamic>;
-            isLoading = false;
-          });
+          if(mounted){
+            setState(() {
+              userDetails = snapshot.docs.first.data() as Map<String, dynamic>;
+              isLoading = false;
+            });
+          }
+
         } else {
           print("No user details found for this user.");
-          setState(() {
-            isLoading = false;
-          });
+          if(mounted){
+            setState(() {
+              isLoading = false;
+            });
+          }
+
         }
       }
     } catch (e) {
       print("Failed to fetch user details: $e");
-      setState(() {
-        isLoading = false;
-      });
+      if(mounted){
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -76,10 +79,10 @@ class _HomePageState extends State<HomePage> {
       if (user != null) {
         //Need to chnage
         QuerySnapshot snapshot = await _firestore
-            .collection('to-be-completed')
+            .collection('properties')
             .doc(
                 user.uid) // Corrected: using user.uid instead of referenceNumber
-            .collection('properties')
+            .collection('property-details')
             .orderBy('createdAt', descending: true)
             .get();
 
@@ -95,15 +98,19 @@ class _HomePageState extends State<HomePage> {
             .where((property) => property['status'] == status[0])
             .toList();
 
+        if (mounted) {
+          setState(() {
+            isLoading = false;
+          });
+        }
+      }
+    } catch (e) {
+      print("Failed to fetch properties: $e");
+      if (mounted) {
         setState(() {
           isLoading = false;
         });
       }
-    } catch (e) {
-      print("Failed to fetch properties: $e");
-      setState(() {
-        isLoading = false;
-      });
     }
   }
 

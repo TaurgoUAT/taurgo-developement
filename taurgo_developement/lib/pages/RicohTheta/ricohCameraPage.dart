@@ -6,6 +6,7 @@ import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/takeP
 import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:taurgo_developement/pages/navpages/upload_image_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:theta_client_flutter/digest_auth.dart';
 import 'package:theta_client_flutter/theta_client_flutter.dart';
 
 import '../navpages/helpAndSupportPage.dart';
@@ -21,8 +22,8 @@ class _RicohCameraPageState extends State<RicohCameraPage>
     with WidgetsBindingObserver {
   String _platformVersion = 'Unknown';
   final _thetaClientFlutter = ThetaClientFlutter();
-  bool _isInitTheta = false;
-  bool _initializing = false;
+  bool _isInitTheta = true;
+  bool _initializing = true;
   ThetaModel? _thetaModel;
 
   final String endpoint = 'http://192.168.1.1:80/';
@@ -77,16 +78,32 @@ class _RicohCameraPageState extends State<RicohCameraPage>
     bool isInitTheta;
     ThetaModel? thetaModel;
     try {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(
+            child: SizedBox(
+              width: 60.0,
+              height: 60.0,
+              child: CircularProgressIndicator(
+                color: kPrimaryColor, // Set the color to your primary color
+                strokeWidth: 6.0,
+                strokeCap: StrokeCap.square,// Set the stroke width
+              ),
+            ),
+          );
+        },
+      );
       _initializing = true;
       isInitTheta = await _thetaClientFlutter.isInitialized();
       debugPrint('start initialize');
       await _thetaClientFlutter.initialize(endpoint);
       thetaModel = await _thetaClientFlutter.getThetaModel();
 
-      // // Client mode authentication settings
-      // final config = ThetaConfig();
-      // config.clientMode = DigestAuth('THETAXX12345678', '12345678');
-      // await _thetaClientFlutter.initialize(endpoint, config);
+      // Client mode authentication settings
+      final config = ThetaConfig();
+      config.clientMode = DigestAuth('THETAXX12345678', '12345678');
+      await _thetaClientFlutter.initialize(endpoint, config);
 
       isInitTheta = true;
     } on PlatformException {
@@ -138,6 +155,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
 
     String camera = isInitialized ? 'CONNECTED! $thetaModel' : 'DISCONNECTED!';
+    Color colorOfStatus = isInitialized ? kPrimaryColor : Colors.redAccent;
     Color iconColor = isInitialized ? kPrimaryColor : Colors.redAccent;
 
     return Scaffold(
@@ -204,7 +222,7 @@ class Home extends StatelessWidget {
                         text: "$camera\n",
                         style: TextStyle(
                           fontSize: 20,
-                          color: Colors.redAccent,
+                          color: colorOfStatus,
                           fontWeight: FontWeight.w500,
                           fontFamily: "Inter",
                         ),
@@ -259,7 +277,7 @@ class Home extends StatelessWidget {
                         ? null
                         : () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const TakePictureScreen()));
+                                builder: (_) => TakePictureScreen()));
                           },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: kPrimaryColor,

@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _fe_analyzer_shared
-      sha256: "0b2f2bd91ba804e53a61d757b986f89f1f9eaed5b11e4b2f5a2468d86d6c9fc7"
+      sha256: ae92f5d747aee634b87f89d9946000c2de774be1d6ac3e58268224348cd0101a
       url: "https://pub.dev"
     source: hosted
-    version: "67.0.0"
+    version: "61.0.0"
   _flutterfire_internals:
     dependency: transitive
     description:
@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.39"
+  amazon_cognito_identity_dart_2:
+    dependency: transitive
+    description:
+      name: amazon_cognito_identity_dart_2
+      sha256: ad550b054e19c1879f729f9f1b612f91f21f2c595623942a283564f9218ca6c8
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   amplify_analytics_pinpoint:
     dependency: transitive
     description:
@@ -149,10 +157,10 @@ packages:
     dependency: transitive
     description:
       name: analyzer
-      sha256: "37577842a27e4338429a1cbc32679d508836510b056f1eedf0c8d20e39c1383d"
+      sha256: ea3d8652bda62982addfd92fdc2d0214e5f82e43325104990d4f4c4a2a313562
       url: "https://pub.dev"
     source: hosted
-    version: "6.4.1"
+    version: "5.13.0"
   archive:
     dependency: transitive
     description:
@@ -185,6 +193,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.1"
+  aws_s3_upload:
+    dependency: "direct main"
+    description:
+      name: aws_s3_upload
+      sha256: "20683fa0de19c75d1f4c4f48d3a7ac7fa8e0cdfd370003c59b4234fb4aa4257b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.0"
   aws_signature_v4:
     dependency: transitive
     description:
@@ -197,10 +213,10 @@ packages:
     dependency: transitive
     description:
       name: basic_utils
-      sha256: "2064b21d3c41ed7654bc82cc476fd65542e04d60059b74d5eed490a4da08fc6c"
+      sha256: "8815477fcf58499e42326bd858e391442425fa57db9a45e48e15224c62049262"
       url: "https://pub.dev"
     source: hosted
-    version: "5.7.0"
+    version: "5.5.4"
   boolean_selector:
     dependency: transitive
     description:
@@ -341,10 +357,10 @@ packages:
     dependency: transitive
     description:
       name: cancellation_token
-      sha256: ad95acf9d4b2f3563e25dc937f63587e46a70ce534e910b65d10e115490f1027
+      sha256: "44891ef71d605bc59ef7974c403630d8e8506fcd897a29c3e38466ef69e5c4eb"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1"
+    version: "1.6.1"
   characters:
     dependency: transitive
     description:
@@ -485,10 +501,10 @@ packages:
     dependency: transitive
     description:
       name: dart_style
-      sha256: "99e066ce75c89d6b29903d788a7bb9369cf754f7b24bf70bf4b6d6d6b26853b9"
+      sha256: "1efa911ca7086affd35f463ca2fc1799584fb6aa89883cf0af8e3664d6a02d55"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.6"
+    version: "2.3.2"
   dbus:
     dependency: transitive
     description:
@@ -892,10 +908,10 @@ packages:
     dependency: "direct main"
     description:
       name: http
-      sha256: b9c29a161230ee03d3ccf545097fccd9b87a5264228c5d348202e0f0c28f9010
+      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.2"
+    version: "0.13.6"
   http2:
     dependency: transitive
     description:
@@ -1148,10 +1164,10 @@ packages:
     dependency: transitive
     description:
       name: objectid
-      sha256: fd4a0b9fe07df25c446948b786e7ab2f363b2f461afa78632cab179d7613b9b3
+      sha256: "22fa972000d3256f10d06323a9dcbf4b564fb03fdb9024399e3a6c1d9902f914"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "2.1.0"
   os_detect:
     dependency: transitive
     description:
@@ -1364,34 +1380,34 @@ packages:
     dependency: "direct main"
     description:
       name: realm
-      sha256: a53b6903e2f6603c906bf5aac3691f0b2f45262aa08525a4bd546900602f2f17
+      sha256: "690393387790e4214d6490f36774e8dd124d07d9282abf0c516a9d9650543e2f"
       url: "https://pub.dev"
     source: hosted
-    version: "1.9.0"
+    version: "1.2.0"
   realm_common:
     dependency: transitive
     description:
       name: realm_common
-      sha256: "29516a9e43a9e75b2e16226ce24ccd9a549d9377e69be218394d8fb84da11183"
+      sha256: f69b58e96789d62c1f361165ef051444d43217eeaf4791f79e898efcd9adc120
       url: "https://pub.dev"
     source: hosted
-    version: "1.9.0"
-  realm_dart:
-    dependency: transitive
-    description:
-      name: realm_dart
-      sha256: "55cf02d26b0775e79570cf0ba6e4036a10c66250b99cb8f1ee41d71057206a7f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.9.0"
+    version: "1.2.0"
   realm_generator:
     dependency: transitive
     description:
       name: realm_generator
-      sha256: "6d26ca214aad1b49f37a1a86f3216f19a25657d38d82cefb16551a35aa316ec1"
+      sha256: "6301e0cfefd5b57b0f979f3c4e4545e060bc8bf6170d84971a5bfb6621e057f8"
       url: "https://pub.dev"
     source: hosted
-    version: "1.9.0"
+    version: "1.2.0"
+  recase:
+    dependency: transitive
+    description:
+      name: recase
+      sha256: e4eb4ec2dcdee52dcf99cb4ceabaffc631d7424ee55e56f280bc039737f89213
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
   retry:
     dependency: transitive
     description:
@@ -1537,10 +1553,10 @@ packages:
     dependency: transitive
     description:
       name: tar
-      sha256: "22f67e2d77b51050436620b2a5de521c58ca6f0b75af1d9ab3c8cae2eae58fcd"
+      sha256: "85ffd53e277f2bac8afa2885e6b195e26937e9c402424c3d88d92fd920b56de9"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.5"
+    version: "0.5.6"
   term_glyph:
     dependency: transitive
     description:

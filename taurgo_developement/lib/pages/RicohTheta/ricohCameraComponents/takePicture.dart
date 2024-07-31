@@ -1,23 +1,17 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/messageBox.dart';
-import 'package:taurgo_developement/pages/RicohTheta/ricohCameraComponents/photoScreen.dart';
 import 'package:theta_client_flutter/theta_client_flutter.dart';
+import 'dart:typed_data';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
-import '../../../costants/AppColors.dart';
-import '../../home.dart';
-import '../../navpages/helpAndSupportPage.dart';
+import '../../navpages/upload_image_page.dart';
 
 class TakePictureScreen extends StatefulWidget {
-  const TakePictureScreen({super.key});
-
   @override
-  State<StatefulWidget> createState() {
-    return _TakePictureScreen();
-  }
+  State<StatefulWidget> createState() => _TakePictureScreenState();
 }
 
-class _TakePictureScreen extends State<TakePictureScreen>
+class _TakePictureScreenState extends State<TakePictureScreen>
     with WidgetsBindingObserver {
   final _thetaClientFlutter = ThetaClientFlutter();
 
@@ -26,6 +20,8 @@ class _TakePictureScreen extends State<TakePictureScreen>
   bool shooting = false;
   PhotoCaptureBuilder? builder;
   PhotoCapture? photoCapture;
+
+  List<File> images = [];  // Initialize images list here
 
   @override
   void initState() {
@@ -72,98 +68,63 @@ class _TakePictureScreen extends State<TakePictureScreen>
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: true,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Taek Pictures',
-            style: TextStyle(
-              color: kPrimaryColor,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              fontFamily: "Inter",
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Take Pictures',
+          style: TextStyle(
+            color: Colors.blue,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
           ),
-          centerTitle: true,
-          backgroundColor: bWhite,
-          leading: GestureDetector(
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        Homepage()), // Replace HomePage with your home page widget
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(
-                'assets/logo/Taurgo Logo.png', // Path to your company icon
-              ),
-            ),
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.help_outline,
-                color: kPrimaryColor,
-              ),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Helpandsupportpage()), // Replace HomePage with your home page widget
-                );
-              },
-            ),
-          ],
         ),
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            Container(
-                color: Colors.black,
-                child: Center(
-                  child: shooting
-                      ? const Text(
-                          'Take Picture...',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        )
-                      : Image.memory(
-                          frameData,
-                          errorBuilder: (a, b, c) {
-                            return Container(
-                              color: Colors.black,
-                            );
-                          },
-                          gaplessPlayback: true,
-                        ),
-                )),
-            Container(
-                alignment: const Alignment(0, 0.8),
-                child: MaterialButton(
-                  height: 80,
-                  shape: const CircleBorder(),
-                  color: Colors.white,
-                  onPressed: () {
-                    if (shooting) {
-                      debugPrint('already shooting');
-                      return;
-                    }
-                    takePicture();
-                  },
-                )),
-          ],
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.blue),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      onPopInvoked: (didPop) async {
-        backButtonPress(context);
-      },
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Container(
+              color: Colors.black,
+              child: Center(
+                child: shooting
+                    ? const Text(
+                  'Taking Picture...',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                )
+                    : Image.memory(
+                  frameData,
+                  errorBuilder: (a, b, c) {
+                    return Container(
+                      color: Colors.black,
+                    );
+                  },
+                  gaplessPlayback: true,
+                ),
+              )),
+          Container(
+              alignment: const Alignment(0, 0.8),
+              child: MaterialButton(
+                height: 80,
+                shape: const CircleBorder(),
+                color: Colors.white,
+                onPressed: () {
+                  if (shooting) {
+                    debugPrint('already shooting');
+                    return;
+                  }
+                  takePicture();
+                },
+              )),
+        ],
+      ),
     );
   }
 
@@ -175,19 +136,16 @@ class _TakePictureScreen extends State<TakePictureScreen>
 
   void initialize() async {
     debugPrint('init TakePicture');
-    // initialize PhotoCapture
     builder = _thetaClientFlutter.getPhotoCaptureBuilder();
     builder!.build().then((value) {
       photoCapture = value;
       debugPrint('Ready PhotoCapture');
       Future.delayed(const Duration(milliseconds: 500), () {}).then((value) {
-        // Wait because it can fail.
         startLivePreview();
       });
     }).onError((error, stackTrace) {
-      MessageBox.show(context, 'Error PhotoCaptureBuilder', () {
-        backScreen();
-      });
+      // Handle initialization error
+      debugPrint('Error initializing PhotoCaptureBuilder: $error');
     });
 
     debugPrint('initializing...');
@@ -207,9 +165,7 @@ class _TakePictureScreen extends State<TakePictureScreen>
       debugPrint('LivePreview end.');
     }).onError((error, stackTrace) {
       debugPrint('Error getLivePreview.$error');
-      MessageBox.show(context, 'Error getLivePreview', () {
-        backScreen();
-      });
+      // Handle live preview error
     });
     debugPrint('LivePreview starting..');
   }
@@ -218,10 +174,16 @@ class _TakePictureScreen extends State<TakePictureScreen>
     previewing = false;
   }
 
-  void backScreen() {
-    stopLivePreview();
-    Navigator.pop(context);
+  void _updateImageList(List<File> newImages) {
+    setState(() {
+      images = newImages; // Update the images list with new images
+    });
   }
+  // void _loadInitialImages() {
+  //   setState(() {
+  //     images = widget.initialImages.map((path) => File(path)).toList();
+  //   });
+  // }
 
   void takePicture() {
     if (shooting) {
@@ -232,7 +194,6 @@ class _TakePictureScreen extends State<TakePictureScreen>
       shooting = true;
     });
 
-    // Stops while shooting is in progress
     stopLivePreview();
 
     photoCapture!.takePicture((fileUrl) {
@@ -242,13 +203,17 @@ class _TakePictureScreen extends State<TakePictureScreen>
       debugPrint('take picture: $fileUrl');
       if (!mounted) return;
       if (fileUrl != null) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(
-                builder: (_) => PhotoScreen(
-                      name: 'Take Picture',
-                      fileUrl: fileUrl,
-                    )))
-            .then((value) => startLivePreview());
+        _updateImageList(fileUrl as List<File>);
+        // Navigate to UploadByCategoryPage with the fileUrl
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => UploadByCategoryPage(
+              // initialImages: [fileUrl], // Pass the initial image as a list
+              onImagesSelected: _updateImageList, // Pass the callback
+            ),
+          ),
+        );
       } else {
         setState(() {
           shooting = true;

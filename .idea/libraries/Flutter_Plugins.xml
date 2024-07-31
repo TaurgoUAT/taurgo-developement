@@ -59,11 +59,11 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_storage_web-3.9.11" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/amplify_db_common-0.4.3" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/video_player_avfoundation-2.6.1" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/realm-1.9.0" />
       <root url="file://$PROJECT_DIR$/taurgo_developement/packages/theta_client_flutter" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/file_selector_windows-0.9.3+2" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/firebase_auth-5.1.2" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/ricoh_theta-1.0.0" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/realm-1.2.0" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../costants/AppColors.dart';
+
 class MessageBox extends StatelessWidget {
   final String title;
   final Function? onClose;
@@ -9,7 +11,15 @@ class MessageBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(title),
+      title: Text(title,style: TextStyle(
+          color: kPrimaryColor,
+          fontSize: 16
+      )),
+      content: Text(
+          'Please Try Again, with Ricoh Camera',style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.w100
+      )),
       actions: [
         ElevatedButton(
             onPressed: () {
@@ -18,11 +28,12 @@ class MessageBox extends StatelessWidget {
                 onClose!();
               }
             },
-            child: const Text('OK')),
+            child: const Text('OK',style: TextStyle(
+                color: kPrimaryColor
+            ))),
       ],
     );
   }
-
   static void show(BuildContext context, String title, [Function? onClose]) {
     showDialog(
         context: context,
