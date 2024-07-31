@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taurgo_developement/costants/AppColors.dart';
 import 'package:theta_client_flutter/theta_client_flutter.dart';
 import 'dart:typed_data';
 import 'dart:io';
@@ -73,7 +74,7 @@ class _TakePictureScreenState extends State<TakePictureScreen>
         title: Text(
           'Take Pictures',
           style: TextStyle(
-            color: Colors.blue,
+            color: kPrimaryColor,
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
@@ -81,7 +82,7 @@ class _TakePictureScreenState extends State<TakePictureScreen>
         centerTitle: true,
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.blue),
+          icon: Icon(Icons.arrow_back, color: kPrimaryColor),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
