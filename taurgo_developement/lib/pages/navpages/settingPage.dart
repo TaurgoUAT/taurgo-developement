@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:taurgo_developement/costants/AppColors.dart';
 
+import '../../controllers/authController.dart';
+
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
@@ -17,51 +19,8 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    _checkLocationPermission();
   }
 
-  Future<void> _checkLocationPermission() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
-        setState(() {
-          locationEnabled = false;
-        });
-      } else {
-        setState(() {
-          locationEnabled = true;
-        });
-      }
-    } else {
-      setState(() {
-        locationEnabled = true;
-      });
-    }
-  }
-
-  Future<void> _updateLocationPermission(bool enable) async {
-    if (enable) {
-      // Request location permission
-      LocationPermission permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse &&
-          permission != LocationPermission.always) {
-        setState(() {
-          locationEnabled = false;
-        });
-        return;
-      }
-    } else {
-      // Handle the case where location services should be disabled
-      // Clearing or storing any location data may be handled here
-      // but disabling location services programmatically isn't possible
-      setState(() {
-        locationEnabled = false;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,16 +91,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 inactiveThumbColor: Colors.grey,
                 inactiveTrackColor: Colors.grey[300],
               ),
-              SwitchListTile(
-                title: Text('Location', style: TextStyle(fontSize: 12)),
-                value: locationEnabled,
-                onChanged: (bool value) {
-                  _updateLocationPermission(value);
-                },
-                activeColor: kPrimaryColor,
-                inactiveThumbColor: Colors.grey,
-                inactiveTrackColor: Colors.grey[300],
-              ),
+
               Divider(),
               ListTile(
                 title: Text('About',
@@ -179,6 +129,35 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
                 onTap: () {},
+              ),
+              Spacer(),
+              Container(
+                padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 30.0),
+                width: double.maxFinite,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      AuthController.instance.deleteAccount();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      child: Text(
+                        'Delete Account',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent,
+                      foregroundColor: bWhite, // Background color
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.circular(50), // Button corner radius
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

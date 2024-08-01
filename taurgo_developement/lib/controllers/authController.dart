@@ -98,4 +98,45 @@ class AuthController extends GetxController {
   void logOut() async {
     await auth.signOut();
   }
+
+  void deleteAccount() async {
+    try {
+      User? user = auth.currentUser;
+
+      // Delete user's data from Firestore
+      if (user != null) {
+        await firestore.collection('users-deatils').doc(user.uid).delete();
+
+        // Delete the user account
+        await user.delete();
+
+        // Sign out the user
+        await auth.signOut();
+
+        Get.snackbar("Account Deleted", "Your account has been deleted successfully",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            titleText: Text("Success",
+                style: TextStyle(color: Colors.white)),
+            messageText: Text(
+              "Your account has been deleted successfully.",
+              style: TextStyle(color: Colors.white),
+            ));
+
+        // Navigate to the splash screen or login page
+        Get.offAll(() => SplashScreen());
+      }
+    } catch (e) {
+      Get.snackbar("Delete Account", "Error",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent,
+          titleText: Text("Account Deletion Failed",
+              style: TextStyle(color: Colors.white)),
+          messageText: Text(
+            e.toString(),
+            style: TextStyle(color: Colors.white),
+          ));
+    }
+  }
+
 }

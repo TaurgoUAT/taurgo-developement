@@ -29,15 +29,14 @@
 	<key>NSAllowsArbitraryLoads</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>We need access to the camera to take photos.</string>
+	<string>My app uses camera for select the property picture directly from camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-    <string>We need your location to provide better service</string>
-    <key>NSLocationAlwaysUsageDescription</key>
     <string>We need your location to provide better service</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need access to the microphone for recording audio.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>My app uses photos for predicting mages from gallery</string>
+	<string>My app uses uploading images from gallery to select their floor
+	plans and logo</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
